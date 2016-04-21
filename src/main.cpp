@@ -11,17 +11,41 @@ int main(int argc, char** argv) {
         testnodes.push_back(Node(nodes[i]));
     }
 
-	std::vector<bool> connectitit;
+    std::vector<bool> connectitit, connectut;
 	connectitit.push_back(true);
 	connectitit.push_back(false);
-    //testnode.newConnection(testnode2, connectitit);
-    for (int i = 0; i < testnodes.size(); i++) {
-        cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
-    }
 
-
+    connectut.push_back(false);
+    connectut.push_back(true);
+    testnodes.at(1).newConnection(testnodes.at(2), connectitit);
+    testnodes.at(1).newConnection(testnodes.at(2), connectut);
     //testnode.newConnection();
 
-    //cout << testnode.getSpecificConnection(connectitit) << endl;
+
+    for (int i = 0; i < testnodes.size(); i++) {
+        cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
+        cout << "Node " << testnodes.at(i).getName() << " is "
+             << (testnodes.at(i).isIsolated() ? "" : "not ") << "isolated"
+             << endl;
+
+    }
+
+    cout << "node b is connected to "
+         << testnodes.at(1).getSpecificConnection(connectitit) << endl;
+    std::vector<std::vector<bool>> targetNodeCon = testnodes.at(1).getConditionsForNode(testnodes.at(2));
+    cout << targetNodeCon.size() << endl;
+    cout << "conditions for b going to c are: ";
+
+
+
+    for(int i = 0; i < targetNodeCon.size(); i++) {
+        cout << targetNodeCon.at(i).at(0)
+             << targetNodeCon.at(i).at(1);
+    }
+    cout << endl;
+
+
+
+
 	return 0;
 }

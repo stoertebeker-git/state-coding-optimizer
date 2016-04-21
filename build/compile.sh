@@ -3,7 +3,7 @@ rm main
 echo "Running CMake..."
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 echo "lelle coppied so hard..."
-make
+make -j 4
 
 echo "Cleanup..."
 rm -r CMakeFiles
