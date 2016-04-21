@@ -12,6 +12,7 @@ public:
 	char getName();
 	void setName(char name);
 	void newConnection(Node node, std::vector<bool> conditions);
+	char getSpecificConnection(std::vector<bool> condition);
 
 private:
 	std::map<std::vector<bool>, Node> connections;
