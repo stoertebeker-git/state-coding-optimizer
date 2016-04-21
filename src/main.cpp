@@ -1,12 +1,18 @@
 #include <iostream>
 #include "node.h"
+#include <ctime>
+
+//#define RAND_MAX 3
 
 using namespace std;
 
 int main(int argc, char** argv) {
 
     std::vector<Node> testnodes;
+    std::srand(std::time(0));
+
     char nodes[] = {'a', 'b', 'c', 'd'};
+
     for (int i = 0; i < sizeof(nodes)/sizeof(nodes[0]); i++) {
         testnodes.push_back(Node(nodes[i]));
     }
@@ -22,10 +28,12 @@ int main(int argc, char** argv) {
         conditionslist.push_back(cond);
     }
 
-    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(1));
-    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(3));
-    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(0));
-    testnodes.at(2).newConnection(testnodes.at(1), conditionslist.at(0));
+
+    for(int y = 0; y < testnodes.size(); y++) {
+            for(int i = 0; i < conditionslist.size(); i++) {
+               testnodes.at(y).newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
+        }
+    }
 
     for (int i = 0; i < testnodes.size(); i++) {
         cout << "Node " << testnodes.at(i).getName() << " created!" << endl;

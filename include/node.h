@@ -22,9 +22,10 @@ public:
 
     int getNodeCode() const;
     void setNodeCode(int value);
+    std::map<std::vector<bool>, Node> connections;
 
 private:
-    std::map<std::vector<bool>, Node> connections;
+
 	char name;
     int nodeCode;
 };
