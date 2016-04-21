@@ -11,6 +11,7 @@ public:
 
 	void newConnection(Node node, std::vector<bool> conditions);
 	char getSpecificConnection(std::vector<bool> condition);
+    bool hasSpecificConnection(std::vector<bool> condition);
     bool isIsolated();
 
     std::vector<std::vector<bool>> getConditionsForNode(Node node);

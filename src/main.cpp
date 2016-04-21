@@ -14,11 +14,13 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
         std::map<Node, std::vector<Node>> results;
 
         for(int j = 0; j < nodes.size(); j++) {
+            if(!nodes.at(j).hasSpecificConnection(conditions.at(i)))
+                continue;
+
             Node node = nodes.at(j).getSpecificConnection(conditions.at(i));
 
             if(results.count(node)) {
                 results.at(node).push_back(nodes.at(j));
-                //countdisshit++;
                 cout << "sth already exists" << endl;
             } else {
                 std::vector<Node> resultnode;
@@ -27,8 +29,13 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
                 //cout << "sth new happend" << endl;
             }
         }
+        for(int j = 0; j < nodes.size(); j++) {
+            //delete entries with only one connection
+        }
         lists.push_back(results);
     }
+
+    //for(int i = 0;)
 }
 
 int main(int argc, char** argv) {
@@ -56,7 +63,9 @@ int main(int argc, char** argv) {
 
     for(int y = 0; y < testnodes.size(); y++) {
             for(int i = 0; i < conditionslist.size(); i++) {
-               testnodes.at(y).newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
+                if(std::rand() % 6 >= 2) {
+                    testnodes.at(y).newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
+                }
         }
     }
 

@@ -34,6 +34,10 @@ char Node::getSpecificConnection(std::vector<bool> condition) {
     return connections.at(condition).getName();
 }
 
+bool Node::hasSpecificConnection(std::vector<bool> condition) {
+    return connections.count(condition) != 0;
+}
+
 std::map<std::vector<bool>, Node> Node::getAllConnections() {
     return connections;
 }
