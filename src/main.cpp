@@ -4,19 +4,24 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	
-	Node testnode('a');
-	Node testnode2('b');
+
+    std::vector<Node> testnodes;
+    char nodes[] = {'a', 'b', 'c', 'd'};
+    for (int i = 0; i < sizeof(nodes)/sizeof(nodes[0]); i++) {
+        testnodes.push_back(Node(nodes[i]));
+    }
+
 	std::vector<bool> connectitit;
 	connectitit.push_back(true);
 	connectitit.push_back(false);
-	testnode.newConnection(testnode2, connectitit);
+    //testnode.newConnection(testnode2, connectitit);
+    for (int i = 0; i < testnodes.size(); i++) {
+        cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
+    }
 
-	cout << "Node " << testnode.getName() << " created!" << endl;
-	cout << "Node " << testnode2.getName() << " created!" << endl;
 
-	cout << "Node " << testnode.getName() << " has the following connections" << endl;
+    //testnode.newConnection();
 
-	cout << testnode.getSpecificConnection(connectitit) << endl;
+    //cout << testnode.getSpecificConnection(connectitit) << endl;
 	return 0;
 }
