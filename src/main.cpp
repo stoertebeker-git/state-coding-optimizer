@@ -11,39 +11,44 @@ int main(int argc, char** argv) {
         testnodes.push_back(Node(nodes[i]));
     }
 
-    std::vector<bool> connectitit, connectut;
-	connectitit.push_back(true);
-	connectitit.push_back(false);
+    std::vector<std::vector<bool>> conditionslist;
+    for(int i = 0; i <= 3; i++) {
 
-    connectut.push_back(false);
-    connectut.push_back(true);
-    testnodes.at(1).newConnection(testnodes.at(2), connectitit);
-    testnodes.at(1).newConnection(testnodes.at(2), connectut);
-    //testnode.newConnection();
+        std::vector<bool> cond;
 
+        cond.push_back((i >> 1) & 1);
+        cond.push_back(i & 1);
+
+        conditionslist.push_back(cond);
+    }
+
+    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(1));
+    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(3));
+    testnodes.at(1).newConnection(testnodes.at(2), conditionslist.at(0));
+    testnodes.at(2).newConnection(testnodes.at(1), conditionslist.at(0));
 
     for (int i = 0; i < testnodes.size(); i++) {
         cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
         cout << "Node " << testnodes.at(i).getName() << " is "
              << (testnodes.at(i).isIsolated() ? "" : "not ") << "isolated"
              << endl;
-
     }
 
-    cout << "node b is connected to "
-         << testnodes.at(1).getSpecificConnection(connectitit) << endl;
-    std::vector<std::vector<bool>> targetNodeCon = testnodes.at(1).getConditionsForNode(testnodes.at(2));
-    cout << targetNodeCon.size() << endl;
-    cout << "conditions for b going to c are: ";
+    for(int y = 0; y < testnodes.size(); y++) {
+        for(int j = 0; j < testnodes.size(); j++) {
+            std::vector<std::vector<bool>> targetNodeCon =
+                    testnodes.at(y).getConditionsForNode(testnodes.at(j));
+            cout << testnodes.at(y).getName() << "->" << testnodes.at(j).getName() << ":";
+            for(int i = 0; i < targetNodeCon.size(); i++) {
+                cout << targetNodeCon.at(i).at(0)
+                     << targetNodeCon.at(i).at(1)
+                     << ",";
+            }
+            cout << " ";
 
-
-
-    for(int i = 0; i < targetNodeCon.size(); i++) {
-        cout << targetNodeCon.at(i).at(0)
-             << targetNodeCon.at(i).at(1);
+        }
+        cout << endl << endl;
     }
-    cout << endl;
-
 
 
 

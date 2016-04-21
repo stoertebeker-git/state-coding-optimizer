@@ -37,6 +37,7 @@ char Node::getSpecificConnection(std::vector<bool> condition) {
 std::map<std::vector<bool>, Node> Node::getAllConnections() {
     return connections;
 }
+
 int Node::getNodeCode() const
 {
     return nodeCode;
@@ -46,7 +47,6 @@ void Node::setNodeCode(int value)
 {
     nodeCode = value;
 }
-
 
 bool Node::isIsolated(){
     for(auto& iter : connections) {
