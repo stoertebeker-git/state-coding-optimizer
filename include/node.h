@@ -24,6 +24,8 @@ public:
     void setNodeCode(int value);
     std::map<std::vector<bool>, Node> connections;
 
+    bool operator<(const Node& otherNode) const;
+
 private:
 
 	char name;

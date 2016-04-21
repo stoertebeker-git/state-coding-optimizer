@@ -6,6 +6,31 @@
 
 using namespace std;
 
+void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> conditions) {
+
+    std::vector<std::map<Node, std::vector<Node>>> lists;
+
+    for(int i = 0; i < conditions.size(); i++) {
+        std::map<Node, std::vector<Node>> results;
+
+        for(int j = 0; j < nodes.size(); j++) {
+            Node node = nodes.at(j).getSpecificConnection(conditions.at(i));
+
+            if(results.count(node)) {
+                results.at(node).push_back(nodes.at(j));
+                //countdisshit++;
+                cout << "sth already exists" << endl;
+            } else {
+                std::vector<Node> resultnode;
+                resultnode.push_back(nodes.at(j));
+                results.insert( std::pair<Node, std::vector<Node>>(node, resultnode) );
+                //cout << "sth new happend" << endl;
+            }
+        }
+        lists.push_back(results);
+    }
+}
+
 int main(int argc, char** argv) {
 
     std::vector<Node> testnodes;
@@ -35,12 +60,12 @@ int main(int argc, char** argv) {
         }
     }
 
-    for (int i = 0; i < testnodes.size(); i++) {
+    /*for (int i = 0; i < testnodes.size(); i++) {
         cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
         cout << "Node " << testnodes.at(i).getName() << " is "
              << (testnodes.at(i).isIsolated() ? "" : "not ") << "isolated"
              << endl;
-    }
+    }*/
 
     for(int y = 0; y < testnodes.size(); y++) {
         for(int j = 0; j < testnodes.size(); j++) {
@@ -53,12 +78,13 @@ int main(int argc, char** argv) {
                      << ",";
             }
             cout << " ";
-
         }
         cout << endl << endl;
     }
 
-
+    returnPriorityOne(testnodes,conditionslist);
 
 	return 0;
 }
+
+

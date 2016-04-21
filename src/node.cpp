@@ -56,3 +56,7 @@ bool Node::isIsolated(){
     }
     return true;
 }
+
+bool Node::operator<(const Node& otherNode) const {
+   return this->name < otherNode.name;
+}
