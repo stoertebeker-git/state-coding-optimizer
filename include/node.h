@@ -14,6 +14,8 @@ public:
     bool hasSpecificConnection(std::vector<bool> condition);
     bool isIsolated();
 
+    void setOutputAt(std::vector<bool> conditions, std::vector<bool> outputs);
+    std::vector<bool> getOutputAt(std::vector<bool> conditions);
     std::vector<std::vector<bool>> getConditionsForNode(Node node);
 
     std::map<std::vector<bool>, Node> getAllConnections();
@@ -23,12 +25,13 @@ public:
 
     int getNodeCode() const;
     void setNodeCode(int value);
-    std::map<std::vector<bool>, Node> connections;
+
 
     bool operator<(const Node& otherNode) const;
 
 private:
-
+    std::map<std::vector<bool>, std::vector<bool>> output;
+    std::map<std::vector<bool>, Node> connections;
 	char name;
     int nodeCode;
 };

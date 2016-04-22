@@ -7,6 +7,13 @@ Node::Node(char name) : name(name) {
 Node::~Node() {
 
 }
+void Node::setOutputAt(std::vector<bool> condition, std::vector<bool> outputs) {
+    output.insert(std::pair<std::vector<bool>, std::vector<bool>>(condition, outputs));
+}
+
+std::vector<bool> Node::getOutputAt(std::vector<bool> condition) {
+    return output.at(condition);
+}
 
 std::vector<std::vector<bool>> Node::getConditionsForNode(Node node) {
     std::vector<std::vector<bool>> matchingconditions;
@@ -26,8 +33,8 @@ void Node::setName(char name) {
     name = name;
 }
 
-void Node::newConnection(Node node, std::vector<bool> conditions) {
-	connections.insert( std::pair<std::vector<bool>,Node>(conditions,node) );
+void Node::newConnection(Node node, std::vector<bool> condition) {
+    connections.insert( std::pair<std::vector<bool>,Node>(condition,node) );
 }
 
 char Node::getSpecificConnection(std::vector<bool> condition) {

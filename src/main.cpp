@@ -21,12 +21,11 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
 
             if(results.count(node)) {
                 results.at(node).push_back(nodes.at(j));
-                cout << "sth already exists" << endl;
+                cout << "Priority one was found" << endl;
             } else {
                 std::vector<Node> resultnode;
                 resultnode.push_back(nodes.at(j));
                 results.insert( std::pair<Node, std::vector<Node>>(node, resultnode) );
-                //cout << "sth new happend" << endl;
             }
         }
         for(int j = 0; j < nodes.size(); j++) {
@@ -36,6 +35,20 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
     }
 
     //for(int i = 0;)
+}
+
+void returnPriorityTwo (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
+
+}
+
+void returnPriorityThree (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
+    for(int i = 0; i < nodes.size(); i++) {
+        for(int j = 0; j < conditions.size(); j++) {
+            if(nodes.at(i).getOutput(conditions(j)) == conditions(j)) {
+                cout << "Priority three was found" << endl;
+            }
+        }
+    }
 }
 
 int main(int argc, char** argv) {
