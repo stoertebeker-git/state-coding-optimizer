@@ -96,9 +96,10 @@ int main(int argc, char** argv) {
             for(int i = 0; i < targetNodeCon.size(); i++) {
                 cout << targetNodeCon.at(i).at(0)
                      << targetNodeCon.at(i).at(1)
-                     << "(" << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)
-                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(1) << ")"
-                     <<  " ,";
+                     << "("
+                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)
+                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(1)
+                     << ")" << ",";
             }
             cout << " ";
         }
