@@ -2,7 +2,6 @@
 #include "node.h"
 #include <ctime>
 
-//#define RAND_MAX 3
 
 using namespace std;
 
@@ -33,12 +32,9 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
         }
         lists.push_back(results);
     }
-
-    //for(int i = 0;)
 }
 
 void returnPriorityTwo (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
-
 }
 
 void returnPriorityThree (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
@@ -105,7 +101,6 @@ int main(int argc, char** argv) {
         }
         cout << endl << endl;
     }
-
     returnPriorityOne(testnodes,conditionslist);
     returnPriorityThree(testnodes,conditionslist);
 
