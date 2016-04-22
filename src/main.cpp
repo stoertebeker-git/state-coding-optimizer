@@ -44,7 +44,7 @@ void returnPriorityTwo (std::vector<Node> nodes, std::vector<std::vector<bool>> 
 void returnPriorityThree (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
     for(int i = 0; i < nodes.size(); i++) {
         for(int j = 0; j < conditions.size(); j++) {
-            if(nodes.at(i).getOutput(conditions(j)) == conditions(j)) {
+            if(nodes.at(i).getOutputAt(conditions.at(j)) == conditions.at(j)) {
                 cout << "Priority three was found" << endl;
             }
         }
@@ -73,21 +73,18 @@ int main(int argc, char** argv) {
         conditionslist.push_back(cond);
     }
 
-
     for(int y = 0; y < testnodes.size(); y++) {
             for(int i = 0; i < conditionslist.size(); i++) {
                 if(std::rand() % 6 >= 2) {
                     testnodes.at(y).newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
+                    std::vector<bool> outputGenerate;
+                    for(int z = 0; z < conditionslist.at(i).size(); z++) {
+                        outputGenerate.push_back(std::rand()%2);
+                    }
+                    testnodes.at(y).setOutputAt(conditionslist.at(i), outputGenerate);
                 }
         }
     }
-
-    /*for (int i = 0; i < testnodes.size(); i++) {
-        cout << "Node " << testnodes.at(i).getName() << " created!" << endl;
-        cout << "Node " << testnodes.at(i).getName() << " is "
-             << (testnodes.at(i).isIsolated() ? "" : "not ") << "isolated"
-             << endl;
-    }*/
 
     for(int y = 0; y < testnodes.size(); y++) {
         for(int j = 0; j < testnodes.size(); j++) {
@@ -97,7 +94,9 @@ int main(int argc, char** argv) {
             for(int i = 0; i < targetNodeCon.size(); i++) {
                 cout << targetNodeCon.at(i).at(0)
                      << targetNodeCon.at(i).at(1)
-                     << ",";
+                     << "(" << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)
+                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(1) << ")"
+                     <<  " ,";
             }
             cout << " ";
         }
