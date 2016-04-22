@@ -44,6 +44,8 @@ void returnPriorityTwo (std::vector<Node> nodes, std::vector<std::vector<bool>> 
 void returnPriorityThree (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
     for(int i = 0; i < nodes.size(); i++) {
         for(int j = 0; j < conditions.size(); j++) {
+            if(!nodes.at(i).hasSpecificConnection(conditions.at(j)))
+                continue;
             if(nodes.at(i).getOutputAt(conditions.at(j)) == conditions.at(j)) {
                 cout << "Priority three was found" << endl;
             }
@@ -104,6 +106,7 @@ int main(int argc, char** argv) {
     }
 
     returnPriorityOne(testnodes,conditionslist);
+    returnPriorityThree(testnodes,conditionslist);
 
 	return 0;
 }
