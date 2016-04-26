@@ -25,6 +25,34 @@ std::vector<std::vector<bool>> Node::getConditionsForNode(Node node) {
     return matchingconditions;
 }
 
+/*std::vector<std::vector<bool>> Node::checkforOneStep() {
+    for(int i = 0; i < connections.size(); i++) {
+        std::vector<bool> to_compare;
+        to_compare = connections.at(1);
+        for(int j = 0; j < connections.size(); j++) {
+            short differences = 0;
+            std::vector<bool> compare;
+            compare = connections.at(j);
+            for(int k = 0; k < compare.size(); k++) {
+                if(compare.at(k) != to_compare.at(k)) {
+                    differences++;
+                }
+            }
+            if(differences == 1) {
+                cout << "ofenfoneofneonfoenfonef" << endl;
+            }
+        }
+    }
+}*/
+std::vector<std::vector<bool>> Node::checkforOneStep() {
+    std::vector<bool> test;
+    test.push_back(false);
+    test.push_back(true);
+    std::map<std::vector<bool>, Node>::const_iterator it;
+    it = connections.find(test);
+}
+
+
 char Node::getName() {
     return name;
 }

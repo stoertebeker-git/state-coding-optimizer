@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
                     testnodes.at(y).getConditionsForNode(testnodes.at(j));
             cout << testnodes.at(y).getName() << "->" << testnodes.at(j).getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << targetNodeCon.at(i).at(0)
+                cout << targetNodeCon.at(ils).at(0)
                      << targetNodeCon.at(i).at(1)
                      << "("
                      << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)

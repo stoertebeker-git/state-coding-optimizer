@@ -22,6 +22,8 @@ public:
 
     std::map<std::vector<bool>, Node> getAllConnections();
 
+    std::vector<std::vector<bool>> checkforOneStep();
+
     char getName();
     void setName(char name);
 
