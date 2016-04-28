@@ -16,15 +16,15 @@ public:
     bool isIsolated();
 
     void setOutputAt(std::vector<bool> conditions, std::vector<bool> outputs);
-    std::vector<bool> getOutputAt(std::vector<bool> conditions);
+    std::vector<bool> getOutputAt(std::vector<bool> &conditions);
 
-    std::vector<std::vector<bool>> getConditionsForNode(Node node);
+    std::vector<std::vector<bool>> getConditionsForNode(Node &node);
 
     std::map<std::vector<bool>, Node> getAllConnections();
 
-    std::vector<std::vector<bool>> checkforOneStep();
+    void checkForOneStep() ;
 
-    char getName();
+    char getName() const;
     void setName(char name);
 
     int getNodeCode() const;

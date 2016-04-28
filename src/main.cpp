@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> conditions) {
+void returnPriorityOne (std::vector<Node> &nodes,std::vector<std::vector<bool>> &conditions) {
 
     std::vector<std::map<Node, std::vector<Node>>> lists;
 
@@ -34,10 +34,13 @@ void returnPriorityOne (std::vector<Node> nodes,std::vector<std::vector<bool>> c
     }
 }
 
-void returnPriorityTwo (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
+void returnPriorityTwo (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
+    for(int i = 0; i < nodes.size(); i++) {
+        nodes.at(i).checkForOneStep();
+    }
 }
 
-void returnPriorityThree (std::vector<Node> nodes, std::vector<std::vector<bool>> conditions) {
+void returnPriorityThree (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
     for(int i = 0; i < nodes.size(); i++) {
         for(int j = 0; j < conditions.size(); j++) {
             if(!nodes.at(i).hasSpecificConnection(conditions.at(j)))
@@ -90,7 +93,7 @@ int main(int argc, char** argv) {
                     testnodes.at(y).getConditionsForNode(testnodes.at(j));
             cout << testnodes.at(y).getName() << "->" << testnodes.at(j).getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << targetNodeCon.at(ils).at(0)
+                cout << targetNodeCon.at(i).at(0)
                      << targetNodeCon.at(i).at(1)
                      << "("
                      << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)
@@ -102,6 +105,7 @@ int main(int argc, char** argv) {
         cout << endl << endl;
     }
     returnPriorityOne(testnodes,conditionslist);
+    returnPriorityTwo(testnodes,conditionslist);
     returnPriorityThree(testnodes,conditionslist);
 
 	return 0;
