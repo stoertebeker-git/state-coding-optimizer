@@ -1,50 +1,14 @@
-#include <iostream>
 #include "node.h"
-#include <ctime>
-#include <fstream>
+#include "helper.h"
 
+#include <ctime>
+#include <iostream>
+#include <math.h>
 
 using namespace std;
 
-void writeFile (std::vector<Node> &nodes,std::vector<std::vector<bool>> &conditions) {
-    ofstream sampleFile;
-    sampleFile.open("SampleFile.txt");
-    sampleFile <<"DESTATE: ";
-                for(int i = 0; i < nodes.size(); i++) {
-                    sampleFile << nodes.at(i).getName();
-                    if(i < nodes.size()-1)
-                        sampleFile << ",";
-                }
-
-    int conditions_size = (int)conditions.at(0).size();
-    string conditions_variable_string;
-    char conditions_code_first = 'i';
-                for(int i = 0; i < conditions_size; i++) {
-                    conditions_variable_string += (char)(conditions_code_first + i);
-                    if(i < conditions_size-1)
-                        conditions_variable_string += ",";
-                }
-
-    int output_size = (int)nodes.at(0).getAnyOutput().size();
-    string output_variable_string;
-    char output_code_first = 'v';
-                for(int i = 0; i < output_size; i++) {
-                     output_variable_string += (char)(output_code_first + i);
-                     if(i < output_size-1)
-                         output_variable_string += ",";
-                }
-    sampleFile << " DEFIN: " << conditions_variable_string << " DEFOUT " << output_variable_string << endl;
-    for(int i = 0; i < nodes.size(); i++) {
-        for(auto const &pair : nodes) {
-            sampleFile << "[" << conditions_variable_string << "]" << endl;
-        }
-    }
-
-    sampleFile.close();
-}
 
 void returnPriorityOne (std::vector<Node> &nodes,std::vector<std::vector<bool>> &conditions) {
-
     std::vector<std::map<Node, std::vector<Node>>> lists;
 
     for(int i = 0; i < conditions.size(); i++) {
@@ -92,24 +56,28 @@ void returnPriorityThree (std::vector<Node> &nodes, std::vector<std::vector<bool
 
 int main(int argc, char** argv) {
 
+    int input_bits = 3;
+    int num_nodes  = 2;
+
     std::vector<Node> testnodes;
     std::srand(std::time(0));
 
-    char nodes[] = {'a', 'b', 'c', 'd'};
-
-    for (int i = 0; i < sizeof(nodes)/sizeof(nodes[0]); i++) {
-        testnodes.push_back(Node(nodes[i]));
+    for(int i = 0; i < num_nodes; i++) {
+        testnodes.push_back(Node('a' + i));
     }
 
     std::vector<std::vector<bool>> conditionslist;
-    for(int i = 0; i <= 3; i++) {
 
-        std::vector<bool> cond;
+    for(int i = 0; i < pow(2, input_bits); i++) {
+        std::vector<bool> bits;
 
-        cond.push_back((i >> 1) & 1);
-        cond.push_back(i & 1);
+        for(int j = input_bits - 1; j >= 0; j--) {
+            bits.push_back((i >> j) & 1);
+            cout << ((i >> j) & 1);
+        }
+        cout << endl;
 
-        conditionslist.push_back(cond);
+        conditionslist.push_back(bits);
     }
 
     for(int y = 0; y < testnodes.size(); y++) {
@@ -142,10 +110,12 @@ int main(int argc, char** argv) {
         }
         cout << endl << endl;
     }
+
     returnPriorityOne(testnodes,conditionslist);
     returnPriorityTwo(testnodes,conditionslist);
     returnPriorityThree(testnodes,conditionslist);
     writeFile(testnodes,conditionslist);
+
 	return 0;
 }
 

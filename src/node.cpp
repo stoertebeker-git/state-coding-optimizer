@@ -1,19 +1,15 @@
 #include "node.h"
 #include <iostream>
 
-Node::Node(char name) : name(name) {
+Node::Node(char name) : name(name) {}
 
-}
+Node::~Node() {}
 
-Node::~Node() {
-
-}
 void Node::setOutputAt(std::vector<bool> condition, std::vector<bool> outputs) {
     output.insert(std::pair<std::vector<bool>, std::vector<bool>>(condition, outputs));
 }
 
-
-std::vector<bool> Node::getOutputAt(std::vector<bool> &condition) {
+std::vector<bool> Node::getOutputAt(const std::vector<bool> &condition) const {
     return output.at(condition);
 }
 
@@ -25,15 +21,15 @@ std::vector<bool> Node::getAnyOutput() {
 
 std::vector<std::vector<bool>> Node::getConditionsForNode(Node &node) {
     std::vector<std::vector<bool>> matchingconditions;
+
     for(auto& iter : connections) {
         if(iter.second.getName() == node.getName()){
             matchingconditions.push_back(iter.first);
         }
     }
+
     return matchingconditions;
 }
-
-
 
 void Node::checkForOneStep() {
     for(auto const &pair : connections) {

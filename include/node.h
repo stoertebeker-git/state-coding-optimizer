@@ -16,7 +16,7 @@ public:
     bool isIsolated();
 
     void setOutputAt(std::vector<bool> conditions, std::vector<bool> outputs);
-    std::vector<bool> getOutputAt(std::vector<bool> &conditions);
+    std::vector<bool> getOutputAt(const std::vector<bool> &conditions) const;
     std::vector<bool> getAnyOutput();
 
     std::vector<std::vector<bool>> getConditionsForNode(Node &node);
@@ -33,11 +33,11 @@ public:
 
 
     bool operator<(const Node& otherNode) const;
-
+    std::map<std::vector<bool>, Node> connections;
 private:
 
     std::map<std::vector<bool>, std::vector<bool>> output;
-    std::map<std::vector<bool>, Node> connections;
+
 	char name;
     int nodeCode;
 };
