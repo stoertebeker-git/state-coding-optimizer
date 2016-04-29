@@ -36,23 +36,11 @@ void writeFile (std::vector<Node> &nodes, std::vector<std::vector<bool>> &condit
                         sampleFile << ",";
                 }
 
-    int conditions_size = (int)conditions.at(0).size();
-    string conditions_variable_string;
-    char conditions_code_first = 'i';
-                for(int i = 0; i < conditions_size; i++) {
-                    conditions_variable_string += (char)(conditions_code_first + i);
-                    if(i < conditions_size-1)
-                        conditions_variable_string += ",";
-                }
 
-    int output_size = (int)nodes.at(0).getAnyOutput().size();
-    string output_variable_string;
-    char output_code_first = 'v';
-                for(int i = 0; i < output_size; i++) {
-                     output_variable_string += (char)(output_code_first + i);
-                     if(i < output_size-1)
-                         output_variable_string += ",";
-                }
+    string conditions_variable_string = generateNames('i', nodes.at(0).getConditionSize(true), true);
+
+    string output_variable_string = generateNames('v', nodes.at(0).getConditionSize(false), true);
+
     sampleFile << " DEFIN: " << conditions_variable_string
                << " DEFOUT " << output_variable_string << endl;
 
