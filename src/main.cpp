@@ -56,8 +56,8 @@ void returnPriorityThree (std::vector<Node> &nodes, std::vector<std::vector<bool
 
 int main(int argc, char** argv) {
 
-    int input_bits = 3;
-    int num_nodes  = 2;
+    int input_bits = 2;
+    int num_nodes  = 4;
 
     std::vector<Node> testnodes;
     std::srand(std::time(0));
@@ -99,11 +99,8 @@ int main(int argc, char** argv) {
                     testnodes.at(y).getConditionsForNode(testnodes.at(j));
             cout << testnodes.at(y).getName() << "->" << testnodes.at(j).getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << targetNodeCon.at(i).at(0)
-                     << targetNodeCon.at(i).at(1)
-                     << "("
-                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(0)
-                     << testnodes.at(y).getOutputAt(targetNodeCon.at(i)).at(1)
+                cout << printVec(targetNodeCon.at(i), false) << "("
+                     << printVec(testnodes.at(y).getOutputAt(targetNodeCon.at(i)), false)
                      << ")" << ",";
             }
             cout << " ";
@@ -111,11 +108,11 @@ int main(int argc, char** argv) {
         cout << endl << endl;
     }
 
-    returnPriorityOne(testnodes,conditionslist);
-    returnPriorityTwo(testnodes,conditionslist);
-    returnPriorityThree(testnodes,conditionslist);
-    writeFile(testnodes,conditionslist);
-
+    returnPriorityOne(testnodes, conditionslist);
+    returnPriorityTwo(testnodes, conditionslist);
+    returnPriorityThree(testnodes, conditionslist);
+    writeFile(testnodes, conditionslist);
+    writeMLFile(testnodes);
 	return 0;
 }
 

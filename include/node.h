@@ -31,6 +31,9 @@ public:
     int getNodeCode() const;
     void setNodeCode(int value);
 
+    std::map<std::vector<bool>, std::vector<bool>> getOutput();
+
+    int getConditionSize(bool select);
 
     bool operator<(const Node& otherNode) const;
     std::map<std::vector<bool>, Node> connections;

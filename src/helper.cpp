@@ -2,9 +2,28 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
+std::string printVec(std::vector<bool> vector, bool commata) {
+    ostringstream stream;
+    bool isFirst = true;
+
+    for(auto const &n : vector) {
+
+        if(isFirst)
+            isFirst = false;
+        else {
+            if(commata)
+                stream << ",";
+        }
+
+        stream << n;
+    }
+
+    return stream.str();
+}
 
 void writeFile (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
     ofstream sampleFile;
@@ -39,34 +58,51 @@ void writeFile (std::vector<Node> &nodes, std::vector<std::vector<bool>> &condit
 
     for(int i = 0; i < nodes.size(); i++) {
         for(auto const &pair : nodes.at(i).connections) {
-            sampleFile << "[" << conditions_variable_string << "]=(";
-
-            bool isFirst = true;
-            for(auto const &n : pair.first) {
-                if(isFirst)
-                    isFirst = false;
-                else
-                    sampleFile << ",";
-
-                sampleFile << n;
-            }
-                       //<< pair.first.at(0) << "," << pair.first.at(1)
-            sampleFile << ")(" << nodes.at(i).getName() << ")"
-                       << " > [" << output_variable_string << "]:(";
-
-            isFirst = true;
-            for(auto const &n : nodes.at(i).getOutputAt(pair.first)) {
-                if(isFirst)
-                    isFirst = false;
-                else
-                    sampleFile << ",";
-
-                sampleFile << n;
-            }
-
-            sampleFile << ")(" << pair.second.getName() << ")" << endl;
+            sampleFile << "[" << conditions_variable_string << "]=("
+                       << printVec(pair.first, true)
+                       << ")(" << nodes.at(i).getName() << ")"
+                       << " > [" << output_variable_string << "]:("
+                       << printVec(nodes.at(i).getOutputAt(pair.first), true)
+                       << ")(" << pair.second.getName() << ")" << endl;
         }
     }
 
     sampleFile.close();
 }
+
+void writeMLFile(std::vector<Node> &nodes) {
+     ofstream ml_file;
+     ml_file.open("gib.tbl");
+     ml_file << "input " << generateNames('i', nodes.at(0).getConditionSize(true), true) << endl;
+     ml_file << "output " << generateNames('v', nodes.at(0).getConditionSize(false), true) << endl;
+     for(int i = 0; i < nodes.size(); i++) {
+         for(auto const &pair : nodes.at(i).getOutput()) {
+             ml_file << printVec(pair.first, false)
+                     << ","
+                     << printVec(pair.second, false) << endl;
+
+         }
+     }
+     ml_file << "end" << endl;
+     ml_file.close();
+}
+
+std::string generateNames(char start, int amount, bool commata) {
+    ostringstream stream;
+    bool isFirst = true;
+
+    for(int i = 0; i < amount; i++) {
+
+        if(isFirst)
+            isFirst = false;
+        else {
+            if(commata)
+                stream << ",";
+        }
+
+        stream << (char)(start+i);
+    }
+
+    return stream.str();
+}
+

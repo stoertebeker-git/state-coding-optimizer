@@ -59,6 +59,10 @@ void Node::checkForOneStep() {
     }
 }
 
+std::map<std::vector<bool>, std::vector<bool>> Node::getOutput() {
+    return output;
+}
+
 char Node::getName() const{
     return name;
 }
@@ -104,4 +108,16 @@ bool Node::isIsolated(){
 
 bool Node::operator<(const Node& otherNode) const {
    return this->name < otherNode.name;
+}
+
+int Node::getConditionSize(bool select) {
+    for(auto const &pair : output) {
+        if(output.size() == 0)
+            continue;
+        if(select)
+            return pair.first.size();
+        else
+            return pair.second.size();
+
+    }
 }
