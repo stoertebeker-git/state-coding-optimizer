@@ -17,6 +17,12 @@ std::vector<bool> Node::getOutputAt(std::vector<bool> &condition) {
     return output.at(condition);
 }
 
+std::vector<bool> Node::getAnyOutput() {
+    for(auto const &pair : output) {
+        return pair.first;
+    }
+}
+
 std::vector<std::vector<bool>> Node::getConditionsForNode(Node &node) {
     std::vector<std::vector<bool>> matchingconditions;
     for(auto& iter : connections) {
@@ -26,6 +32,8 @@ std::vector<std::vector<bool>> Node::getConditionsForNode(Node &node) {
     }
     return matchingconditions;
 }
+
+
 
 void Node::checkForOneStep() {
     for(auto const &pair : connections) {

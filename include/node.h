@@ -17,6 +17,7 @@ public:
 
     void setOutputAt(std::vector<bool> conditions, std::vector<bool> outputs);
     std::vector<bool> getOutputAt(std::vector<bool> &conditions);
+    std::vector<bool> getAnyOutput();
 
     std::vector<std::vector<bool>> getConditionsForNode(Node &node);
 
