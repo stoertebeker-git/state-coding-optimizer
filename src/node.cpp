@@ -41,7 +41,6 @@ void Node::checkForOneStep() {
                 continue;
             if(pair2.second.getName() == name)
                 continue;
-//            compare = connections.at(j);
 
             for(int k = 0; k < compare.size(); k++) {
                 if(compare.at(k) != to_compare.at(k)) {
@@ -52,19 +51,9 @@ void Node::checkForOneStep() {
                 std::cout << "Priority two was found from " << name << " to " << pair.second.getName()
                           << " and " << pair2.second.getName() << std::endl;
             }
-
         }
     }
 }
-/*
-std::vector<std::vector<bool>> Node::checkforOneStep() {
-    std::vector<bool> test;
-    test.push_back(false);
-    test.push_back(true);
-    std::map<std::vector<bool>, Node>::const_iterator it;
-    it = connections.find(test);
-}*/
-
 
 char Node::getName() const{
     return name;
