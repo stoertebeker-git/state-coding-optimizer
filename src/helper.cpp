@@ -18,10 +18,8 @@ std::string printVec(std::vector<bool> vector, bool commata) {
             if(commata)
                 stream << ",";
         }
-
         stream << n;
     }
-
     return stream.str();
 }
 
@@ -36,13 +34,11 @@ void writeFile (std::vector<Node> &nodes, std::vector<std::vector<bool>> &condit
                         sampleFile << ",";
                 }
 
-
     string conditions_variable_string = generateNames('i', nodes.at(0).getConditionSize(true), true);
-
     string output_variable_string = generateNames('v', nodes.at(0).getConditionSize(false), true);
 
     sampleFile << " DEFIN: " << conditions_variable_string
-               << " DEFOUT " << output_variable_string << endl;
+               << " DEFOUT: " << output_variable_string << endl;
 
     for(int i = 0; i < nodes.size(); i++) {
         for(auto const &pair : nodes.at(i).connections) {
@@ -68,7 +64,6 @@ void writeMLFile(std::vector<Node> &nodes) {
              ml_file << printVec(pair.first, false)
                      << ","
                      << printVec(pair.second, false) << endl;
-
          }
      }
      ml_file << "end" << endl;
@@ -87,10 +82,8 @@ std::string generateNames(char start, int amount, bool commata) {
             if(commata)
                 stream << ",";
         }
-
         stream << (char)(start+i);
     }
-
     return stream.str();
 }
 

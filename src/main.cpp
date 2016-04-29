@@ -73,7 +73,6 @@ int main(int argc, char** argv) {
 
         for(int j = input_bits - 1; j >= 0; j--) {
             bits.push_back((i >> j) & 1);
-            cout << ((i >> j) & 1);
         }
         cout << endl;
 
