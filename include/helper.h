@@ -18,6 +18,7 @@ void assignNeighbours(std::vector<Node*> &list, bool first);
 void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions);
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
 void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
-void printAutomate (std::vector<Node*> &nodes);
+void printAutomate(std::vector<Node*> &nodes);
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist, int numoutten);
+void generateOutput(std::vector<Node*> &nodes);
 #endif // HELPER_H

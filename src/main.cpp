@@ -9,9 +9,9 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    int input_bits = 6;
-    int num_nodes  = 100;
-    int probability_of_generation = 8;
+    int input_bits = 1;
+    int num_nodes  = 6;
+    int probability_of_generation = 7;
 
     std::vector<Node*> testnodes;
     std::srand(std::time(0));
@@ -41,13 +41,7 @@ int main(int argc, char** argv) {
     returnPriorityThree(testnodes, conditionslist);
     writeFile(testnodes, conditionslist);
 
-    for(auto &n : testnodes) {
-        cout << endl << "Found Patterns for Node: " << n->getName()   << endl
-             << "Prio 1: " << printVec(n->getFirstNeighbours(),true)  << endl
-             << "Prio 2: " << printVec(n->getSecondNeighbours(),true) << endl
-             << "===================================================" << endl;
-    }
-
+    generateOutput(testnodes);
     for(auto &n : testnodes) {
         delete n;
     }

@@ -187,4 +187,13 @@ void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vecto
     }
 }
 
-
+void generateOutput(std::vector<Node*> &nodes) {
+    for(auto &n : nodes) {
+        cout << endl
+             << "===================================================" << endl
+             << "Found Patterns for Node: " << n->getName()   << endl
+             << "Prio 1: " << printVec(n->getFirstNeighbours(),true)  << endl
+             << "Prio 2: " << printVec(n->getSecondNeighbours(),true) << endl
+             << "===================================================" << endl;
+    }
+}
