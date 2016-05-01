@@ -23,7 +23,7 @@ std::string printVec(std::vector<bool> vector, bool commata) {
     return stream.str();
 }
 
-std::string printVec(std::vector<Node> vector, bool commata) {
+std::string printVec(std::vector<Node*> vector, bool commata) {
     ostringstream stream;
     bool isFirst = true;
 
@@ -35,65 +35,49 @@ std::string printVec(std::vector<Node> vector, bool commata) {
             if(commata)
                 stream << ",";
         }
-        stream << n.getName();
+        stream << n->getName();
     }
     return stream.str();
 }
 
-std::string printMap(std::map<Node, std::vector<Node>> map) {
+std::string printMap(std::map<Node*, std::vector<Node*>> map) {
     ostringstream stream;
     for(auto const &pair : map) {
-        stream << pair.first.getName() << "<-";
+        stream << pair.first->getName() << "<-";
         stream << printVec(pair.second, true) << endl;
     }
     return stream.str();
 }
 
-void writeFile (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
+void writeFile (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
     ofstream sampleFile;
     sampleFile.open("SampleFile.txt");
 
     sampleFile <<"DESTATE: ";
                 for(int i = 0; i < nodes.size(); i++) {
-                    sampleFile << nodes.at(i).getName();
+                    sampleFile << nodes.at(i)->getName();
                     if(i < nodes.size()-1)
                         sampleFile << ",";
                 }
 
-    string conditions_variable_string = generateNames('i', nodes.at(0).getConditionSize(true), true);
-    string output_variable_string = generateNames('v', nodes.at(0).getConditionSize(false), true);
+    string conditions_variable_string = generateNames('i', nodes.at(0)->getConditionSize(true), true);
+    string output_variable_string = generateNames('v', nodes.at(0)->getConditionSize(false), true);
 
     sampleFile << " DEFIN: " << conditions_variable_string
                << " DEFOUT: " << output_variable_string << endl;
 
     for(int i = 0; i < nodes.size(); i++) {
-        for(auto const &pair : nodes.at(i).getConnections()) {
+        for(auto const &pair : nodes.at(i)->getConnections()) {
             sampleFile << "[" << conditions_variable_string << "]=("
                        << printVec(pair.first, true)
-                       << ")(" << nodes.at(i).getName() << ")"
+                       << ")(" << nodes.at(i)->getName() << ")"
                        << " > [" << output_variable_string << "]:("
-                       << printVec(nodes.at(i).getOutputAt(pair.first), true)
-                       << ")(" << pair.second.getName() << ")" << endl;
+                       << printVec(nodes.at(i)->getOutputAt(pair.first), true)
+                       << ")(" << pair.second->getName() << ")" << endl;
         }
     }
 
     sampleFile.close();
-}
-
-void writeMLFile(std::vector<Node> &nodes) {
-     ofstream ml_file;
-     ml_file.open("gib.tbl");
-     ml_file << "input " << generateNames('i', nodes.at(0).getConditionSize(true), true) << endl;
-     ml_file << "output " << generateNames('v', nodes.at(0).getConditionSize(false), true) << endl;
-     for(int i = 0; i < nodes.size(); i++) {
-         for(auto const &pair : nodes.at(i).getOutput()) {
-             ml_file << printVec(pair.first, false)
-                     << ","
-                     << printVec(pair.second, false) << endl;
-         }
-     }
-     ml_file << "end" << endl;
-     ml_file.close();
 }
 
 std::string generateNames(char start, int amount, bool commata) {
@@ -113,16 +97,16 @@ std::string generateNames(char start, int amount, bool commata) {
     return stream.str();
 }
 
-void assignFirstNeighbours(std::vector<Node> &list) {
+void assignFirstNeighbours(std::vector<Node*> &list) {
     if(list.size() <= 1) {
         std::cout << "too small" << endl;
         return;
     }
     for(auto &n : list) {
         for(auto &m : list) {
-            if(n.getName() == m.getName())
+            if(n->getName() == m->getName())
                 continue;
-            n.addFirstNeighbour(m);
+            n->addFirstNeighbour(m);
         }
     }
 }

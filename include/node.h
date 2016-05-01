@@ -11,8 +11,8 @@ public:
 	Node(char name);
 	~Node();
 
-    void newConnection(Node &node, std::vector<bool> &conditions);
-    Node& getSpecificConnection(std::vector<bool> condition);
+    void newConnection(Node* node, std::vector<bool> &conditions);
+    Node* getSpecificConnection(std::vector<bool> condition);
     bool hasSpecificConnection(std::vector<bool> condition);
     bool isIsolated();
 
@@ -20,9 +20,9 @@ public:
     std::vector<bool> getOutputAt(const std::vector<bool> &conditions) const;
     std::vector<bool> getAnyOutput();
 
-    std::vector<std::vector<bool>> getConditionsForNode(Node &node);
+    std::vector<std::vector<bool>> getConditionsForNode(Node* node);
 
-    std::map<std::vector<bool>, Node> getAllConnections();
+    std::map<std::vector<bool>, Node*>& getAllConnections();
 
     void checkForOneStep() ;
 
@@ -37,19 +37,19 @@ public:
     int getConditionSize(bool select);
 
     bool operator<(const Node& otherNode) const;
-    std::vector<Node> getFirstNeighbours();
+    std::vector<Node*>& getFirstNeighbours();
 
-    std::vector<Node> getSecondNeighbours();
+    std::vector<Node*>& getSecondNeighbours();
 
-    void addFirstNeighbour(Node &node);
+    void addFirstNeighbour(Node* node);
 
-    std::map<std::vector<bool>, Node> getConnections() const;
+    std::map<std::vector<bool>, Node*>& getConnections();
 
 private:
     std::map<std::vector<bool>, std::vector<bool>> output;
-    std::vector<Node> firstneighbours;
-    std::vector<Node> secondneighbours;
-    std::map<std::vector<bool>, Node> connections;
+    std::vector<Node*> firstneighbours;
+    std::vector<Node*> secondneighbours;
+    std::map<std::vector<bool>, Node*> connections;
 
 	char name;
     int nodeCode;

@@ -8,26 +8,26 @@
 using namespace std;
 
 
-void returnPriorityOne (std::vector<Node> &nodes,std::vector<std::vector<bool>> &conditions) {
+void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions) {
     //std::vector<std::map<Node, std::vector<Node>>> lists;
 
     for(int i = 0; i < conditions.size(); i++) {
-        std::map<Node, std::vector<Node>> results;
+        std::map<Node*, std::vector<Node*>> results;
 
         for(auto &n : nodes) {
-            if(!n.hasSpecificConnection(conditions.at(i)))
+            if(!n->hasSpecificConnection(conditions.at(i)))
                 continue;
 
-            Node &node = n.getSpecificConnection(conditions.at(i));
+            Node* node = n->getSpecificConnection(conditions.at(i));
 
             if(results.count(node)) {
                 results.at(node).push_back(n);
                 cout << "found hitla" << endl;
 
             } else {
-                std::vector<Node> resultnode;
+                std::vector<Node*> resultnode;
                 resultnode.push_back(n);
-                results.insert( std::pair<Node, std::vector<Node>>(node, resultnode) );
+                results.insert( std::pair<Node*, std::vector<Node*>>(node, resultnode) );
             }
         }
 
@@ -36,24 +36,24 @@ void returnPriorityOne (std::vector<Node> &nodes,std::vector<std::vector<bool>> 
         }
     }
     for(auto &n : nodes) {
-        cout << n.getName() << " "
-             << printVec(n.getFirstNeighbours(), true)
+        cout << n->getName() << " "
+             << printVec(n->getFirstNeighbours(), true)
              << std::endl;
     }
 }
 
-void returnPriorityTwo (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
+void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
     for(int i = 0; i < nodes.size(); i++) {
-        nodes.at(i).checkForOneStep();
+        nodes.at(i)->checkForOneStep();
     }
 }
 
-void returnPriorityThree (std::vector<Node> &nodes, std::vector<std::vector<bool>> &conditions) {
+void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
     for(int i = 0; i < nodes.size(); i++) {
         for(int j = 0; j < conditions.size(); j++) {
-            if(!nodes.at(i).hasSpecificConnection(conditions.at(j)))
+            if(!nodes.at(i)->hasSpecificConnection(conditions.at(j)))
                 continue;
-            if(nodes.at(i).getOutputAt(conditions.at(j)) == conditions.at(j)) {
+            if(nodes.at(i)->getOutputAt(conditions.at(j)) == conditions.at(j)) {
                 cout << "Priority three was found" << endl;
             }
         }
@@ -65,11 +65,11 @@ int main(int argc, char** argv) {
     int input_bits = 2;
     int num_nodes  = 4;
 
-    std::vector<Node> testnodes;
+    std::vector<Node*> testnodes;
     std::srand(std::time(0));
 
     for(int i = 0; i < num_nodes; i++) {
-        testnodes.push_back(Node('a' + i));
+        testnodes.push_back(new Node('a' + i));
     }
 
     std::vector<std::vector<bool>> conditionslist;
@@ -88,12 +88,12 @@ int main(int argc, char** argv) {
     for(int y = 0; y < testnodes.size(); y++) {
             for(int i = 0; i < conditionslist.size(); i++) {
                 if(std::rand() % 6 >= 2) {
-                    testnodes.at(y).newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
+                    testnodes.at(y)->newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
                     std::vector<bool> outputGenerate;
                     for(int z = 0; z < conditionslist.at(i).size(); z++) {
                         outputGenerate.push_back(std::rand()%2);
                     }
-                    testnodes.at(y).setOutputAt(conditionslist.at(i), outputGenerate);
+                    testnodes.at(y)->setOutputAt(conditionslist.at(i), outputGenerate);
                 }
         }
     }
@@ -101,11 +101,11 @@ int main(int argc, char** argv) {
     for(int y = 0; y < testnodes.size(); y++) {
         for(int j = 0; j < testnodes.size(); j++) {
             std::vector<std::vector<bool>> targetNodeCon =
-                    testnodes.at(y).getConditionsForNode(testnodes.at(j));
-            cout << testnodes.at(y).getName() << "->" << testnodes.at(j).getName() << ":";
+                    testnodes.at(y)->getConditionsForNode(testnodes.at(j));
+            cout << testnodes.at(y)->getName() << "->" << testnodes.at(j)->getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
                 cout << printVec(targetNodeCon.at(i), false) << "("
-                     << printVec(testnodes.at(y).getOutputAt(targetNodeCon.at(i)), false)
+                     << printVec(testnodes.at(y)->getOutputAt(targetNodeCon.at(i)), false)
                      << ")" << ",";
             }
             cout << " ";
@@ -118,6 +118,9 @@ int main(int argc, char** argv) {
     //returnPriorityThree(testnodes, conditionslist);
     //writeFile(testnodes, conditionslist);
     //writeMLFile(testnodes);
-	return 0;
+    for(auto &n : testnodes) {
+        delete n;
+    }
+    return 0;
 }
 
