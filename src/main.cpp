@@ -7,59 +7,6 @@
 
 using namespace std;
 
-
-void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions) {
-    //std::vector<std::map<Node, std::vector<Node>>> lists;
-
-    for(int i = 0; i < conditions.size(); i++) {
-        std::map<Node*, std::vector<Node*>> results;
-
-        for(auto &n : nodes) {
-            if(!n->hasSpecificConnection(conditions.at(i)))
-                continue;
-
-            Node* node = n->getSpecificConnection(conditions.at(i));
-
-            if(results.count(node)) {
-                results.at(node).push_back(n);
-                cout << "found hitla" << endl;
-
-            } else {
-                std::vector<Node*> resultnode;
-                resultnode.push_back(n);
-                results.insert( std::pair<Node*, std::vector<Node*>>(node, resultnode) );
-            }
-        }
-
-        for(auto &h : results) {
-            assignFirstNeighbours(h.second);
-        }
-    }
-    for(auto &n : nodes) {
-        cout << n->getName() << " "
-             << printVec(n->getFirstNeighbours(), true)
-             << std::endl;
-    }
-}
-
-void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
-    for(int i = 0; i < nodes.size(); i++) {
-        nodes.at(i)->checkForOneStep();
-    }
-}
-
-void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
-    for(int i = 0; i < nodes.size(); i++) {
-        for(int j = 0; j < conditions.size(); j++) {
-            if(!nodes.at(i)->hasSpecificConnection(conditions.at(j)))
-                continue;
-            if(nodes.at(i)->getOutputAt(conditions.at(j)) == conditions.at(j)) {
-                cout << "Priority three was found" << endl;
-            }
-        }
-    }
-}
-
 int main(int argc, char** argv) {
 
     int input_bits = 2;
@@ -81,43 +28,25 @@ int main(int argc, char** argv) {
             bits.push_back((i >> j) & 1);
         }
         cout << endl;
-
         conditionslist.push_back(bits);
     }
 
-    for(int y = 0; y < testnodes.size(); y++) {
-            for(int i = 0; i < conditionslist.size(); i++) {
-                if(std::rand() % 6 >= 2) {
-                    testnodes.at(y)->newConnection(testnodes.at(std::rand()%4), conditionslist.at(i));
-                    std::vector<bool> outputGenerate;
-                    for(int z = 0; z < conditionslist.at(i).size(); z++) {
-                        outputGenerate.push_back(std::rand()%2);
-                    }
-                    testnodes.at(y)->setOutputAt(conditionslist.at(i), outputGenerate);
-                }
-        }
-    }
+    generateRandomConnections(testnodes, conditionslist);
 
-    for(int y = 0; y < testnodes.size(); y++) {
-        for(int j = 0; j < testnodes.size(); j++) {
-            std::vector<std::vector<bool>> targetNodeCon =
-                    testnodes.at(y)->getConditionsForNode(testnodes.at(j));
-            cout << testnodes.at(y)->getName() << "->" << testnodes.at(j)->getName() << ":";
-            for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << printVec(targetNodeCon.at(i), false) << "("
-                     << printVec(testnodes.at(y)->getOutputAt(targetNodeCon.at(i)), false)
-                     << ")" << ",";
-            }
-            cout << " ";
-        }
-        cout << endl << endl;
-    }
+    printAutomate(testnodes);
 
     returnPriorityOne(testnodes, conditionslist);
-    //returnPriorityTwo(testnodes, conditionslist);
-    //returnPriorityThree(testnodes, conditionslist);
-    //writeFile(testnodes, conditionslist);
-    //writeMLFile(testnodes);
+    returnPriorityTwo(testnodes, conditionslist);
+    returnPriorityThree(testnodes, conditionslist);
+    writeFile(testnodes, conditionslist);
+
+    for(auto &n : testnodes) {
+        cout << endl << "Found Patterns for Node: " << n->getName()   << endl
+             << "Prio 1: " << printVec(n->getFirstNeighbours(),true)  << endl
+             << "Prio 2: " << printVec(n->getSecondNeighbours(),true) << endl
+             << "===================================================" << endl;
+    }
+
     for(auto &n : testnodes) {
         delete n;
     }

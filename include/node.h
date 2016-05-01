@@ -6,7 +6,6 @@
 
 class Node {
 public:
-    Node();
     Node(const Node &other);
 	Node(char name);
 	~Node();
@@ -42,6 +41,7 @@ public:
     std::vector<Node*>& getSecondNeighbours();
 
     void addFirstNeighbour(Node* node);
+    void addSecondNeighbour(Node* node);
 
     std::map<std::vector<bool>, Node*>& getConnections();
 

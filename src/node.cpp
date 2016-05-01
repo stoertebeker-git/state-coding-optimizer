@@ -1,10 +1,7 @@
 #include "node.h"
 #include "helper.h"
 #include <iostream>
-
-Node::Node() : name('\0') {
-    std::cout << "node without name created" << std::endl;
-}
+#include <algorithm>
 
 Node::Node(const Node& other) {
     this->name = other.name;
@@ -18,7 +15,7 @@ Node::Node(const Node& other) {
 }
 
 Node::Node(char name) : name(name) {
-    std::cout << "node " << name << " created" << std::endl;
+    //std::cout << "node " << name << " created" << std::endl;
 }
 
 Node::~Node() {
@@ -83,7 +80,7 @@ std::map<std::vector<bool>, std::vector<bool>> Node::getOutput() {
     return output;
 }
 
-char Node::getName() const{
+char Node::getName() const {
     return name;
 }
 
@@ -107,17 +104,15 @@ std::map<std::vector<bool>, Node*>& Node::getAllConnections() {
     return connections;
 }
 
-int Node::getNodeCode() const
-{
+int Node::getNodeCode() const {
     return nodeCode;
 }
 
-void Node::setNodeCode(int value)
-{
+void Node::setNodeCode(int value) {
     nodeCode = value;
 }
 
-bool Node::isIsolated(){
+bool Node::isIsolated() {
     for(auto& iter : connections) {
         if(iter.second->getName() != name){
             return false;
@@ -134,8 +129,7 @@ std::vector<Node*>& Node::getFirstNeighbours() {
     return firstneighbours;
 }
 
-std::vector<Node*>& Node::getSecondNeighbours()
-{
+std::vector<Node*>& Node::getSecondNeighbours() {
     return secondneighbours;
 }
 
@@ -151,9 +145,15 @@ int Node::getConditionSize(bool select) {
 }
 
 void Node::addFirstNeighbour(Node* node) {
-    std::cout << "adding neighbour " << node->getName() << " to " << name << std::endl;
-    firstneighbours.push_back(node);
-    std::cout << "neighbors of " << name << ": " << printVec(firstneighbours, true) << std::endl;
+    //std::cout << "adding neighbour " << node->getName() << " to " << name << std::endl;
+    if(std::find(firstneighbours.begin(), firstneighbours.end(), node) == firstneighbours.end())
+        firstneighbours.push_back(node);
+    //std::cout << "neighbors of " << name << ": " << printVec(firstneighbours, true) << std::endl;
+}
+
+void Node::addSecondNeighbour(Node* node) {
+    if(std::find(secondneighbours.begin(), secondneighbours.end(), node) == secondneighbours.end())
+        secondneighbours.push_back(node);
 }
 
 std::map<std::vector<bool>, Node*>& Node::getConnections() {

@@ -36,6 +36,7 @@ std::string printVec(std::vector<Node*> vector, bool commata) {
                 stream << ",";
         }
         stream << n->getName();
+
     }
     return stream.str();
 }
@@ -97,16 +98,92 @@ std::string generateNames(char start, int amount, bool commata) {
     return stream.str();
 }
 
-void assignFirstNeighbours(std::vector<Node*> &list) {
-    if(list.size() <= 1) {
-        std::cout << "too small" << endl;
+void assignNeighbours(std::vector<Node*> &list, bool first) {
+    if(list.size() <= 1)
         return;
-    }
     for(auto &n : list) {
         for(auto &m : list) {
             if(n->getName() == m->getName())
                 continue;
-            n->addFirstNeighbour(m);
+            if(first)
+                n->addFirstNeighbour(m);
+            else
+                n->addSecondNeighbour(m);
+        }
+    }
+}
+
+void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions) {
+
+    for(int i = 0; i < conditions.size(); i++) {
+        std::map<Node*, std::vector<Node*>> results;
+
+        for(auto &n : nodes) {
+            if(!n->hasSpecificConnection(conditions.at(i)))
+                continue;
+
+            Node* node = n->getSpecificConnection(conditions.at(i));
+
+            if(results.count(node)) {
+                results.at(node).push_back(n);
+                cout << "lel" << endl;
+            } else {
+                std::vector<Node*> resultnode;
+                resultnode.push_back(n);
+                results.insert( std::pair<Node*, std::vector<Node*>>(node, resultnode) );
+            }
+        }
+
+        for(auto &h : results)
+            assignNeighbours(h.second, true);
+    }
+}
+void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+    for(auto &n : nodes) {
+        n->checkForOneStep();
+    }
+}
+
+void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+    for(auto &n : nodes) {
+        for(int j = 0; j < conditions.size(); j++) {
+            if(!n->hasSpecificConnection(conditions.at(j)))
+                continue;
+            if(n->getOutputAt(conditions.at(j)) == conditions.at(j)) {
+                cout << "Priority three was found" << endl;
+            }
+        }
+    }
+}
+
+void printAutomate (std::vector<Node*> &nodes) {
+    for(auto &n : nodes) {
+        for(auto &m : nodes) {
+            std::vector<std::vector<bool>> targetNodeCon =
+                    n->getConditionsForNode(m);
+            cout << n->getName() << "->" << m->getName() << ":";
+            for(int i = 0; i < targetNodeCon.size(); i++) {
+                cout << printVec(targetNodeCon.at(i), false) << "("
+                     << printVec(n->getOutputAt(targetNodeCon.at(i)), false)
+                     << ")" << ",";
+            }
+            cout << " ";
+        }
+        cout << endl << endl;
+    }
+}
+
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist) {
+    for(int y = 0; y < nodes.size(); y++) {
+            for(int i = 0; i < conditionslist.size(); i++) {
+                if(std::rand() % 6 >= 2) {
+                    nodes.at(y)->newConnection(nodes.at(std::rand()%4), conditionslist.at(i));
+                    std::vector<bool> outputGenerate;
+                    for(int z = 0; z < conditionslist.at(i).size(); z++) {
+                        outputGenerate.push_back(std::rand()%2);
+                    }
+                    nodes.at(y)->setOutputAt(conditionslist.at(i), outputGenerate);
+                }
         }
     }
 }

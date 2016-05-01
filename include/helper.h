@@ -13,5 +13,11 @@ std::string printMap(std::map<Node*, std::vector<Node*>> map);
 
 void writeMLFile(std::vector<Node*> &nodes);
 std::string generateNames(char start, int amount, bool commata);
-void assignFirstNeighbours(std::vector<Node*> &list);
+void assignNeighbours(std::vector<Node*> &list, bool first);
+
+void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions);
+void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
+void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
+void printAutomate (std::vector<Node*> &nodes);
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist);
 #endif // HELPER_H
