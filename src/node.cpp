@@ -154,6 +154,15 @@ void Node::addSecondNeighbour(Node* node) {
         secondneighbours.push_back(node);
 }
 
+void Node::addThirdNeighbour(Node* node) {
+    if(std::find(thirdneighbours.begin(), thirdneighbours.end(), node) == thirdneighbours.end())
+        thirdneighbours.push_back(node);
+}
+
 std::map<std::vector<bool>, Node*>& Node::getConnections() {
     return connections;
+}
+
+std::vector<Node *> &Node::getThirdNeighbours(){
+    return thirdneighbours;
 }

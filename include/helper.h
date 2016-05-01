@@ -13,7 +13,7 @@ std::string printMap(std::map<Node*, std::vector<Node*>> map);
 
 void writeMLFile(std::vector<Node*> &nodes);
 std::string generateNames(char start, int amount, bool commata);
-void assignNeighbours(std::vector<Node*> &list, bool first);
+void assignNeighbours(std::vector<Node*> &list, short select);
 
 void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions);
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);

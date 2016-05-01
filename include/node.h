@@ -42,13 +42,17 @@ public:
 
     void addFirstNeighbour(Node* node);
     void addSecondNeighbour(Node* node);
+    void addThirdNeighbour(Node* node);
 
     std::map<std::vector<bool>, Node*>& getConnections();
+
+    std::vector<Node*>& getThirdNeighbours();
 
 private:
     std::map<std::vector<bool>, std::vector<bool>> output;
     std::vector<Node*> firstneighbours;
     std::vector<Node*> secondneighbours;
+    std::vector<Node*> thirdneighbours;
     std::map<std::vector<bool>, Node*> connections;
 
 	char name;

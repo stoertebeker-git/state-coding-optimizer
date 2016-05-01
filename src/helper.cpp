@@ -97,17 +97,20 @@ std::string generateNames(char start, int amount, bool commata) {
     return stream.str();
 }
 
-void assignNeighbours(std::vector<Node*> &list, bool first) {
+void assignNeighbours(std::vector<Node*> &list, short select) {
     if(list.size() <= 1)
         return;
     for(auto &n : list) {
         for(auto &m : list) {
             if(n->getName() == m->getName())
                 continue;
-            if(first)
+            if(select == 1)
                 n->addFirstNeighbour(m);
-            else
+            else if(select == 2)
                 n->addSecondNeighbour(m);
+            else if(select == 3)
+                n->addThirdNeighbour(m);
+            else return;
         }
     }
 }
@@ -144,15 +147,17 @@ void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>
 }
 
 void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+    std::vector<Node*> results;
     for(auto &n : nodes) {
         for(int j = 0; j < conditions.size(); j++) {
             if(!n->hasSpecificConnection(conditions.at(j)))
                 continue;
             if(n->getOutputAt(conditions.at(j)) == conditions.at(j)) {
-                cout << "Priority three was found" << endl;
+                results.push_back(n);
             }
         }
     }
+    assignNeighbours(results,3);
 }
 
 void printAutomate (std::vector<Node*> &nodes) {
@@ -194,6 +199,7 @@ void generateOutput(std::vector<Node*> &nodes) {
              << "Found Patterns for Node: " << n->getName()   << endl
              << "Prio 1: " << printVec(n->getFirstNeighbours(),true)  << endl
              << "Prio 2: " << printVec(n->getSecondNeighbours(),true) << endl
+             << "Prio 3: " << printVec(n->getThirdNeighbours(), true) << endl
              << "===================================================" << endl;
     }
 }

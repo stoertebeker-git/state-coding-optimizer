@@ -10,8 +10,8 @@ using namespace std;
 int main(int argc, char** argv) {
 
     int input_bits = 1;
-    int num_nodes  = 6;
-    int probability_of_generation = 7;
+    int num_nodes  = 4;
+    int probability_of_generation = 3;
 
     std::vector<Node*> testnodes;
     std::srand(std::time(0));
