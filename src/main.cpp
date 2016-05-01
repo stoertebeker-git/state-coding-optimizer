@@ -9,30 +9,36 @@ using namespace std;
 
 
 void returnPriorityOne (std::vector<Node> &nodes,std::vector<std::vector<bool>> &conditions) {
-    std::vector<std::map<Node, std::vector<Node>>> lists;
+    //std::vector<std::map<Node, std::vector<Node>>> lists;
 
     for(int i = 0; i < conditions.size(); i++) {
         std::map<Node, std::vector<Node>> results;
 
-        for(int j = 0; j < nodes.size(); j++) {
-            if(!nodes.at(j).hasSpecificConnection(conditions.at(i)))
+        for(auto &n : nodes) {
+            if(!n.hasSpecificConnection(conditions.at(i)))
                 continue;
 
-            Node node = nodes.at(j).getSpecificConnection(conditions.at(i));
+            Node &node = n.getSpecificConnection(conditions.at(i));
 
             if(results.count(node)) {
-                results.at(node).push_back(nodes.at(j));
-                cout << "Priority one was found" << endl;
+                results.at(node).push_back(n);
+                cout << "found hitla" << endl;
+
             } else {
                 std::vector<Node> resultnode;
-                resultnode.push_back(nodes.at(j));
+                resultnode.push_back(n);
                 results.insert( std::pair<Node, std::vector<Node>>(node, resultnode) );
             }
         }
-        for(int j = 0; j < nodes.size(); j++) {
-            //delete entries with only one connection
+
+        for(auto &h : results) {
+            assignFirstNeighbours(h.second);
         }
-        lists.push_back(results);
+    }
+    for(auto &n : nodes) {
+        cout << n.getName() << " "
+             << printVec(n.getFirstNeighbours(), true)
+             << std::endl;
     }
 }
 
@@ -108,10 +114,10 @@ int main(int argc, char** argv) {
     }
 
     returnPriorityOne(testnodes, conditionslist);
-    returnPriorityTwo(testnodes, conditionslist);
-    returnPriorityThree(testnodes, conditionslist);
-    writeFile(testnodes, conditionslist);
-    writeMLFile(testnodes);
+    //returnPriorityTwo(testnodes, conditionslist);
+    //returnPriorityThree(testnodes, conditionslist);
+    //writeFile(testnodes, conditionslist);
+    //writeMLFile(testnodes);
 	return 0;
 }
 

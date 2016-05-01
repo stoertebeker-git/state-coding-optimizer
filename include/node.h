@@ -6,12 +6,13 @@
 
 class Node {
 public:
-
+    Node();
+    Node(const Node &other);
 	Node(char name);
 	~Node();
 
-	void newConnection(Node node, std::vector<bool> conditions);
-	char getSpecificConnection(std::vector<bool> condition);
+    void newConnection(Node &node, std::vector<bool> &conditions);
+    Node& getSpecificConnection(std::vector<bool> condition);
     bool hasSpecificConnection(std::vector<bool> condition);
     bool isIsolated();
 
@@ -36,10 +37,19 @@ public:
     int getConditionSize(bool select);
 
     bool operator<(const Node& otherNode) const;
-    std::map<std::vector<bool>, Node> connections;
-private:
+    std::vector<Node> getFirstNeighbours();
 
+    std::vector<Node> getSecondNeighbours();
+
+    void addFirstNeighbour(Node &node);
+
+    std::map<std::vector<bool>, Node> getConnections() const;
+
+private:
     std::map<std::vector<bool>, std::vector<bool>> output;
+    std::vector<Node> firstneighbours;
+    std::vector<Node> secondneighbours;
+    std::map<std::vector<bool>, Node> connections;
 
 	char name;
     int nodeCode;

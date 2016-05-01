@@ -1,9 +1,29 @@
 #include "node.h"
+#include "helper.h"
 #include <iostream>
 
-Node::Node(char name) : name(name) {}
+Node::Node() : name('\0') {
+    std::cout << "node without name created" << std::endl;
+}
 
-Node::~Node() {}
+Node::Node(const Node& other) {
+    this->name = other.name;
+    this->nodeCode = other.nodeCode;
+    this->output = other.output;
+    this->firstneighbours = other.firstneighbours;
+    this->secondneighbours = other.secondneighbours;
+    this->connections = other.connections;
+
+    //std::cout << "node " << name << " copied" << std::endl;
+}
+
+Node::Node(char name) : name(name) {
+    std::cout << "node " << name << " created" << std::endl;
+}
+
+Node::~Node() {
+    //std::cout << "node " << name << " deleted" << std::endl;
+}
 
 void Node::setOutputAt(std::vector<bool> condition, std::vector<bool> outputs) {
     output.insert(std::pair<std::vector<bool>, std::vector<bool>>(condition, outputs));
@@ -71,12 +91,12 @@ void Node::setName(char name) {
     name = name;
 }
 
-void Node::newConnection(Node node, std::vector<bool> condition) {
+void Node::newConnection(Node &node, std::vector<bool> &condition) {
     connections.insert( std::pair<std::vector<bool>,Node>(condition,node) );
 }
 
-char Node::getSpecificConnection(std::vector<bool> condition) {
-    return connections.at(condition).getName();
+Node &Node::getSpecificConnection(std::vector<bool> condition) {
+    return connections.at(condition);
 }
 
 bool Node::hasSpecificConnection(std::vector<bool> condition) {
@@ -110,6 +130,15 @@ bool Node::operator<(const Node& otherNode) const {
    return this->name < otherNode.name;
 }
 
+std::vector<Node> Node::getFirstNeighbours() {
+    return firstneighbours;
+}
+
+std::vector<Node> Node::getSecondNeighbours()
+{
+    return secondneighbours;
+}
+
 int Node::getConditionSize(bool select) {
     for(auto const &pair : output) {
         if(output.size() == 0)
@@ -120,4 +149,14 @@ int Node::getConditionSize(bool select) {
             return pair.second.size();
 
     }
+}
+
+void Node::addFirstNeighbour(Node &node) {
+    std::cout << "adding neighbour " << node.getName() << " to " << name << std::endl;
+    firstneighbours.push_back(node);
+    std::cout << "neighbors of " << name << ": " << printVec(firstneighbours, true) << std::endl;
+}
+
+std::map<std::vector<bool>, Node> Node::getConnections() const {
+    return connections;
 }
