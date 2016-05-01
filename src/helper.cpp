@@ -177,16 +177,16 @@ void printAutomate (std::vector<Node*> &nodes) {
     }
 }
 
-void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist, int numoutten) {
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Condition*> &conditions, int numoutten) {
     for(int y = 0; y < nodes.size(); y++) {
-            for(int i = 0; i < conditionslist.size(); i++) {
+            for(int i = 0; i < conditions.size(); i++) {
                 if(std::rand() % 10 >= numoutten) {
-                    nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditionslist.at(i));
+                    nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
                     std::vector<bool> outputGenerate;
-                    for(int z = 0; z < conditionslist.at(i).size(); z++) {
-                        outputGenerate.push_back(std::rand()%(conditionslist.size()));
+                    for(int z = 0; z < conditions.at(i).size(); z++) {
+                        outputGenerate.push_back(std::rand()%(conditions.size()));
                     }
-                    nodes.at(y)->setOutputAt(conditionslist.at(i), outputGenerate);
+                    nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
                 }
         }
     }

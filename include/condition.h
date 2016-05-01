@@ -3,6 +3,9 @@
 
 #include <vector>
 
+#include "helper.h"
+#include "node.h"
+
 class Condition{
     public:
         Condition(int intvalue, short size_in_bits);

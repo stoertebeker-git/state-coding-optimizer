@@ -4,18 +4,20 @@
 #include <map>
 #include <vector>
 
+#include "condition.h"
+
 class Node {
 public:
     Node(const Node &other);
 	Node(char name);
 	~Node();
 
-    void newConnection(Node* node, std::vector<bool> &conditions);
+    void newConnection(Node* node, Condition* condition);
     Node* getSpecificConnection(std::vector<bool> condition);
     bool hasSpecificConnection(std::vector<bool> condition);
     bool isIsolated();
 
-    void setOutputAt(std::vector<bool> conditions, std::vector<bool> outputs);
+    void setOutputAt(Condition *conditions, std::vector<bool> outputs);
     std::vector<bool> getOutputAt(const std::vector<bool> &conditions) const;
     std::vector<bool> getAnyOutput();
 

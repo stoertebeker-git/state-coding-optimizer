@@ -1,5 +1,7 @@
 #include "node.h"
 #include "helper.h"
+#include "condition.h"
+#include "table.h"
 
 #include <ctime>
 #include <iostream>
@@ -9,42 +11,39 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    int input_bits = 1;
+    int input_bits = 3;
     int num_nodes  = 4;
     int probability_of_generation = 3;
 
     std::vector<Node*> testnodes;
     std::srand(std::time(0));
 
-    for(int i = 0; i < num_nodes; i++) {
+    for(int i = 0; i < num_nodes; i++)
         testnodes.push_back(new Node('a' + i));
-    }
 
-    std::vector<std::vector<bool>> conditionslist;
 
-    for(int i = 0; i < pow(2, input_bits); i++) {
-        std::vector<bool> bits;
+    std::vector<Condition*> conditions;
 
-        for(int j = input_bits - 1; j >= 0; j--) {
-            bits.push_back((i >> j) & 1);
-        }
-        cout << endl;
-        conditionslist.push_back(bits);
-    }
+    for(int i = 0; i < pow(2, input_bits); i++)
+        conditions.push_back(new Condition(i, input_bits));
 
-    generateRandomConnections(testnodes, conditionslist, probability_of_generation);
 
-    printAutomate(testnodes);
+    generateRandomConnections(testnodes, conditions, probability_of_generation);
 
-    returnPriorityOne(testnodes, conditionslist);
-    returnPriorityTwo(testnodes, conditionslist);
-    returnPriorityThree(testnodes, conditionslist);
-    writeFile(testnodes, conditionslist);
+    //printAutomate(testnodes);
 
-    generateOutput(testnodes);
-    for(auto &n : testnodes) {
+    //returnPriorityOne(testnodes, conditionslist);
+    //returnPriorityTwo(testnodes, conditionslist);
+    //returnPriorityThree(testnodes, conditionslist);
+    //writeFile(testnodes, conditionslist);
+
+    //generateOutput(testnodes);
+    for(auto &n : testnodes)
         delete n;
-    }
+
+    for(auto &n : conditions)
+        delete n;
+
     return 0;
 }
 

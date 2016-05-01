@@ -2,6 +2,7 @@
 #define HELPER_H
 
 #include "node.h"
+#include "condition.h"
 
 #include <vector>
 
@@ -19,6 +20,6 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> 
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
 void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
 void printAutomate(std::vector<Node*> &nodes);
-void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist, int numoutten);
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Condition*> &conditions, int numoutten);
 void generateOutput(std::vector<Node*> &nodes);
 #endif // HELPER_H

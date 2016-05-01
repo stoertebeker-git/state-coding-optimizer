@@ -22,7 +22,7 @@ Node::~Node() {
     //std::cout << "node " << name << " deleted" << std::endl;
 }
 
-void Node::setOutputAt(std::vector<bool> condition, std::vector<bool> outputs) {
+void Node::setOutputAt(Condition* condition, std::vector<bool> outputs) {
     output.insert(std::pair<std::vector<bool>, std::vector<bool>>(condition, outputs));
 }
 
@@ -87,7 +87,7 @@ void Node::setName(char name) {
     name = name;
 }
 
-void Node::newConnection(Node* node, std::vector<bool> &condition) {
+void Node::newConnection(Node* node, Condition *condition) {
     connections.insert( std::pair<std::vector<bool>,Node*>(condition,node) );
 }
 
