@@ -19,5 +19,5 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> 
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
 void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions);
 void printAutomate (std::vector<Node*> &nodes);
-void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist);
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditionslist, int numoutten);
 #endif // HELPER_H

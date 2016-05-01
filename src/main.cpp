@@ -9,8 +9,9 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    int input_bits = 2;
-    int num_nodes  = 4;
+    int input_bits = 6;
+    int num_nodes  = 100;
+    int probability_of_generation = 8;
 
     std::vector<Node*> testnodes;
     std::srand(std::time(0));
@@ -31,7 +32,7 @@ int main(int argc, char** argv) {
         conditionslist.push_back(bits);
     }
 
-    generateRandomConnections(testnodes, conditionslist);
+    generateRandomConnections(testnodes, conditionslist, probability_of_generation);
 
     printAutomate(testnodes);
 
