@@ -77,7 +77,6 @@ void writeFile (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &condi
                        << ")(" << pair.second->getName() << ")" << endl;
         }
     }
-
     sampleFile.close();
 }
 
@@ -126,7 +125,7 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> 
 
             if(results.count(node)) {
                 results.at(node).push_back(n);
-                cout << "lel" << endl;
+                cout << endl;
             } else {
                 std::vector<Node*> resultnode;
                 resultnode.push_back(n);

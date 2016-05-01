@@ -44,7 +44,6 @@ std::vector<std::vector<bool>> Node::getConditionsForNode(Node* node) {
             matchingconditions.push_back(iter.first);
         }
     }
-
     return matchingconditions;
 }
 
@@ -69,8 +68,8 @@ void Node::checkForOneStep() {
                 }
             }
             if(differences == 1) {
-                std::cout << "Priority two was found from " << name << " to " << pair.second->getName()
-                          << " and " << pair2.second->getName() << std::endl;
+                pair.second->addSecondNeighbour(pair2.second);
+                pair2.second->addSecondNeighbour(pair.second);
             }
         }
     }
@@ -148,7 +147,6 @@ void Node::addFirstNeighbour(Node* node) {
     //std::cout << "adding neighbour " << node->getName() << " to " << name << std::endl;
     if(std::find(firstneighbours.begin(), firstneighbours.end(), node) == firstneighbours.end())
         firstneighbours.push_back(node);
-    //std::cout << "neighbors of " << name << ": " << printVec(firstneighbours, true) << std::endl;
 }
 
 void Node::addSecondNeighbour(Node* node) {
