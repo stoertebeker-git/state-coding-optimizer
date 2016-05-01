@@ -14,7 +14,7 @@ Node::Node(const Node& other) {
     this->secondneighbours = other.secondneighbours;
     this->connections = other.connections;
 
-    //std::cout << "node " << name << " copied" << std::endl;
+    std::cout << "node " << name << " copied" << std::endl;
 }
 
 Node::Node(char name) : name(name) {
