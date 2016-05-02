@@ -1,22 +1,11 @@
 #include "node.h"
 #include "helper.h"
-#include "condition.h"
+#include "binary.h"
 
 #include <iostream>
 #include <algorithm>
 
-Node::Node(const Node& other) {
-    this->name = other.name;
-    this->nodeCode = other.nodeCode;
-    this->output = other.output;
-    this->firstneighbours = other.firstneighbours;
-    this->secondneighbours = other.secondneighbours;
-    this->connections = other.connections;
-
-    std::cout << "node " << name << " copied" << std::endl;
-}
-
-Node::Node(char name) : name(name) {
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
     //std::cout << "node " << name << " created" << std::endl;
 }
 
@@ -24,11 +13,11 @@ Node::~Node() {
     //std::cout << "node " << name << " deleted" << std::endl;
 }
 
-void Node::setOutputAt(Condition* condition, std::vector<bool> outputs) {
-    output.insert(std::pair<Condition*, std::vector<bool>>(condition, outputs));
+void Node::setOutputAt(Binary* condition, std::vector<bool> outputs) {
+    output.insert(std::pair<Binary*, std::vector<bool>>(condition, outputs));
 }
 
-std::vector<bool> Node::getOutputAt(Condition* condition) const {
+std::vector<bool> Node::getOutputAt(Binary* condition) const {
     return output.at(condition);
 }
 
@@ -38,8 +27,8 @@ std::vector<bool> Node::getAnyOutput() {
     }
 }
 
-std::vector<Condition*> Node::getConditionsForNode(Node* node) {
-    std::vector<Condition*> matchingconditions;
+std::vector<Binary*> Node::getConditionsForNode(Node* node) {
+    std::vector<Binary*> matchingconditions;
 
     for(auto& iter : connections) {
         if(iter.second->getName() == node->getName()){
@@ -52,13 +41,13 @@ std::vector<Condition*> Node::getConditionsForNode(Node* node) {
 void Node::checkForOneStep() {
     for(auto const &pair : connections) {
 
-        Condition* to_compare = pair.first;
+        Binary* to_compare = pair.first;
         if(name == pair.second->getName())
             continue;
 
         for(auto const &pair2 : connections) {
             short differences = 0;
-            Condition* compare = pair2.first;
+            Binary* compare = pair2.first;
             if(pair2.second->getName() == pair.second->getName())
                 continue;
             if(pair2.second->getName() == name)
@@ -77,7 +66,7 @@ void Node::checkForOneStep() {
     }
 }
 
-std::map<Condition*, std::vector<bool>> Node::getOutput() {
+std::map<Binary*, std::vector<bool>> Node::getOutput() {
     return output;
 }
 
@@ -89,37 +78,30 @@ void Node::setName(char name) {
     name = name;
 }
 
-void Node::newConnection(Node* node, Condition* condition) {
-    connections.insert(std::pair<Condition*,Node*>(condition,node));
+void Node::newConnection(Node* node, Binary* condition) {
+    connections.insert(std::pair<Binary*,Node*>(condition,node));
 }
 
-Node* Node::getSpecificConnection(Condition* condition) {
+Node* Node::getSpecificConnection(Binary* condition) {
     return connections.at(condition);
 }
 
-bool Node::hasSpecificConnection(Condition* condition) {
+bool Node::hasSpecificConnection(Binary* condition) {
     return connections.count(condition) != 0;
 }
 
-std::map<Condition*, Node*>& Node::getAllConnections() {
+std::map<Binary*, Node*>& Node::getAllConnections() {
     return connections;
 }
 
-int Node::getNodeCode() const {
-    return nodeCode;
+Binary* Node::getNodeCode() const {
+    return node_code;
 }
 
 void Node::setNodeCode(int value) {
-    nodeCode = value;
-}
-
-bool Node::isIsolated() {
-    for(auto& iter : connections) {
-        if(iter.second->getName() != name){
-            return false;
-        }
-    }
-    return true;
+    if(node_code!=NULL)
+        delete node_code;
+    node_code = new Binary(value, num_nodes);
 }
 
 bool Node::operator<(const Node& otherNode) const {
@@ -161,7 +143,7 @@ void Node::addThirdNeighbour(Node* node) {
         thirdneighbours.push_back(node);
 }
 
-std::map<Condition *, Node *> &Node::getConnections() {
+std::map<Binary *, Node *> &Node::getConnections() {
     return connections;
 }
 

@@ -1,10 +1,12 @@
 #include "table.h"
 
-Table::Table() {
+Table::Table(std::vector<Node *> nodes) {
 }
 
-Table::~Table() {};
+Table::~Table() {
 
-//std::map<Node*, int> Table::getTable(){
- //   return binarytable;
-//}
+}
+
+std::map<Node*, int> Table::getTable(){
+   return binarytable;
+}

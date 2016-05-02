@@ -1,26 +1,26 @@
 #include <iostream>
-#include "condition.h"
+#include "binary.h"
 
-Condition::Condition(int intvalue, short size_in_bits) : intvalue(intvalue), size_in_bits(size_in_bits) {
+Binary::Binary(int intvalue, short size_in_bits) : intvalue(intvalue), size_in_bits(size_in_bits) {
     std::cout << "Condition created: " << intvalue
               << " " << printVec(returnAsBoolVec(), true) << std::endl;
 }
 
-Condition::~Condition() {
+Binary::~Binary() {
 
 }
 
-std::vector<bool> Condition::returnAsBoolVec() {
+std::vector<bool> Binary::returnAsBoolVec() {
     std::vector<bool> bits;
 
     for(int j = size_in_bits - 1; j >= 0; j--)
         bits.push_back((intvalue >> j) & 1);
     return bits;
 }
-short Condition::returnSize() {
+short Binary::returnSize() {
     return size_in_bits;
 }
 
-int Condition::returnInt() {
+int Binary::returnInt() {
     return intvalue;
 }

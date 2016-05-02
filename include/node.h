@@ -4,61 +4,60 @@
 #include <map>
 #include <vector>
 
-class Condition;
+class Binary;
 
 class Node {
 public:
-    Node(const Node &other);
-	Node(char name);
+
+    Node(char name, int num_nodes);
 	~Node();
 
-    void newConnection(Node* node, Condition* condition);
-    Node* getSpecificConnection(Condition *condition);
-    bool hasSpecificConnection(Condition *condition);
-    bool isIsolated();
+    void newConnection(Node* node, Binary* condition);
+    Node* getSpecificConnection(Binary *condition);
+    bool hasSpecificConnection(Binary *condition);
 
-    void setOutputAt(Condition *conditions, std::vector<bool> outputs);
-    std::vector<bool> getOutputAt(Condition* condition) const;
+    std::vector<Binary*> getConditionsForNode(Node* node);
+    std::map<Binary*, Node*>& getConnections();
+    std::map<Binary *, Node *> &getAllConnections();
+
+    void setOutputAt(Binary *conditions, std::vector<bool> outputs);
+    std::vector<bool> getOutputAt(Binary* condition) const;
     std::vector<bool> getAnyOutput();
-
-    std::vector<Condition*> getConditionsForNode(Node* node);
-
-    std::map<Condition *, Node *> &getAllConnections();
 
     void checkForOneStep() ;
 
     char getName() const;
     void setName(char name);
 
-    int getNodeCode() const;
+    Binary* getNodeCode() const;
     void setNodeCode(int value);
 
-    std::map<Condition *, std::vector<bool> > getOutput();
+    std::map<Binary *, std::vector<bool> > getOutput();
 
     int getConditionSize(bool select);
 
     bool operator<(const Node& otherNode) const;
-    std::vector<Node*>& getFirstNeighbours();
 
+    std::vector<Node*>& getFirstNeighbours();
     std::vector<Node*>& getSecondNeighbours();
+    std::vector<Node*>& getThirdNeighbours();
 
     void addFirstNeighbour(Node* node);
     void addSecondNeighbour(Node* node);
     void addThirdNeighbour(Node* node);
 
-    std::map<Condition*, Node*>& getConnections();
-
-    std::vector<Node*>& getThirdNeighbours();
 
 private:
-    std::map<Condition*, std::vector<bool>> output;
+
+    std::map<Binary*, std::vector<bool>> output;
     std::vector<Node*> firstneighbours;
     std::vector<Node*> secondneighbours;
     std::vector<Node*> thirdneighbours;
-    std::map<Condition*, Node*> connections;
+    std::map<Binary*, Node*> connections;
 
+    int num_nodes;
 	char name;
-    int nodeCode;
+    Binary* node_code;
 };
 
 #endif // _NODE_H_

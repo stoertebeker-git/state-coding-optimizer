@@ -1,5 +1,5 @@
 #include "helper.h"
-#include "condition.h"
+#include "binary.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -50,7 +50,7 @@ std::string printMap(std::map<Node*, std::vector<Node*>> map) {
     return stream.str();
 }
 
-void writeFile (std::vector<Node*> &nodes, std::vector<Condition*> conditions) {
+void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
     sampleFile.open("SampleFile.txt");
 
@@ -115,7 +115,7 @@ void assignNeighbours(std::vector<Node*> &list, short select) {
     }
 }
 
-void returnPriorityOne (std::vector<Node*> nodes,std::vector<Condition*> conditions) {
+void returnPriorityOne (std::vector<Node*> nodes,std::vector<Binary*> conditions) {
 
     for(int i = 0; i < conditions.size(); i++) {
         std::map<Node*, std::vector<Node*>> results;
@@ -139,13 +139,13 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<Condition*> conditi
             assignNeighbours(h.second, true);
     }
 }
-void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Condition *> conditions) {
+void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditions) {
     for(auto &n : nodes) {
         n->checkForOneStep();
     }
 }
 
-void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Condition*> conditions) {
+void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     std::vector<Node*> results;
     for(auto &n : nodes) {
         for(int j = 0; j < conditions.size(); j++) {
@@ -162,7 +162,7 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Condition*> con
 void printAutomate (std::vector<Node*> &nodes) {
     for(auto &n : nodes) {
         for(auto &m : nodes) {
-            std::vector<Condition*> targetNodeCon = n->getConditionsForNode(m);
+            std::vector<Binary*> targetNodeCon = n->getConditionsForNode(m);
             cout << n->getName() << "->" << m->getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
                 cout << printVec(targetNodeCon.at(i)->returnAsBoolVec(), false) << "("
@@ -175,7 +175,7 @@ void printAutomate (std::vector<Node*> &nodes) {
     }
 }
 
-void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Condition*> &conditions, int numoutten) {
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {
     for(int y = 0; y < nodes.size(); y++) {
             for(int i = 0; i < conditions.size(); i++) {
                 if(std::rand() % 10 >= numoutten) {

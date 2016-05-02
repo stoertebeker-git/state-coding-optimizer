@@ -1,5 +1,5 @@
-#ifndef CONDITION_H
-#define CONDITION_H
+#ifndef BINARY_H
+#define BINARY_H
 
 #include <vector>
 
@@ -7,10 +7,10 @@
 
 class Node;
 
-class Condition{
+class Binary{
     public:
-        Condition(int intvalue, short size_in_bits);
-        ~Condition();
+        Binary(int intvalue, short size_in_bits);
+        ~Binary();
 
         std::vector<bool> returnAsBoolVec();
 
@@ -21,8 +21,8 @@ class Condition{
     private:
         int intvalue;
         short size_in_bits;
-//this is heavy work in progress
+
 };
 
-#endif // CONDITION_H
+#endif // BINARY_H
 
