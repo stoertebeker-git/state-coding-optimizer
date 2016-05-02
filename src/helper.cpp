@@ -1,5 +1,5 @@
 #include "helper.h"
-
+#include "condition.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -50,7 +50,7 @@ std::string printMap(std::map<Node*, std::vector<Node*>> map) {
     return stream.str();
 }
 
-void writeFile (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+void writeFile (std::vector<Node*> &nodes, std::vector<Condition*> conditions) {
     ofstream sampleFile;
     sampleFile.open("SampleFile.txt");
 
@@ -70,7 +70,7 @@ void writeFile (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &condi
     for(int i = 0; i < nodes.size(); i++) {
         for(auto const &pair : nodes.at(i)->getConnections()) {
             sampleFile << "[" << conditions_variable_string << "]=("
-                       << printVec(pair.first, true)
+                       << printVec(pair.first->returnAsBoolVec(), true)
                        << ")(" << nodes.at(i)->getName() << ")"
                        << " > [" << output_variable_string << "]:("
                        << printVec(nodes.at(i)->getOutputAt(pair.first), true)
@@ -115,7 +115,7 @@ void assignNeighbours(std::vector<Node*> &list, short select) {
     }
 }
 
-void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> &conditions) {
+void returnPriorityOne (std::vector<Node*> nodes,std::vector<Condition*> conditions) {
 
     for(int i = 0; i < conditions.size(); i++) {
         std::map<Node*, std::vector<Node*>> results;
@@ -128,7 +128,6 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> 
 
             if(results.count(node)) {
                 results.at(node).push_back(n);
-                cout << endl;
             } else {
                 std::vector<Node*> resultnode;
                 resultnode.push_back(n);
@@ -140,19 +139,19 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<std::vector<bool>> 
             assignNeighbours(h.second, true);
     }
 }
-void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Condition *> conditions) {
     for(auto &n : nodes) {
         n->checkForOneStep();
     }
 }
 
-void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<bool>> &conditions) {
+void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Condition*> conditions) {
     std::vector<Node*> results;
     for(auto &n : nodes) {
         for(int j = 0; j < conditions.size(); j++) {
             if(!n->hasSpecificConnection(conditions.at(j)))
                 continue;
-            if(n->getOutputAt(conditions.at(j)) == conditions.at(j)) {
+            if(n->getOutputAt(conditions.at(j)) == conditions.at(j)->returnAsBoolVec()) {
                 results.push_back(n);
             }
         }
@@ -163,11 +162,10 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<std::vector<boo
 void printAutomate (std::vector<Node*> &nodes) {
     for(auto &n : nodes) {
         for(auto &m : nodes) {
-            std::vector<std::vector<bool>> targetNodeCon =
-                    n->getConditionsForNode(m);
+            std::vector<Condition*> targetNodeCon = n->getConditionsForNode(m);
             cout << n->getName() << "->" << m->getName() << ":";
             for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << printVec(targetNodeCon.at(i), false) << "("
+                cout << printVec(targetNodeCon.at(i)->returnAsBoolVec(), false) << "("
                      << printVec(n->getOutputAt(targetNodeCon.at(i)), false)
                      << ")" << ",";
             }
@@ -183,8 +181,8 @@ void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Condition*
                 if(std::rand() % 10 >= numoutten) {
                     nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
                     std::vector<bool> outputGenerate;
-                    for(int z = 0; z < conditions.at(i).size(); z++) {
-                        outputGenerate.push_back(std::rand()%(conditions.size()));
+                    for(int z = 0; z < conditions.at(i)->returnSize(); z++) {
+                        outputGenerate.push_back(std::rand()%2);
                     }
                     nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
                 }

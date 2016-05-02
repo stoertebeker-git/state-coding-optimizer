@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include "condition.h"
+class Condition;
 
 class Node {
 public:
@@ -13,17 +13,17 @@ public:
 	~Node();
 
     void newConnection(Node* node, Condition* condition);
-    Node* getSpecificConnection(std::vector<bool> condition);
-    bool hasSpecificConnection(std::vector<bool> condition);
+    Node* getSpecificConnection(Condition *condition);
+    bool hasSpecificConnection(Condition *condition);
     bool isIsolated();
 
     void setOutputAt(Condition *conditions, std::vector<bool> outputs);
-    std::vector<bool> getOutputAt(const std::vector<bool> &conditions) const;
+    std::vector<bool> getOutputAt(Condition* condition) const;
     std::vector<bool> getAnyOutput();
 
-    std::vector<std::vector<bool>> getConditionsForNode(Node* node);
+    std::vector<Condition*> getConditionsForNode(Node* node);
 
-    std::map<std::vector<bool>, Node*>& getAllConnections();
+    std::map<Condition *, Node *> &getAllConnections();
 
     void checkForOneStep() ;
 
@@ -33,7 +33,7 @@ public:
     int getNodeCode() const;
     void setNodeCode(int value);
 
-    std::map<std::vector<bool>, std::vector<bool>> getOutput();
+    std::map<Condition *, std::vector<bool> > getOutput();
 
     int getConditionSize(bool select);
 
@@ -46,16 +46,16 @@ public:
     void addSecondNeighbour(Node* node);
     void addThirdNeighbour(Node* node);
 
-    std::map<std::vector<bool>, Node*>& getConnections();
+    std::map<Condition*, Node*>& getConnections();
 
     std::vector<Node*>& getThirdNeighbours();
 
 private:
-    std::map<std::vector<bool>, std::vector<bool>> output;
+    std::map<Condition*, std::vector<bool>> output;
     std::vector<Node*> firstneighbours;
     std::vector<Node*> secondneighbours;
     std::vector<Node*> thirdneighbours;
-    std::map<std::vector<bool>, Node*> connections;
+    std::map<Condition*, Node*> connections;
 
 	char name;
     int nodeCode;

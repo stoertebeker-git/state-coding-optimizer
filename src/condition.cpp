@@ -17,7 +17,10 @@ std::vector<bool> Condition::returnAsBoolVec() {
         bits.push_back((intvalue >> j) & 1);
     return bits;
 }
+short Condition::returnSize() {
+    return size_in_bits;
+}
 
-int Condition::returnAsInt() {
+int Condition::returnInt() {
     return intvalue;
 }

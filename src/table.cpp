@@ -5,6 +5,6 @@ Table::Table() {
 
 Table::~Table() {};
 
-std::map<Node*, int> Table::getTable(){
-    return binarytable;
-}
+//std::map<Node*, int> Table::getTable(){
+ //   return binarytable;
+//}

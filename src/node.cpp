@@ -1,5 +1,7 @@
 #include "node.h"
 #include "helper.h"
+#include "condition.h"
+
 #include <iostream>
 #include <algorithm>
 
@@ -23,21 +25,21 @@ Node::~Node() {
 }
 
 void Node::setOutputAt(Condition* condition, std::vector<bool> outputs) {
-    output.insert(std::pair<std::vector<bool>, std::vector<bool>>(condition, outputs));
+    output.insert(std::pair<Condition*, std::vector<bool>>(condition, outputs));
 }
 
-std::vector<bool> Node::getOutputAt(const std::vector<bool> &condition) const {
+std::vector<bool> Node::getOutputAt(Condition* condition) const {
     return output.at(condition);
 }
 
 std::vector<bool> Node::getAnyOutput() {
     for(auto const &pair : output) {
-        return pair.first;
+        return pair.second;
     }
 }
 
-std::vector<std::vector<bool>> Node::getConditionsForNode(Node* node) {
-    std::vector<std::vector<bool>> matchingconditions;
+std::vector<Condition*> Node::getConditionsForNode(Node* node) {
+    std::vector<Condition*> matchingconditions;
 
     for(auto& iter : connections) {
         if(iter.second->getName() == node->getName()){
@@ -50,20 +52,20 @@ std::vector<std::vector<bool>> Node::getConditionsForNode(Node* node) {
 void Node::checkForOneStep() {
     for(auto const &pair : connections) {
 
-        std::vector<bool> to_compare = pair.first;
+        Condition* to_compare = pair.first;
         if(name == pair.second->getName())
             continue;
 
         for(auto const &pair2 : connections) {
             short differences = 0;
-            std::vector<bool> compare = pair2.first;
+            Condition* compare = pair2.first;
             if(pair2.second->getName() == pair.second->getName())
                 continue;
             if(pair2.second->getName() == name)
                 continue;
 
-            for(int k = 0; k < compare.size(); k++) {
-                if(compare.at(k) != to_compare.at(k)) {
+            for(int k = 0; k < compare->returnSize(); k++) {
+                if(compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k)) {
                     differences++;
                 }
             }
@@ -75,7 +77,7 @@ void Node::checkForOneStep() {
     }
 }
 
-std::map<std::vector<bool>, std::vector<bool>> Node::getOutput() {
+std::map<Condition*, std::vector<bool>> Node::getOutput() {
     return output;
 }
 
@@ -87,19 +89,19 @@ void Node::setName(char name) {
     name = name;
 }
 
-void Node::newConnection(Node* node, Condition *condition) {
-    connections.insert( std::pair<std::vector<bool>,Node*>(condition,node) );
+void Node::newConnection(Node* node, Condition* condition) {
+    connections.insert(std::pair<Condition*,Node*>(condition,node));
 }
 
-Node* Node::getSpecificConnection(std::vector<bool> condition) {
+Node* Node::getSpecificConnection(Condition* condition) {
     return connections.at(condition);
 }
 
-bool Node::hasSpecificConnection(std::vector<bool> condition) {
+bool Node::hasSpecificConnection(Condition* condition) {
     return connections.count(condition) != 0;
 }
 
-std::map<std::vector<bool>, Node*>& Node::getAllConnections() {
+std::map<Condition*, Node*>& Node::getAllConnections() {
     return connections;
 }
 
@@ -137,7 +139,7 @@ int Node::getConditionSize(bool select) {
         if(output.size() == 0)
             continue;
         if(select)
-            return pair.first.size();
+            return pair.first->returnSize();
         else
             return pair.second.size();
     }
@@ -159,7 +161,7 @@ void Node::addThirdNeighbour(Node* node) {
         thirdneighbours.push_back(node);
 }
 
-std::map<std::vector<bool>, Node*>& Node::getConnections() {
+std::map<Condition *, Node *> &Node::getConnections() {
     return connections;
 }
 

@@ -11,33 +11,35 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    int input_bits = 3;
+    short input_bits = 2;
     int num_nodes  = 4;
     int probability_of_generation = 3;
 
     std::vector<Node*> testnodes;
-    std::srand(std::time(0));
-
-    for(int i = 0; i < num_nodes; i++)
-        testnodes.push_back(new Node('a' + i));
-
-
     std::vector<Condition*> conditions;
 
-    for(int i = 0; i < pow(2, input_bits); i++)
-        conditions.push_back(new Condition(i, input_bits));
+    std::srand(std::time(0));
 
+    for(int i = 0; i < num_nodes; i++) {
+        testnodes.push_back(new Node('a' + i));
+    }
+
+
+
+    for(int i = 0; i < pow(2, input_bits); i++) {
+        conditions.push_back(new Condition(i, input_bits));
+    }
 
     generateRandomConnections(testnodes, conditions, probability_of_generation);
 
-    //printAutomate(testnodes);
+    printAutomate(testnodes);
 
-    //returnPriorityOne(testnodes, conditionslist);
-    //returnPriorityTwo(testnodes, conditionslist);
-    //returnPriorityThree(testnodes, conditionslist);
-    //writeFile(testnodes, conditionslist);
+    returnPriorityOne(testnodes, conditions);
+    returnPriorityTwo(testnodes, conditions);
+    returnPriorityThree(testnodes, conditions);
+    writeFile(testnodes, conditions);
+    generateOutput(testnodes);
 
-    //generateOutput(testnodes);
     for(auto &n : testnodes)
         delete n;
 

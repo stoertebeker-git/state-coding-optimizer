@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "helper.h"
-#include "node.h"
+
+class Node;
 
 class Condition{
     public:
@@ -13,7 +14,9 @@ class Condition{
 
         std::vector<bool> returnAsBoolVec();
 
-        int returnAsInt();
+        int returnInt();
+
+        short returnSize();
 
     private:
         int intvalue;
