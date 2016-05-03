@@ -20,13 +20,11 @@ int main(int argc, char** argv) {
 
     std::srand(std::time(0));
 
-    for(int i = 0; i < num_nodes; i++) {
+    for(int i = 0; i < num_nodes; i++)
         testnodes.push_back(new Node('a' + i, num_nodes));
-    }
 
-    for(int i = 0; i < pow(2, input_bits); i++) {
+    for(int i = 0; i < pow(2, input_bits); i++)
         conditions.push_back(new Binary(i, input_bits));
-    }
 
     generateRandomConnections(testnodes, conditions, probability_of_generation);
 

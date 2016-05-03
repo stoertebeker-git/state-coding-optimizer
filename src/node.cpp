@@ -5,13 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
-Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
-    //std::cout << "node " << name << " created" << std::endl;
-}
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {}
 
-Node::~Node() {
-    //std::cout << "node " << name << " deleted" << std::endl;
-}
+Node::~Node() {}
 
 void Node::setOutputAt(Binary* condition, std::vector<bool> outputs) {
     output.insert(std::pair<Binary*, std::vector<bool>>(condition, outputs));
@@ -22,18 +18,16 @@ std::vector<bool> Node::getOutputAt(Binary* condition) const {
 }
 
 std::vector<bool> Node::getAnyOutput() {
-    for(auto const &pair : output) {
+    for(auto const &pair : output)
         return pair.second;
-    }
 }
 
 std::vector<Binary*> Node::getConditionsForNode(Node* node) {
     std::vector<Binary*> matchingconditions;
 
     for(auto& iter : connections) {
-        if(iter.second->getName() == node->getName()){
+        if(iter.second->getName() == node->getName())
             matchingconditions.push_back(iter.first);
-        }
     }
     return matchingconditions;
 }
@@ -54,9 +48,8 @@ void Node::checkForOneStep() {
                 continue;
 
             for(int k = 0; k < compare->returnSize(); k++) {
-                if(compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k)) {
+                if(compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k))
                     differences++;
-                }
             }
             if(differences == 1) {
                 pair.second->addSecondNeighbour(pair2.second);
@@ -72,10 +65,6 @@ std::map<Binary*, std::vector<bool>> Node::getOutput() {
 
 char Node::getName() const {
     return name;
-}
-
-void Node::setName(char name) {
-    name = name;
 }
 
 void Node::newConnection(Node* node, Binary* condition) {
@@ -128,7 +117,6 @@ int Node::getConditionSize(bool select) {
 }
 
 void Node::addFirstNeighbour(Node* node) {
-    //std::cout << "adding neighbour " << node->getName() << " to " << name << std::endl;
     if(std::find(firstneighbours.begin(), firstneighbours.end(), node) == firstneighbours.end())
         firstneighbours.push_back(node);
 }
