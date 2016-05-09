@@ -41,11 +41,26 @@ std::string printVec(std::vector<Node*> vector, bool commata) {
     return stream.str();
 }
 
+int bitSize (int temp) {
+
+    int bits = 0;
+    while(true) {
+        if(temp == 1) {
+            return bits;
+        }
+        if(temp%2 == 1) {
+            temp++;
+        }
+        temp = temp/2;
+        bits++;
+    }
+}
+
 std::string printMap(std::map<Node*, std::vector<Node*>> map) {
     ostringstream stream;
     for(auto const &pair : map) {
-        stream << pair.first->getName() << "<-";
-        stream << printVec(pair.second, true) << endl;
+        stream << pair.first->getName() << "<-"
+               << printVec(pair.second, true) << endl;
     }
     return stream.str();
 }

@@ -7,11 +7,14 @@
 
 class Table {
     public:
-        Table(std::vector<Node*> nodes);
+        Table();
         ~Table();
-       std::map<Node*, int> getTable();
+      // std::map<Node*, int> getTable();
+       void assignPriorityThree(std::vector<Node*> nodes);
     private:
-       std::map<Node*, int> binarytable;
+       //std::map<Node*, int> binarytable;
+       std::vector<int> table;
+       bool setCodes (Node* anchor , Node* node, int i, int max);
 };
 
 #endif // TABLE_H

@@ -22,4 +22,6 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary *> condi
 void printAutomate(std::vector<Node*> &nodes);
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten);
 void generateOutput(std::vector<Node*> &nodes);
+
+int bitSize(int temp);
 #endif // HELPER_H

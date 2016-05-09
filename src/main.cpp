@@ -11,9 +11,9 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    short input_bits = 3;
-    int num_nodes  = 10;
-    int probability_of_generation = 3;
+    short input_bits = 2;
+    int num_nodes  = 8;
+    int probability_of_generation = 4;
 
     std::vector<Node*> testnodes;
     std::vector<Binary*> conditions;
@@ -36,6 +36,15 @@ int main(int argc, char** argv) {
     writeFile(testnodes, conditions);
     generateOutput(testnodes);
 
+    Table table;
+    table.assignPriorityThree(testnodes);
+
+    for(Node* &n : testnodes) {
+        if(n->getNodeCode() != NULL)
+            cout << n->getName() << ": " << printVec(n->getNodeCode()->returnAsBoolVec(), false) << endl;
+    }
+
+    // Clean up
     for(auto &n : testnodes)
         delete n;
 

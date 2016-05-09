@@ -88,9 +88,9 @@ Binary* Node::getNodeCode() const {
 }
 
 void Node::setNodeCode(int value) {
-    if(node_code!=NULL)
+    if(node_code != NULL)
         delete node_code;
-    node_code = new Binary(value, num_nodes);
+    node_code = new Binary(value, bitSize(num_nodes));
 }
 
 bool Node::operator<(const Node& otherNode) const {

@@ -2,7 +2,7 @@
 #include "binary.h"
 
 Binary::Binary(int intvalue, short size_in_bits) : intvalue(intvalue), size_in_bits(size_in_bits) {
-    std::cout << "Condition created: " << intvalue
+    std::cout << "Binary created: " << intvalue
               << " " << printVec(returnAsBoolVec(), true) << std::endl;
 }
 
@@ -17,6 +17,7 @@ std::vector<bool> Binary::returnAsBoolVec() {
         bits.push_back((intvalue >> j) & 1);
     return bits;
 }
+
 short Binary::returnSize() {
     return size_in_bits;
 }
