@@ -29,6 +29,7 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
                     std::cout << "maxsize new code " << i << std::endl;
                     break;
                 }
+                //this is shit
                 if(i != table.at(i)) {
                     std::cout << "new code " << i << std::endl;
                     code = i;
