@@ -38,6 +38,7 @@ public:
     std::vector<Node*>& getFirstNeighbours();
     std::vector<Node*>& getSecondNeighbours();
     std::vector<Node*>& getThirdNeighbours();
+    std::vector<Node*>& getNeighbours(short select);
 
     void addFirstNeighbour(Node* node);
     void addSecondNeighbour(Node* node);

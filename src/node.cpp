@@ -112,6 +112,14 @@ void Node::addThirdNeighbour(Node* node) {
     if(std::find(thirdneighbours.begin(), thirdneighbours.end(), node) == thirdneighbours.end())
         thirdneighbours.push_back(node);
 }
+std::vector<Node*>& Node::getNeighbours(short select) {
+    if(select == 0)
+        return firstneighbours;
+    else if(select == 1)
+        return secondneighbours;
+    else if(select == 2)
+        return thirdneighbours;
+}
 
 std::map<Binary *, Node *> &Node::getConnections() {
     return connections;

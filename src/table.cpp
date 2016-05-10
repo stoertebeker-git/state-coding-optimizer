@@ -34,42 +34,51 @@ void Table::assignPriorityOne(std::vector<Node*> nodes) {
                   << ": " << node->getWeight() << std::endl;
     }
     int code = 0;
+    for(int k = 0; k < 3; k++) {
+        for(Node* &anchor : nodes) {
+            if(k == 0)
+                anchor->sortAllNeighbours();
 
-    for(Node* &anchor : nodes) {
-        anchor->sortAllNeighbours();
-
-        if(anchor->getFirstNeighbours().empty())
-            continue;
-        else
-            std::cout << "NO CODE: " << anchor->getName() << std::endl;
-        if(anchor->getFirstNeighbours().size() != 0) {
-            if(anchor->getNodeCode() == NULL) {
-                code = findMaxHamDist()->returnInt();
-                anchor->setNodeCode(binaries.at(code));
-                table[binaries.at(code)] = anchor;
-                std::cout << "SUCCESS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
-                          << " for node " << anchor->getName() << std::endl;
-            } else {
-                code = anchor->getNodeCode()->returnInt();
-                std::cout << "ALREADY HAS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
-                          << " for node " << anchor->getName() << std::endl;
-            }
+            if(anchor->getNeighbours(k).empty())
+                continue;
+            else
+                std::cout << "NO CODE: " << anchor->getName() << std::endl;
+            if(anchor->getNeighbours(k).size() != 0) {
+                if(anchor->getNodeCode() == NULL) {
+                    code = findMaxHamDist()->returnInt();
+                    anchor->setNodeCode(binaries.at(code));
+                    table[binaries.at(code)] = anchor;
+                    std::cout << "SUCCESS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
+                              << " for node " << anchor->getName() << std::endl;
+                } else {
+                    code = anchor->getNodeCode()->returnInt();
+                    std::cout << "ALREADY HAS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
+                              << " for node " << anchor->getName() << std::endl;
+                }
 
 
-            int max = anchor->getNodeCode()->getSize()-1;
+                int max = anchor->getNodeCode()->getSize()-1;
 
-            for(Node* node : anchor->getFirstNeighbours()) {
+                for(Node* node : anchor->getNeighbours(k)) {
 
-                int i = max;
+                    int i = max;
 
-                while(i >= 0 && !setCodes(anchor, node, i, max)) {
-                    i--;
+                    while(i >= 0 && !setCodes(anchor, node, i, max)) {
+                        i--;
+                    }
                 }
             }
         }
     }
-}
 
+    for(Node* node : nodes) {
+        if(node->getNodeCode() == NULL) {
+            code = findMaxHamDist()->returnInt();
+            node->setNodeCode(binaries.at(code));
+            table[binaries.at(code)] = node;
+        }
+    }
+}
 bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
     if(node->getNodeCode())
         return true;
@@ -94,8 +103,8 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
     } else {
         return false;
     }
-
 }
+
 
 bool Table::inTable(int i) {
     if(table[binaries.at(i)] != NULL)
@@ -106,8 +115,7 @@ bool Table::inTable(int i) {
 
 Binary* Table::findMaxHamDist() {
     std::pair<Binary*, int> code_with_max_distance(binaries.at(0),0);
-   // code_with_max_distance.first = binaries.at(0);
-    //code_with_max_distance.second = 0;
+
     for(int i = 0; i < binaries.size(); i++) {
 
         int ham_distance_for_codeword = bitSize(binaries.size());
