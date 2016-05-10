@@ -1,8 +1,10 @@
+#include "helper.h"
 #include "table.h"
+
 #include <iostream>
 #include <math.h>
 #include <algorithm>
-#include <helper.h>
+
 
 Table::Table(int size) : size(size){
     for(int i = 0; i < size; i++) {
@@ -34,19 +36,22 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
     int code = 0;
 
     for(Node* &anchor : nodes) {
-        if(anchor->getNodeCode() != NULL)
+        if(anchor->getFirstNeighbours().empty())
             continue;
         else
             std::cout << "NO CODE: " << anchor->getName() << std::endl;
         if(anchor->getFirstNeighbours().size() != 0) {
-
-            code = findMaxHamDist()->returnInt();
-
-            std::cout << "SUCCESS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
-                      << " for node " << anchor->getName() << std::endl;
-            anchor->setNodeCode(binaries.at(code));
-            table[binaries.at(code)] = anchor;
-
+            if(anchor->getNodeCode() == NULL) {
+                code = findMaxHamDist()->returnInt();
+                anchor->setNodeCode(binaries.at(code));
+                table[binaries.at(code)] = anchor;
+                std::cout << "SUCCESS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
+                          << " for node " << anchor->getName() << std::endl;
+            } else {
+                code = anchor->getNodeCode()->returnInt();
+                std::cout << "ALREADY HAS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
+                          << " for node " << anchor->getName() << std::endl;
+            }
 
 
             int max = anchor->getNodeCode()->returnSize()-1;
@@ -91,7 +96,6 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
 }
 
 bool Table::inTable(int i) {
-    auto search = table.find(binaries.at(i));
     if(table[binaries.at(i)] != NULL)
         return true;
     else
@@ -125,4 +129,3 @@ Binary* Table::findMaxHamDist() {
     }
     return code_with_max_distance.first;
 }
-

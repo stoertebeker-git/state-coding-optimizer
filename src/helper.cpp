@@ -1,5 +1,7 @@
 #include "helper.h"
 #include "binary.h"
+#include "table.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -67,7 +69,7 @@ std::string printMap(std::map<Node*, std::vector<Node*>> map) {
 
 void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
-    sampleFile.open("SampleFile.txt");
+    sampleFile.open("samplefile.txt");
 
     sampleFile <<"DESTATE: ";
     for(int i = 0; i < nodes.size(); i++) {
@@ -199,4 +201,31 @@ void generateOutput(std::vector<Node*> &nodes) {
              << "Prio 3: " << printVec(n->getThirdNeighbours(), true) << endl
              << "===================================================" << endl;
     }
+}
+
+void printSortedMLFile(Table* table) {
+    ofstream file;
+    file.open("sortedfile.tbl");
+    file.close();
+}
+
+void printUnsortedMLFile(std::vector<Node*> nodes, int conditions_size) {
+    ofstream file;
+    file.open("unsortedfile.tbl");
+
+    file << "input ";
+    while(conditions_size-- > 0)
+        file << "i" << conditions_size << " ";
+
+    int bits_nodes = bitSize(nodes.at(0)->getNumNodes());
+    while(bits_nodes-- > 0)
+        file << "r" << bits_nodes << " ";
+
+    file << endl << "output ";
+    bits_nodes = bitSize(nodes.at(0)->getNumNodes());
+    while(bits_nodes-- > 0)
+        file << "r" << bits_nodes << " ";
+    file << endl;
+
+    file.close();
 }

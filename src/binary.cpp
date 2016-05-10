@@ -2,8 +2,8 @@
 #include "binary.h"
 
 Binary::Binary(int intvalue, short size_in_bits) : intvalue(intvalue), size_in_bits(size_in_bits) {
-    std::cout << "Binary created: " << intvalue
-              << " " << printVec(returnAsBoolVec(), true) << std::endl;
+    //std::cout << "Binary created: " << intvalue
+    //          << " " << printVec(returnAsBoolVec(), true) << std::endl;
 }
 
 Binary::~Binary() {

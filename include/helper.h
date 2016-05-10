@@ -3,6 +3,7 @@
 
 #include "node.h"
 #include "binary.h"
+#include "table.h"
 
 #include <vector>
 
@@ -21,6 +22,9 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary *> condi
 void printAutomate(std::vector<Node*> &nodes);
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten);
 void generateOutput(std::vector<Node*> &nodes);
+
+void printSortedMLFile(Table* table);
+void printUnsortedMLFile(std::vector<Node*> nodes, int conditions_size);
 
 int bitSize(int temp);
 #endif // HELPER_H
