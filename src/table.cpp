@@ -143,3 +143,6 @@ Binary* Table::findMaxHamDist() {
 std::vector<Binary*> Table::getBinaries() {
     return binaries;
 }
+std::map<Binary*, Node*> Table::getTable() {
+    return table;
+}

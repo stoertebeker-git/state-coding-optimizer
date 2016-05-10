@@ -17,13 +17,14 @@ public:
     int searchFreeCode(int range);
     bool inTable(int i);
     bool setCodes (Node* anchor , Node* node, int i, int max);
-
+    void calcFreeCodes();
     std::vector<Binary*> getBinaries();
+    std::map<Binary*, Node*> getTable();
 
 private:
     std::map<Binary*, Node*> table;
     std::vector<Binary*> binaries;
-
+    int num_free_codes;
     int size;
 };
 

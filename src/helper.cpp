@@ -225,6 +225,26 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
     file << endl;
+    int i = 0;
+    for(Binary* &condition : conditions) {
+        for(auto const &pair : table->getTable()) {
+            file << printVec(condition->returnAsBoolVec(), false);
+
+            if (pair.second == NULL) {
+                file << placeholder << "," << placeholder << endl;
+                continue;
+            }
+            file << printVec(pair.first->returnAsBoolVec(), false)
+                 << ",";
+            if (pair.second->hasSpecificConnection(condition))
+                file << printVec(pair.second->getSpecificConnection(condition)->getNodeCode()->returnAsBoolVec(), false) << endl;
+            else
+                file << placeholder << endl;
+
+        }
+
+    }
+
     file <<  "end" << endl;
 
     file.close();
@@ -264,13 +284,13 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
             file << printVec(binary->returnAsBoolVec(), false)
                  << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false)
                  << ",";
-                 if(node->hasSpecificConnection(binary)) {
-                         file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
-                 } else {
-                         file << placeholder;
-                 }
+            if(node->hasSpecificConnection(binary)) {
+                file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
+            } else {
+                file << placeholder;
+            }
 
-                 file << endl;
+            file << endl;
             i++;
         }
         for(i; i < pow(2, bitSize(nodes.size())); i++) {
