@@ -54,7 +54,7 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
             }
 
 
-            int max = anchor->getNodeCode()->returnSize()-1;
+            int max = anchor->getNodeCode()->getSize()-1;
 
             for(Node* node : anchor->getFirstNeighbours()) {
 

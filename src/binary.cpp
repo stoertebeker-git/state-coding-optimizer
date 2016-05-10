@@ -18,7 +18,7 @@ std::vector<bool> Binary::returnAsBoolVec() {
     return bits;
 }
 
-short Binary::returnSize() {
+short Binary::getSize() {
     return size_in_bits;
 }
 \

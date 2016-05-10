@@ -42,7 +42,7 @@ void Node::checkForOneStep() {
             if(pair2.second->getName() == name)
                 continue;
 
-            for(int k = 0; k < compare->returnSize(); k++) {
+            for(int k = 0; k < compare->getSize(); k++) {
                 if(compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k))
                     differences++;
             }

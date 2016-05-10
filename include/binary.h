@@ -15,7 +15,7 @@ public:
     std::vector<bool> returnAsBoolVec();
 
     int returnInt();
-    short returnSize();
+    short getSize();
 
 private:
     int intvalue;

@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     }
 
     printSortedMLFile(table);
-    printUnsortedMLFile(testnodes, input_bits);
+    printUnsortedMLFile(testnodes, conditions);
 
     // Clean up
     delete table;

@@ -24,7 +24,7 @@ void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &
 void generateOutput(std::vector<Node*> &nodes);
 
 void printSortedMLFile(Table* table);
-void printUnsortedMLFile(std::vector<Node*> nodes, int conditions_size);
+void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary *> conditions);
 
 int bitSize(int temp);
 #endif // HELPER_H

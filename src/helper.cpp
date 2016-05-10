@@ -2,6 +2,7 @@
 #include "binary.h"
 #include "table.h"
 
+#include <math.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -78,8 +79,8 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
             sampleFile << ",";
     }
 
-    string conditions_variable_string = generateNames('i', conditions.at(0)->returnSize(), true);
-    string output_variable_string = generateNames('v', conditions.at(0)->returnSize(), true);
+    string conditions_variable_string = generateNames('i', conditions.at(0)->getSize(), true);
+    string output_variable_string = generateNames('v', conditions.at(0)->getSize(), true);
 
     sampleFile << " DEFIN: " << conditions_variable_string
                << " DEFOUT: " << output_variable_string << endl;
@@ -182,7 +183,7 @@ void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &
             if(std::rand() % 11 <= numoutten) {
                 nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
                 std::vector<bool> outputGenerate;
-                for(int z = 0; z < conditions.at(i)->returnSize(); z++) {
+                for(int z = 0; z < conditions.at(i)->getSize(); z++) {
                     outputGenerate.push_back(std::rand()%2);
                 }
                 nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
@@ -209,11 +210,21 @@ void printSortedMLFile(Table* table) {
     file.close();
 }
 
-void printUnsortedMLFile(std::vector<Node*> nodes, int conditions_size) {
+void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditions) {
+    std::vector<Binary*> unsortedcodes;
+    for(int i = 0; i < nodes.size(); i++) {
+        unsortedcodes.push_back(new Binary(i, bitSize(nodes.size())));
+    }
+
     ofstream file;
     file.open("unsortedfile.tbl");
 
     file << "input ";
+    int conditions_size = conditions.at(0)->getSize();
+    string placeholder = "";
+    for(int i = 0; i < unsortedcodes.at(0)->getSize(); i++) {
+        placeholder += "-";
+    }
     while(conditions_size-- > 0)
         file << "i" << conditions_size << " ";
 
@@ -226,6 +237,37 @@ void printUnsortedMLFile(std::vector<Node*> nodes, int conditions_size) {
     while(bits_nodes-- > 0)
         file << "r" << bits_nodes << " ";
     file << endl;
+    int i = 0;
+    for(Binary* &binary : conditions) {
+        for(Node* &node : nodes) {
+
+            file << printVec(binary->returnAsBoolVec(), false)
+                 << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false)
+                 << ",";
+                 if(node->hasSpecificConnection(binary)) {
+                         file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
+                 } else {
+                         file << placeholder;
+                 }
+
+                 file << endl;
+            i++;
+        }
+        for(i; i < pow(2, bitSize(nodes.size())); i++) {
+            file << printVec(binary->returnAsBoolVec(), false)
+                 << placeholder << "," << placeholder
+                 << endl;
+        }
+        i = 0;
+    }
+    file << "end" << endl;
+
+    for(Binary* &it3 : unsortedcodes) {
+        std::cout << "deleting " << printVec(it3->returnAsBoolVec(), true)
+                  << "..." << endl;
+        delete it3;
+        std::cout << "success" << endl;
+    }
 
     file.close();
 }
