@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
 
     generateRandomConnections(testnodes, conditions, probability_of_generation);
 
-    printAutomate(testnodes);
+    //printAutomate(testnodes);
 
     returnPriorityOne(testnodes, conditions);
     returnPriorityTwo(testnodes, conditions);

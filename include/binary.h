@@ -8,20 +8,18 @@
 class Node;
 
 class Binary{
-    public:
-        Binary(int intvalue, short size_in_bits);
-        ~Binary();
+public:
+    Binary(int intvalue, short size_in_bits);
+    ~Binary();
 
-        std::vector<bool> returnAsBoolVec();
+    std::vector<bool> returnAsBoolVec();
 
-        int returnInt();
+    int returnInt();
+    short returnSize();
 
-        short returnSize();
-
-    private:
-        int intvalue;
-        short size_in_bits;
-
+private:
+    int intvalue;
+    short size_in_bits;
 };
 
 #endif // BINARY_H

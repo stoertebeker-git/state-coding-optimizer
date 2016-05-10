@@ -70,11 +70,11 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     sampleFile.open("SampleFile.txt");
 
     sampleFile <<"DESTATE: ";
-                for(int i = 0; i < nodes.size(); i++) {
-                    sampleFile << nodes.at(i)->getName();
-                    if(i < nodes.size()-1)
-                        sampleFile << ",";
-                }
+    for(int i = 0; i < nodes.size(); i++) {
+        sampleFile << nodes.at(i)->getName();
+        if(i < nodes.size()-1)
+            sampleFile << ",";
+    }
 
     string conditions_variable_string = generateNames('i', conditions.at(0)->returnSize(), true);
     string output_variable_string = generateNames('v', conditions.at(0)->returnSize(), true);
@@ -176,15 +176,15 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary*> condit
 
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {
     for(int y = 0; y < nodes.size(); y++) {
-            for(int i = 0; i < conditions.size(); i++) {
-                if(std::rand() % 11 <= numoutten) {
-                    nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
-                    std::vector<bool> outputGenerate;
-                    for(int z = 0; z < conditions.at(i)->returnSize(); z++) {
-                        outputGenerate.push_back(std::rand()%2);
-                    }
-                    nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
+        for(int i = 0; i < conditions.size(); i++) {
+            if(std::rand() % 11 <= numoutten) {
+                nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
+                std::vector<bool> outputGenerate;
+                for(int z = 0; z < conditions.at(i)->returnSize(); z++) {
+                    outputGenerate.push_back(std::rand()%2);
                 }
+                nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
+            }
         }
     }
 }

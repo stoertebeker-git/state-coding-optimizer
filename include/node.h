@@ -10,7 +10,7 @@ class Node {
 public:
 
     Node(char name, int num_nodes);
-	~Node();
+    ~Node();
 
     void newConnection(Node* node, Binary* condition);
     Node* getSpecificConnection(Binary *condition);
@@ -58,7 +58,8 @@ private:
 
     int weight;
     int num_nodes;
-	char name;
+    char name;
+
     Binary* node_code;
 };
 

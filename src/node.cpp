@@ -87,7 +87,7 @@ void Node::setNodeCode(Binary* code) {
 }
 
 bool Node::operator<(const Node& otherNode) const {
-   return this->name < otherNode.name;
+    return this->name < otherNode.name;
 }
 
 std::vector<Node*>& Node::getFirstNeighbours() {

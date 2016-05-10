@@ -12,7 +12,6 @@ std::string printVec(std::vector<Node*> vector, bool commata);
 
 std::string printMap(std::map<Node*, std::vector<Node*>> map);
 
-void writeMLFile(std::vector<Node*> &nodes);
 std::string generateNames(char start, int amount, bool commata);
 void assignNeighbours(std::vector<Node*> &list, short select);
 
