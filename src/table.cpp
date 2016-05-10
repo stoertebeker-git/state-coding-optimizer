@@ -10,9 +10,7 @@ Table::~Table() {
 
 }
 
-//std::map<Node*, int> Table::getTable(){
-//   return binarytable;
-//}
+std::vector<Node*> anchors;
 
 void Table::assignPriorityThree(std::vector<Node*> nodes) {
     int code = 0;
@@ -22,7 +20,7 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
             continue;
         else
             std::cout << "NO CODE: " << anchor->getName() << std::endl;
-        if(anchor->getThirdNeighbours().size() != 0) {
+        if(anchor->getFirstNeighbours().size() != 0) {
 
             for(int i = 0; i <= table.size(); i++) {
                 if(table.empty()) {
@@ -34,17 +32,16 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
 
 
 
-                std::cout << "setnodecode for " << anchor->getName()
-                          << std::endl;
-                anchor->setNodeCode(code);
-                table.push_back(code);
+            std::cout << "setnodecode for " << anchor->getName()
+                      << std::endl;
+            anchor->setNodeCode(code);
+            table.push_back(code);
 
 
             int max = anchor->getNodeCode()->returnSize()-1;
 
-            for(Node* node : anchor->getThirdNeighbours()) {
-                //if(i >= anchor->getNodeCode()->returnSize())
-                //    break;
+            for(Node* node : anchor->getFirstNeighbours()) {
+
                 int i = max;
 
                 while(i >= 0 && !setCodes(anchor, node, i, max)) {
@@ -58,39 +55,28 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
 bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
     if(node->getNodeCode())
         return true;
+    int int_code = anchor->getNodeCode()->returnInt();
 
-    if(anchor->getNodeCode()->returnAsBoolVec().at(i) == 0) {
+    if(anchor->getNodeCode()->returnAsBoolVec().at(i) == 0)
+        int_code += pow(2, max-i);
+    else
+        int_code -= pow(2, max-i);
 
-        int int_code = anchor->getNodeCode()->returnInt() + pow(2, max-i);
 
-        std::cout << "TRY: digit was 0 so for node "
-                  << node->getName() << " code " << int_code
-                  << " set" << std::endl;
+    std::cout << "TRY: digit was sth so for node "
+              << node->getName() << " code " << int_code
+              << " set" << std::endl;
 
-        if(!inTable(int_code)) {
+    if(!inTable(int_code)) {
 
-            node->setNodeCode(int_code);
-            table.push_back(int_code);
-            std::cout << "SUCCEED!" << std::endl;
-            return true;
-        } else {
-            return false;
-        }
+        node->setNodeCode(int_code);
+        table.push_back(int_code);
+        std::cout << "SUCCEED!" << std::endl;
+        return true;
     } else {
-        int int_code = anchor->getNodeCode()->returnInt() - pow(2, max-i);
-        std::cout << "TRY: digit was 1 so for node " << node->getName()
-                  << " code " << int_code << " set" << std::endl;
-        if(!inTable(int_code)) {
-
-            node->setNodeCode(int_code);
-            table.push_back(int_code);
-            std::cout << "SUCCEED!" << std::endl;
-            return true;
-
-        } else {
-            return false;
-        }
+        return false;
     }
+
 }
 
 int Table::searchFreeCode(int range) {
