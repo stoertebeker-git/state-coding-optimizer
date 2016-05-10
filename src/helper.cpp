@@ -59,15 +59,6 @@ int bitSize (int temp) {
     }
 }
 
-std::string printMap(std::map<Node*, std::vector<Node*>> map) {
-    ostringstream stream;
-    for(auto const &pair : map) {
-        stream << pair.first->getName() << "<-"
-               << printVec(pair.second, true) << endl;
-    }
-    return stream.str();
-}
-
 void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
     sampleFile.open("samplefile.txt");
@@ -162,7 +153,7 @@ void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditi
         n->checkForOneStep();
     }
 }
-
+//THIS NEEDS TO BE FIXED, ITS WRONG
 void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     std::vector<Node*> results;
     for(auto &n : nodes) {

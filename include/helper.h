@@ -11,8 +11,6 @@ void writeFile(std::vector<Node*> &nodes, std::vector<Binary *> conditions);
 std::string printVec(std::vector<bool> vector, bool commata);
 std::string printVec(std::vector<Node*> vector, bool commata);
 
-std::string printMap(std::map<Node*, std::vector<Node*>> map);
-
 std::string generateNames(char start, int amount, bool commata);
 void assignNeighbours(std::vector<Node*> &list, short select);
 
