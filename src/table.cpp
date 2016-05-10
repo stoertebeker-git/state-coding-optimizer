@@ -40,7 +40,7 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
             std::cout << "NO CODE: " << anchor->getName() << std::endl;
         if(anchor->getFirstNeighbours().size() != 0) {
 
-            code = findMinHamDis()->returnInt();
+            code = findMaxHamDist()->returnInt();
 
             std::cout << "SUCCESS! anchornode code " << printVec(binaries.at(code)->returnAsBoolVec(),true)
                       << " for node " << anchor->getName() << std::endl;
@@ -98,7 +98,7 @@ bool Table::inTable(int i) {
         return false;
 }
 
-Binary* Table::findMinHamDis() {
+Binary* Table::findMaxHamDist() {
     std::pair<Binary*, int> code_with_max_distance;
     code_with_max_distance.first = binaries.at(0);
     code_with_max_distance.second = 0;

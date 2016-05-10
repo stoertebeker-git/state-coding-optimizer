@@ -17,6 +17,7 @@ int main(int argc, char** argv) {
     int probability_of_generation = 5;
     int seed = std::time(0);
     std::srand(seed);
+
     for(int i = 0; i < argc; i++) {
         string arg = string(argv[i]);
         if(arg == "-i") {
@@ -28,7 +29,7 @@ int main(int argc, char** argv) {
         } else if (arg == "--help") {
             cout << "===========================================================" << endl
                  << "              MEGA NODE CODE OPTIMIZER V" << std::rand()%10 << "." << std::rand()%1000 << endl
-                 << "This software has mega copyright since 1989" << endl
+                 << "This software has mega copyright until 1989" << endl
                  << "This software is protected by law mainly on the moon" << endl
                  << "--help -> display this help!" << endl
                  << "-p     -> chance of nodeconnections from 0 to 10" << endl
@@ -46,11 +47,10 @@ int main(int argc, char** argv) {
             seed = atoi(argv[i+1]);
         }
     }
+
     std::srand(seed);
     std::vector<Node*> testnodes;
     std::vector<Binary*> conditions;
-
-
 
     for(int i = 0; i < num_nodes; i++)
         testnodes.push_back(new Node('a' + i, num_nodes));

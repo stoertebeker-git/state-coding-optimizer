@@ -22,7 +22,6 @@ public:
 
     void setOutputAt(Binary *conditions, std::vector<bool> outputs);
     std::vector<bool> getOutputAt(Binary* condition) const;
-    std::vector<bool> getAnyOutput();
 
     void checkForOneStep() ;
 
@@ -32,12 +31,9 @@ public:
     Binary* getNodeCode() const;
     void setNodeCode(Binary *code);
 
-    std::map<Binary *, std::vector<bool> > getOutput();
-
-    int getConditionSize(bool select);
+    std::map<Binary*, std::vector<bool> > getOutput();
 
     bool operator<(const Node& otherNode) const;
-    //bool operator!=(const char name) const;
 
     std::vector<Node*>& getFirstNeighbours();
     std::vector<Node*>& getSecondNeighbours();

@@ -76,8 +76,8 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
                         sampleFile << ",";
                 }
 
-    string conditions_variable_string = generateNames('i', nodes.at(0)->getConditionSize(true), true);
-    string output_variable_string = generateNames('v', nodes.at(0)->getConditionSize(false), true);
+    string conditions_variable_string = generateNames('i', conditions.at(0)->returnSize(), true);
+    string output_variable_string = generateNames('v', conditions.at(0)->returnSize(), true);
 
     sampleFile << " DEFIN: " << conditions_variable_string
                << " DEFOUT: " << output_variable_string << endl;
@@ -172,22 +172,6 @@ void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary*> condit
         }
     }
     assignNeighbours(results,3);
-}
-
-void printAutomate (std::vector<Node*> &nodes) {
-    for(auto &n : nodes) {
-        for(auto &m : nodes) {
-            std::vector<Binary*> targetNodeCon = n->getConditionsForNode(m);
-            cout << n->getName() << "->" << m->getName() << ":";
-            for(int i = 0; i < targetNodeCon.size(); i++) {
-                cout << printVec(targetNodeCon.at(i)->returnAsBoolVec(), false) << "("
-                     << printVec(n->getOutputAt(targetNodeCon.at(i)), false)
-                     << ")" << ",";
-            }
-            cout << " ";
-        }
-        cout << endl << endl;
-    }
 }
 
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {

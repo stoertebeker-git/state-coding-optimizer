@@ -12,7 +12,7 @@ class Table {
 
        void assignPriorityThree(std::vector<Node*> nodes);
        int searchFreeCode(int range);
-       Binary* findMinHamDis();
+       Binary* findMaxHamDist();
        bool inTable(int i);
     private:
        std::map<Binary*, Node*> table;

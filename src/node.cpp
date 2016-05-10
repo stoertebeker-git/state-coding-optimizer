@@ -5,9 +5,7 @@
 #include <iostream>
 #include <algorithm>
 
-Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
-    weight = 0;
-}
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {}
 
 Node::~Node() {}
 
@@ -17,11 +15,6 @@ void Node::setOutputAt(Binary* condition, std::vector<bool> outputs) {
 
 std::vector<bool> Node::getOutputAt(Binary* condition) const {
     return output.at(condition);
-}
-
-std::vector<bool> Node::getAnyOutput() {
-    for(auto const &pair : output)
-        return pair.second;
 }
 
 std::vector<Binary*> Node::getConditionsForNode(Node* node) {
@@ -97,27 +90,12 @@ bool Node::operator<(const Node& otherNode) const {
    return this->name < otherNode.name;
 }
 
-//bool Node::operator!=(const Node* otherNode) const {
-//   return this->name == otherNode->name;
-//}
-
 std::vector<Node*>& Node::getFirstNeighbours() {
     return firstneighbours;
 }
 
 std::vector<Node*>& Node::getSecondNeighbours() {
     return secondneighbours;
-}
-
-int Node::getConditionSize(bool select) {
-    for(auto const &pair : output) {
-        if(output.size() == 0)
-            continue;
-        if(select)
-            return pair.first->returnSize();
-        else
-            return pair.second.size();
-    }
 }
 
 void Node::addFirstNeighbour(Node* node) {
@@ -148,6 +126,7 @@ int Node::getNumNodes() {
 }
 
 void Node::setWeight() {
+    weight = 0;
     for(auto &it : firstneighbours)
         weight+=num_nodes*num_nodes;
 
