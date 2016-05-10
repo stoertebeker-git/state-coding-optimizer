@@ -23,7 +23,7 @@ bool compare(Node* a, Node* b) {
     return b->getWeight() < a->getWeight();
 }
 
-void Table::assignPriorityThree(std::vector<Node*> nodes) {
+void Table::assignPriorityOne(std::vector<Node*> nodes) {
 
     for(Node* &node : nodes) {
         node->setWeight();

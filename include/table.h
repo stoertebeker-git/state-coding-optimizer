@@ -13,7 +13,7 @@ public:
 
     Binary* findMaxHamDist();
 
-    void assignPriorityThree(std::vector<Node*> nodes);
+    void assignPriorityOne(std::vector<Node*> nodes);
     int searchFreeCode(int range);
     bool inTable(int i);
     bool setCodes (Node* anchor , Node* node, int i, int max);

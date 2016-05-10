@@ -150,4 +150,3 @@ void Node::sortAllNeighbours() {
    std::sort(secondneighbours.begin(), secondneighbours.end(), compareRev);
    std::sort(thirdneighbours.begin(), thirdneighbours.end(), compareRev);
 }
-

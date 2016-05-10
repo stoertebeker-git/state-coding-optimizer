@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     generateOutput(testnodes);
 
     Table* table = new Table(pow(2,bitSize(num_nodes)));
-    table->assignPriorityThree(testnodes);
+    table->assignPriorityOne(testnodes);
     for(Node* &n : testnodes) {
         if(n->getNodeCode() != NULL)
             cout << n->getName() << ": " << printVec(n->getNodeCode()->returnAsBoolVec(), false) << endl;
