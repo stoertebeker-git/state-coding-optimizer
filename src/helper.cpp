@@ -204,9 +204,29 @@ void generateOutput(std::vector<Node*> &nodes) {
     }
 }
 
-void printSortedMLFile(Table* table) {
+void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     ofstream file;
     file.open("sortedfile.tbl");
+    file << "input ";
+
+    int conditions_size = conditions.at(0)->getSize();
+    string placeholder = "";
+    for(int i = 0; i < table->getBinaries().at(0)->getSize(); i++) {
+        placeholder += "-";
+    }
+    while(conditions_size --> 0)
+        file << "i" << conditions_size << " ";
+    int bits_nodes = table->getBinaries().at(0)->getSize();
+    while(bits_nodes --> 0)
+        file << "r" << bits_nodes << " ";
+
+    file << endl << "output ";
+    bits_nodes = table->getBinaries().at(0)->getSize();
+    while(bits_nodes --> 0)
+        file << "r" << bits_nodes << " ";
+    file << endl;
+    file <<  "end" << endl;
+
     file.close();
 }
 
@@ -225,16 +245,16 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     for(int i = 0; i < unsortedcodes.at(0)->getSize(); i++) {
         placeholder += "-";
     }
-    while(conditions_size-- > 0)
+    while(conditions_size --> 0)
         file << "i" << conditions_size << " ";
 
     int bits_nodes = bitSize(nodes.at(0)->getNumNodes());
-    while(bits_nodes-- > 0)
+    while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
 
     file << endl << "output ";
     bits_nodes = bitSize(nodes.at(0)->getNumNodes());
-    while(bits_nodes-- > 0)
+    while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
     file << endl;
     int i = 0;
@@ -262,12 +282,8 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     }
     file << "end" << endl;
 
-    for(Binary* &it3 : unsortedcodes) {
-        std::cout << "deleting " << printVec(it3->returnAsBoolVec(), true)
-                  << "..." << endl;
+    for(Binary* &it3 : unsortedcodes)
         delete it3;
-        std::cout << "success" << endl;
-    }
 
     file.close();
 }

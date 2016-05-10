@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
             cout << n->getName() << ": " << printVec(n->getNodeCode()->returnAsBoolVec(), false) << endl;
     }
 
-    printSortedMLFile(table);
+    printSortedMLFile(table, conditions);
     printUnsortedMLFile(testnodes, conditions);
 
     // Clean up

@@ -129,3 +129,7 @@ Binary* Table::findMaxHamDist() {
     }
     return code_with_max_distance.first;
 }
+
+std::vector<Binary*> Table::getBinaries() {
+    return binaries;
+}

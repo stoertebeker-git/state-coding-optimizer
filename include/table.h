@@ -18,6 +18,8 @@ public:
     bool inTable(int i);
     bool setCodes (Node* anchor , Node* node, int i, int max);
 
+    std::vector<Binary*> getBinaries();
+
 private:
     std::map<Binary*, Node*> table;
     std::vector<Binary*> binaries;
