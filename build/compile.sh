@@ -8,4 +8,4 @@ make -j 4
 echo "Cleanup..."
 rm -r CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
-./main
+./main --help
