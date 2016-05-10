@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
         } else if (arg == "--help") {
             cout << "===========================================================" << endl
                  << "              MEGA NODE CODE OPTIMIZER V" << std::rand()%10 << "." << std::rand()%1000 << endl
-                 << "This software has mega copyright until 1989" << endl
+                 << "This software has mega copyright until 1984" << endl
                  << "This software is protected by law mainly on the moon" << endl
                  << "--help -> display this help!" << endl
                  << "-p     -> chance of nodeconnections from 0 to 10" << endl

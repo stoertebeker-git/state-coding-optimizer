@@ -35,9 +35,6 @@ public:
 
     bool operator<(const Node& otherNode) const;
 
-    std::vector<Node*>& getFirstNeighbours();
-    std::vector<Node*>& getSecondNeighbours();
-    std::vector<Node*>& getThirdNeighbours();
     std::vector<Node*>& getNeighbours(short select);
 
     void addFirstNeighbour(Node* node);

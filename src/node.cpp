@@ -90,14 +90,6 @@ bool Node::operator<(const Node& otherNode) const {
     return this->name < otherNode.name;
 }
 
-std::vector<Node*>& Node::getFirstNeighbours() {
-    return firstneighbours;
-}
-
-std::vector<Node*>& Node::getSecondNeighbours() {
-    return secondneighbours;
-}
-
 void Node::addFirstNeighbour(Node* node) {
     if(std::find(firstneighbours.begin(), firstneighbours.end(), node) == firstneighbours.end())
         firstneighbours.push_back(node);
@@ -123,10 +115,6 @@ std::vector<Node*>& Node::getNeighbours(short select) {
 
 std::map<Binary *, Node *> &Node::getConnections() {
     return connections;
-}
-
-std::vector<Node *> &Node::getThirdNeighbours(){
-    return thirdneighbours;
 }
 
 int Node::getNumNodes() {

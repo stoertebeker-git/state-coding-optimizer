@@ -197,9 +197,9 @@ void generateOutput(std::vector<Node*> &nodes) {
         cout << endl
              << "===================================================" << endl
              << "Found Patterns for Node: " << n->getName()   << endl
-             << "Prio 1: " << printVec(n->getFirstNeighbours(),true)  << endl
-             << "Prio 2: " << printVec(n->getSecondNeighbours(),true) << endl
-             << "Prio 3: " << printVec(n->getThirdNeighbours(), true) << endl
+             << "Prio 1: " << printVec(n->getNeighbours(0),true)  << endl
+             << "Prio 2: " << printVec(n->getNeighbours(1),true) << endl
+             << "Prio 3: " << printVec(n->getNeighbours(2), true) << endl
              << "===================================================" << endl;
     }
 }
@@ -240,13 +240,9 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
                 file << printVec(pair.second->getSpecificConnection(condition)->getNodeCode()->returnAsBoolVec(), false) << endl;
             else
                 file << placeholder << endl;
-
         }
-
     }
-
     file <<  "end" << endl;
-
     file.close();
 }
 
