@@ -15,7 +15,6 @@ Table::Table(int size) : size(size){
 Table::~Table() {
     for(auto &it : table)
         delete it.first;
-
 }
 
 void Table::assignPriorityThree(std::vector<Node*> nodes) {
@@ -67,13 +66,10 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
     else
         int_code -= pow(2, max-i);
 
-
-    std::cout << "TRY: digit was sth so for node "
-              << node->getName() << " code " << int_code
-              << " set" << std::endl;
+    std::cout << "TRY: code " << printVec(binaries.at(int_code)->returnAsBoolVec(), true)
+              << " for " << node->getName() << std::endl;
 
     if(!inTable(int_code)) {
-
 
         table[binaries.at(int_code)] = node;
         node->setNodeCode(binaries.at(int_code));
@@ -87,23 +83,12 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
 
 }
 
-int Table::searchFreeCode(int range) {
-    for(int i = 0; i < range; i++) {
-        if(!inTable(i)) {
-            std::cout << "returned " << i << std::endl;
-            return i;
-        }\
-    }
-}
-
 bool Table::inTable(int i) {
     auto search = table.find(binaries.at(i));
-    if(table[binaries.at(i)] != NULL) {
-        std::cout << "in table return true" << std::endl;
+    if(table[binaries.at(i)] != NULL)
         return true;
-    } else {
+    else
         return false;
-    }
 }
 
 Binary* Table::findMinHamDis() {
@@ -119,30 +104,17 @@ Binary* Table::findMinHamDis() {
             int ham_distance = bitSize(binaries.size());
 
             for(int j = 0; j < binaries.at(i)->returnAsBoolVec().size(); j++) {
-                if(binaries.at(i)->returnAsBoolVec().at(j) == it.first->returnAsBoolVec().at(j)) {
-                    /*std::cout << binaries.at(i)->returnAsBoolVec().at(j) << " equals "
-                              << it.first->returnAsBoolVec().at(j) << " at Node "
-                              << it.second->getName() << std::endl;
-                    */
+                if(binaries.at(i)->returnAsBoolVec().at(j) == it.first->returnAsBoolVec().at(j))
                     ham_distance--;
-                } else {
-                    /* std::cout << binaries.at(i)->returnAsBoolVec().at(j) << " does not equal "
-                              << it.first->returnAsBoolVec().at(j) << " at Node "
-                              << it.second->getName() << std::endl;
-                    */
-                }
             }
+
             if(ham_distance < ham_distance_for_codeword)
                 ham_distance_for_codeword = ham_distance;
-            //std::cout << "distance= " << ham_distance_for_codeword << "!!new trial code" << std::endl;
-
         }
         if(ham_distance_for_codeword > code_with_max_distance.second) {
             code_with_max_distance.second = ham_distance_for_codeword;
             code_with_max_distance.first  = binaries.at(i);
         }
-        std::cout << "RESULT: " << printVec(code_with_max_distance.first->returnAsBoolVec(),true)
-                  << " with distance " << code_with_max_distance.second << std::endl;
     }
     return code_with_max_distance.first;
 }
