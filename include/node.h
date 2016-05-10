@@ -46,6 +46,7 @@ public:
     void addSecondNeighbour(Node* node);
     void addThirdNeighbour(Node* node);
 
+    int getNumNodes();
 
 private:
 

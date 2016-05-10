@@ -11,6 +11,8 @@ class Table {
         ~Table();
       // std::map<Node*, int> getTable();
        void assignPriorityThree(std::vector<Node*> nodes);
+       int searchFreeCode(int range);
+       bool inTable(int i);
     private:
        //std::map<Node*, int> binarytable;
        std::vector<int> table;

@@ -138,3 +138,7 @@ std::map<Binary *, Node *> &Node::getConnections() {
 std::vector<Node *> &Node::getThirdNeighbours(){
     return thirdneighbours;
 }
+
+int Node::getNumNodes() {
+    return num_nodes;
+}
