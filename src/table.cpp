@@ -36,6 +36,8 @@ void Table::assignPriorityThree(std::vector<Node*> nodes) {
     int code = 0;
 
     for(Node* &anchor : nodes) {
+        anchor->sortAllNeighbours();
+
         if(anchor->getFirstNeighbours().empty())
             continue;
         else
@@ -103,9 +105,9 @@ bool Table::inTable(int i) {
 }
 
 Binary* Table::findMaxHamDist() {
-    std::pair<Binary*, int> code_with_max_distance;
-    code_with_max_distance.first = binaries.at(0);
-    code_with_max_distance.second = 0;
+    std::pair<Binary*, int> code_with_max_distance(binaries.at(0),0);
+   // code_with_max_distance.first = binaries.at(0);
+    //code_with_max_distance.second = 0;
     for(int i = 0; i < binaries.size(); i++) {
 
         int ham_distance_for_codeword = bitSize(binaries.size());

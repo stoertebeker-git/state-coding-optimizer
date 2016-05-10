@@ -211,9 +211,9 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
 
     int conditions_size = conditions.at(0)->getSize();
     string placeholder = "";
-    for(int i = 0; i < table->getBinaries().at(0)->getSize(); i++) {
+    for(int i = 0; i < table->getBinaries().at(0)->getSize(); i++)
         placeholder += "-";
-    }
+
     while(conditions_size --> 0)
         file << "i" << conditions_size << " ";
     int bits_nodes = table->getBinaries().at(0)->getSize();

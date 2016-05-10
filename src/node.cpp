@@ -140,3 +140,14 @@ void Node::setWeight() {
 int Node::getWeight() {
     return weight;
 }
+
+bool Node::compareRev(Node* a, Node* b) {
+    return b->getWeight() > a->getWeight();
+}
+
+void Node::sortAllNeighbours() {
+   std::sort(firstneighbours.begin(), firstneighbours.end(), compareRev);
+   std::sort(secondneighbours.begin(), secondneighbours.end(), compareRev);
+   std::sort(thirdneighbours.begin(), thirdneighbours.end(), compareRev);
+}
+

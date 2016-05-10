@@ -48,6 +48,9 @@ public:
 
     int getNumNodes();
 
+    void sortAllNeighbours();
+    static bool compareRev(Node* a, Node* b);
+
 private:
 
     std::map<Binary*, std::vector<bool>> output;
