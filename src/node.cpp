@@ -5,7 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
-Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {}
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
+    weight = 0;
+}
 
 Node::~Node() {}
 
@@ -87,15 +89,17 @@ Binary* Node::getNodeCode() const {
     return node_code;
 }
 
-void Node::setNodeCode(int value) {
-    if(node_code != NULL)
-        delete node_code;
-    node_code = new Binary(value, bitSize(num_nodes));
+void Node::setNodeCode(Binary* code) {
+    node_code = code;
 }
 
 bool Node::operator<(const Node& otherNode) const {
    return this->name < otherNode.name;
 }
+
+//bool Node::operator!=(const Node* otherNode) const {
+//   return this->name == otherNode->name;
+//}
 
 std::vector<Node*>& Node::getFirstNeighbours() {
     return firstneighbours;
@@ -141,4 +145,19 @@ std::vector<Node *> &Node::getThirdNeighbours(){
 
 int Node::getNumNodes() {
     return num_nodes;
+}
+
+void Node::setWeight() {
+    for(auto &it : firstneighbours)
+        weight+=num_nodes*num_nodes;
+
+    for(auto &it : secondneighbours)
+        weight+=num_nodes;
+
+    for(auto &it : thirdneighbours)
+        weight++;
+}
+
+int Node::getWeight() {
+    return weight;
 }

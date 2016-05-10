@@ -30,13 +30,14 @@ public:
     void setName(char name);
 
     Binary* getNodeCode() const;
-    void setNodeCode(int value);
+    void setNodeCode(Binary *code);
 
     std::map<Binary *, std::vector<bool> > getOutput();
 
     int getConditionSize(bool select);
 
     bool operator<(const Node& otherNode) const;
+    //bool operator!=(const char name) const;
 
     std::vector<Node*>& getFirstNeighbours();
     std::vector<Node*>& getSecondNeighbours();
@@ -45,6 +46,9 @@ public:
     void addFirstNeighbour(Node* node);
     void addSecondNeighbour(Node* node);
     void addThirdNeighbour(Node* node);
+
+    void setWeight();
+    int getWeight();
 
     int getNumNodes();
 
@@ -56,6 +60,7 @@ private:
     std::vector<Node*> thirdneighbours;
     std::map<Binary*, Node*> connections;
 
+    int weight;
     int num_nodes;
 	char name;
     Binary* node_code;

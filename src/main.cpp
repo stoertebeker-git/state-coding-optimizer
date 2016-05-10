@@ -36,9 +36,9 @@ int main(int argc, char** argv) {
     writeFile(testnodes, conditions);
     generateOutput(testnodes);
 
-    Table table;
+    Table table(pow(2,bitSize(num_nodes)));
     table.assignPriorityThree(testnodes);
-
+    table.findMinHamDis();
     for(Node* &n : testnodes) {
         if(n->getNodeCode() != NULL)
             cout << n->getName() << ": " << printVec(n->getNodeCode()->returnAsBoolVec(), false) << endl;

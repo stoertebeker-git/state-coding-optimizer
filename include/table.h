@@ -7,15 +7,17 @@
 
 class Table {
     public:
-        Table();
+        Table(int size);
         ~Table();
-      // std::map<Node*, int> getTable();
+
        void assignPriorityThree(std::vector<Node*> nodes);
        int searchFreeCode(int range);
+       Binary* findMinHamDis();
        bool inTable(int i);
     private:
-       //std::map<Node*, int> binarytable;
-       std::vector<int> table;
+       std::map<Binary*, Node*> table;
+       std::vector<Binary*> binaries;
+       int size;
        bool setCodes (Node* anchor , Node* node, int i, int max);
 };
 
