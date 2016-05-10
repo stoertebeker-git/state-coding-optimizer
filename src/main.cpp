@@ -6,14 +6,29 @@
 #include <ctime>
 #include <iostream>
 #include <math.h>
+#include <string>
 
 using namespace std;
 
 int main(int argc, char** argv) {
 
-    short input_bits = 2;
-    int num_nodes  = 8;
-    int probability_of_generation = 4;
+    short input_bits = 1;
+    int num_nodes  = 4;
+    int probability_of_generation = 5;
+
+    for(int i = 0; i < argc; i++) {
+        string arg = string(argv[i]);
+        if(arg == "-i") {
+            input_bits = atoi(argv[i+1]);
+        } else if (arg == "-n") {
+            num_nodes = atoi(argv[i+1]);
+        } else if (arg == "-p") {
+            probability_of_generation = atoi(argv[i+1]);
+        } else if (arg == "--help") {
+            cout << "ur a fgt!" << endl;
+        }
+    }
+
 
     std::vector<Node*> testnodes;
     std::vector<Binary*> conditions;

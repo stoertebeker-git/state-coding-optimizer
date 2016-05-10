@@ -17,10 +17,17 @@ Table::~Table() {
         delete it.first;
 }
 
+bool compare(Node* a, Node* b) {
+    return b->getWeight() < a->getWeight();
+}
+
 void Table::assignPriorityThree(std::vector<Node*> nodes) {
 
     for(Node* &node : nodes) {
         node->setWeight();
+    }
+    std::sort(nodes.begin(),nodes.end(),compare);
+    for(Node* &node : nodes) {
         std::cout << "Weight for node " << node->getName()
                   << ": " << node->getWeight() << std::endl;
     }

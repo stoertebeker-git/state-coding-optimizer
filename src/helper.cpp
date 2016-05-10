@@ -193,7 +193,7 @@ void printAutomate (std::vector<Node*> &nodes) {
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {
     for(int y = 0; y < nodes.size(); y++) {
             for(int i = 0; i < conditions.size(); i++) {
-                if(std::rand() % 10 >= numoutten) {
+                if(std::rand() % 11 <= numoutten) {
                     nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
                     std::vector<bool> outputGenerate;
                     for(int z = 0; z < conditions.at(i)->returnSize(); z++) {
