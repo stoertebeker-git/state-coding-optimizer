@@ -97,11 +97,8 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
         return true;
     int int_code = anchor->getNodeCode()->returnInt();
 
-    //if bit a i is a 1 flip it to 0 if its a 0 flip it to one
-    if(anchor->getNodeCode()->returnAsBoolVec().at(i) == 0)
-        int_code += pow(2, max-i);
-    else
-        int_code -= pow(2, max-i);
+    //xor the relevant bit in int_code
+    int_code = int_code ^ (1 << (max-i));
 
     std::cout << "TRY: code " << printVec(binaries.at(int_code)->returnAsBoolVec(), true)
               << " for " << node->getName() << std::endl;
