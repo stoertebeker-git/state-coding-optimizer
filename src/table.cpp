@@ -119,7 +119,7 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max) {
 
 
 bool Table::inTable(int i) {
-    if(table[binaries.at(i)] != NULL)
+    if(table[binaries.at(i)])
         return true;
     else
         return false;
@@ -136,7 +136,7 @@ Binary* Table::findMaxHamDist() {
         for(auto &it : table) {
             //if the table does not contain a node pointer at the given
             //binary then go on else skip to next place in the table
-            if(it.second == NULL)
+            if(!it.second)
                 continue;
             int ham_distance = bitSize(binaries.size());
 
