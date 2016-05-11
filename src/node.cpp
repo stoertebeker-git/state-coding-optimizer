@@ -5,7 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
-Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {}
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
+    //std::cout << "Node " << name << " created in a set of " << num_nodes << std::endl;
+}
 
 Node::~Node() {}
 

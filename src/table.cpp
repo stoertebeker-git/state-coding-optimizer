@@ -35,6 +35,7 @@ void Table::assignPriorityOne(std::vector<Node*> nodes) {
     }
     int code = 0;
     for(int k = 0; k < 3; k++) {
+        std::cout << "===ASSIGN PRIORITY " << k+1 << " NEIGHBOURS===" << std::endl;
         for(Node* &anchor : nodes) {
             if(k == 0)
                 anchor->sortAllNeighbours();

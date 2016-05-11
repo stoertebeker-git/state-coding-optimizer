@@ -153,19 +153,30 @@ void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditi
         n->checkForOneStep();
     }
 }
-//THIS NEEDS TO BE FIXED, ITS WRONG
-void returnPriorityThree (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
+
+
+void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> conditions) {
     std::vector<Node*> results;
-    for(auto &n : nodes) {
-        for(int j = 0; j < conditions.size(); j++) {
-            if(!n->hasSpecificConnection(conditions.at(j)))
-                continue;
-            if(n->getOutputAt(conditions.at(j)) == conditions.at(j)->returnAsBoolVec()) {
-                results.push_back(n);
+    for(Binary* &condition : conditions) {
+        for(Node* &anchor : nodes) {
+
+            results.push_back(anchor);
+
+            if(anchor->hasSpecificConnection(condition)) {
+                for(Node* &node : nodes) {
+                    if(node->getName()==anchor->getName())
+                        continue;
+                    if(!node->hasSpecificConnection(condition))
+                        continue;
+                    if(node->getOutputAt(condition) == anchor->getOutputAt(condition))
+                        results.push_back(node);
+                }
             }
+            assignNeighbours(results,3);
+            results.clear();
         }
+
     }
-    assignNeighbours(results,3);
 }
 
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {
@@ -198,7 +209,7 @@ void generateOutput(std::vector<Node*> &nodes) {
 void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     ofstream file;
     file.open("sortedfile.tbl");
-    file << "input ";
+    file << "table sorted" << endl <<"input ";
 
     int conditions_size = conditions.at(0)->getSize();
     string placeholder = "";
@@ -230,7 +241,8 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
             if (pair.second->hasSpecificConnection(condition))
                 file << printVec(pair.second->getSpecificConnection(condition)->getNodeCode()->returnAsBoolVec(), false) << endl;
             else
-                file << placeholder << endl;
+                //MODE UNDEFINED file << placeholder << endl;
+                file << printVec(pair.first->returnAsBoolVec(),false) << endl;
         }
     }
     file <<  "end" << endl;
@@ -246,7 +258,7 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     ofstream file;
     file.open("unsortedfile.tbl");
 
-    file << "input ";
+    file << "table unsorted" << endl << "input ";
     int conditions_size = conditions.at(0)->getSize();
     string placeholder = "";
     for(int i = 0; i < unsortedcodes.at(0)->getSize(); i++) {
@@ -274,7 +286,8 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
             if(node->hasSpecificConnection(binary)) {
                 file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
             } else {
-                file << placeholder;
+                //MODE UNDEFINED file << placeholder;
+                file << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false);
             }
 
             file << endl;
