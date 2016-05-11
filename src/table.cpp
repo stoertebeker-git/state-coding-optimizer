@@ -55,7 +55,6 @@ void Table::assignPriorityOne(std::vector<Node*> nodes) {
             if(anchor->getNeighbours(k).empty())
                 continue;
 
-            //if(anchor->getNeighbours(k).size() != 0) {
             if(anchor->getNodeCode() == NULL) {
                 //find code with maximum hamming distance for the new anchorcode
                 code = findMaxHamDist()->returnInt();
@@ -81,7 +80,6 @@ void Table::assignPriorityOne(std::vector<Node*> nodes) {
                 while(i >= 0 && !setCodes(anchor, node, i, max))
                     i--;
             }
-            //}
         }
     }
     //for all nodes without a code, set codes
