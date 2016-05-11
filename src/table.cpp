@@ -84,7 +84,7 @@ void Table::assignPriorityOne(std::vector<Node*> nodes) {
     }
     //for all nodes without a code, set codes
     for(Node* node : nodes) {
-        if(node->getNodeCode() == NULL) {
+        if(!node->getNodeCode()) {
             code = findMaxHamDist()->returnInt();
             node->setNodeCode(binaries.at(code));
             table[binaries.at(code)] = node;
