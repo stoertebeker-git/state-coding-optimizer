@@ -20,8 +20,8 @@ public:
     std::map<Binary*, Node*>& getConnections();
     std::map<Binary *, Node *> &getAllConnections();
 
-    void setOutputAt(Binary *conditions, std::vector<bool> outputs);
-    std::vector<bool> getOutputAt(Binary* condition) const;
+    void setOutputAt(Binary *output, Binary *conditions);
+    Binary* getOutputAt(Binary* condition) const;
 
     void checkForOneStep() ;
 
@@ -31,30 +31,27 @@ public:
     Binary* getNodeCode() const;
     void setNodeCode(Binary *code);
 
-    std::map<Binary*, std::vector<bool> > getOutput();
+    std::map<Binary *, Binary *> getOutput();
 
     bool operator<(const Node& otherNode) const;
 
-    std::vector<Node*>& getNeighbours(short select);
+    std::vector<Node*>& getNeighbours(short sel);
 
-    void addFirstNeighbour(Node* node);
-    void addSecondNeighbour(Node* node);
-    void addThirdNeighbour(Node* node);
+    void addNeighbour(Node* node, short sel);
 
-    void setWeight();
+    void setWeight(short k);
     int getWeight();
 
     int getNumNodes();
 
-    void sortAllNeighbours();
+    void sortNeighbours();
     static bool compareRev(Node* a, Node* b);
 
 private:
 
-    std::map<Binary*, std::vector<bool>> output;
-    std::vector<Node*> firstneighbours;
-    std::vector<Node*> secondneighbours;
-    std::vector<Node*> thirdneighbours;
+    std::map<Binary*, Binary*> output;
+    std::vector<Node*> neighbours [3];
+
     std::map<Binary*, Node*> connections;
 
     int weight;

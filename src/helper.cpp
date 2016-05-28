@@ -9,6 +9,9 @@
 
 using namespace std;
 
+//==============================================================================
+// Util function see below.
+//==============================================================================
 std::string printVec(std::vector<bool> vector, bool commata) {
     ostringstream stream;
     bool isFirst = true;
@@ -26,6 +29,12 @@ std::string printVec(std::vector<bool> vector, bool commata) {
     return stream.str();
 }
 
+//==============================================================================
+//  Util function to print a vector to a string stream, its used in debug
+//  messages and file i/o. This also applies for it overloaded variant
+//  which prints a bool vector and not a node vector. Bool commta decides if
+//  there should be a ", " between each node name.
+//==============================================================================
 std::string printVec(std::vector<Node*> vector, bool commata) {
     ostringstream stream;
     bool isFirst = true;
@@ -44,21 +53,29 @@ std::string printVec(std::vector<Node*> vector, bool commata) {
     return stream.str();
 }
 
+//==============================================================================
+//  This function returns the number of bits needed for an integer number
+//==============================================================================
 int bitSize (int temp) {
 
     int bits = 0;
     while(true) {
-        if(temp == 1) {
+        if(temp == 1)
             return bits;
-        }
-        if(temp%2 == 1) {
+
+        if(temp%2 == 1)
             temp++;
-        }
+
         temp = temp/2;
         bits++;
     }
 }
 
+//==============================================================================
+//  This function writes the random generated automate to a readable file.
+//  It only exists for testing the file i/o and to make random input files
+//  possible.
+//==============================================================================
 void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
     sampleFile.open("samplefile.txt");
@@ -77,18 +94,22 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
                << " DEFOUT: " << output_variable_string << endl;
 
     for(int i = 0; i < nodes.size(); i++) {
-        for(auto const &pair : nodes.at(i)->getConnections()) {
+        for(auto const &pair : nodes.at(i)->getAllConnections()) {
             sampleFile << "[" << conditions_variable_string << "]=("
                        << printVec(pair.first->returnAsBoolVec(), true)
                        << ")(" << nodes.at(i)->getName() << ")"
                        << " > [" << output_variable_string << "]:("
-                       << printVec(nodes.at(i)->getOutputAt(pair.first), true)
+                       << printVec(nodes.at(i)->getOutputAt(pair.first)->returnAsBoolVec(), true)
                        << ")(" << pair.second->getName() << ")" << endl;
         }
     }
     sampleFile.close();
 }
 
+//==============================================================================
+//  This function is a util function for the file i/o which writes a number of
+//  names for inputbits, outputbits or states. It counts through chars.
+//==============================================================================
 std::string generateNames(char start, int amount, bool commata) {
     ostringstream stream;
     bool isFirst = true;
@@ -106,24 +127,26 @@ std::string generateNames(char start, int amount, bool commata) {
     return stream.str();
 }
 
-void assignNeighbours(std::vector<Node*> &list, short select) {
+//==============================================================================
+//  This function assigns a list of nodes as neighbours to each other
+//==============================================================================
+void assignNeighbours(std::vector<Node*> &list, short sel) {
     if(list.size() <= 1)
         return;
-    for(auto &n : list) {
-        for(auto &m : list) {
-            if(n->getName() == m->getName())
+    for(auto &anchor : list) {
+        for(auto &node : list) {
+            if(anchor->getName() == node->getName())
                 continue;
-            if(select == 1)
-                n->addFirstNeighbour(m);
-            else if(select == 2)
-                n->addSecondNeighbour(m);
-            else if(select == 3)
-                n->addThirdNeighbour(m);
-            else return;
+            anchor->addNeighbour(node, sel);
         }
     }
 }
 
+//==============================================================================
+//  This function iterates through a list of nodes to find to nodes which
+//  connects to another. If theres more than one connecting to one node, than
+//  assignNeighbours doesnt sort it out.
+//==============================================================================
 void returnPriorityOne (std::vector<Node*> nodes,std::vector<Binary*> conditions) {
 
     for(int i = 0; i < conditions.size(); i++) {
@@ -145,16 +168,25 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<Binary*> conditions
         }
 
         for(auto &h : results)
-            assignNeighbours(h.second, true);
+            assignNeighbours(h.second, 0);
     }
 }
+
+//==============================================================================
+//  Search for neighboured conditions which lead to different nodes. This is
+//  a bit hacky because the Node::checkForOneStep should be in helper.cpp not
+//  in the Node class
+//==============================================================================
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditions) {
     for(auto &n : nodes) {
         n->checkForOneStep();
     }
 }
 
-
+//==============================================================================
+//  This function searches for nodes which generate the same output with the
+//  same input.
+//==============================================================================
 void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> conditions) {
     std::vector<Node*> results;
     for(Binary* &condition : conditions) {
@@ -172,28 +204,31 @@ void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> condi
                         results.push_back(node);
                 }
             }
-            assignNeighbours(results,3);
+            assignNeighbours(results,2);
             results.clear();
         }
 
     }
 }
 
-void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, int numoutten) {
-    for(int y = 0; y < nodes.size(); y++) {
-        for(int i = 0; i < conditions.size(); i++) {
+//==============================================================================
+//  This is function which helps the random automaton generation by generating
+//  random connections between nodes.
+//==============================================================================
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, std::vector<Binary*> &outputs, int numoutten) {
+    for(Node* node : nodes) {
+        for(Binary* condition : conditions) {
             if(std::rand() % 11 <= numoutten) {
-                nodes.at(y)->newConnection(nodes.at(std::rand()%(nodes.size())), conditions.at(i));
-                std::vector<bool> outputGenerate;
-                for(int z = 0; z < conditions.at(i)->getSize(); z++) {
-                    outputGenerate.push_back(std::rand()%2);
-                }
-                nodes.at(y)->setOutputAt(conditions.at(i), outputGenerate);
+                node->newConnection(nodes.at(std::rand() % nodes.size()), condition);
+                node->setOutputAt(outputs.at(std::rand() % outputs.size()), condition);
             }
         }
     }
 }
 
+//==============================================================================
+//  This serves debug purposes and prints the neighbours of all nodes
+//==============================================================================
 void generateOutput(std::vector<Node*> &nodes) {
     for(auto &n : nodes) {
         cout << endl
@@ -206,6 +241,9 @@ void generateOutput(std::vector<Node*> &nodes) {
     }
 }
 
+//==============================================================================
+//  This function prints the the optimized code table to a file
+//==============================================================================
 void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     ofstream file;
     file.open("sortedfile.tbl");
@@ -249,6 +287,10 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     file.close();
 }
 
+//==============================================================================
+//  This function generates a file with a unoptimizes code table. This means,
+//  every node gets a code in following order
+//==============================================================================
 void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditions) {
     std::vector<Binary*> unsortedcodes;
     for(int i = 0; i < nodes.size(); i++) {

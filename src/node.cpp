@@ -6,19 +6,33 @@
 #include <algorithm>
 
 Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
-    //std::cout << "Node " << name << " created in a set of " << num_nodes << std::endl;
+    std::vector<Node *> sample;
+    for(int i = 0; i < 3; i ++)
+        neighbours[i] = sample;
+
 }
 
-Node::~Node() {}
+Node::~Node() {
 
-void Node::setOutputAt(Binary* condition, std::vector<bool> outputs) {
-    output.insert(std::pair<Binary*, std::vector<bool>>(condition, outputs));
 }
 
-std::vector<bool> Node::getOutputAt(Binary* condition) const {
+//==============================================================================
+//  Set a new output binary at a specific input.
+//==============================================================================
+void Node::setOutputAt(Binary* output_, Binary* condition) {
+    output.insert(std::pair<Binary*, Binary*>(condition, output_));
+}
+
+//==============================================================================
+//  return the output binary at a specific input
+//==============================================================================
+Binary* Node::getOutputAt(Binary* condition) const {
     return output.at(condition);
 }
 
+//==============================================================================
+//  return all the inputs leading from this node to another one.
+//==============================================================================
 std::vector<Binary*> Node::getConditionsForNode(Node* node) {
     std::vector<Binary*> matchingconditions;
 
@@ -29,6 +43,10 @@ std::vector<Binary*> Node::getConditionsForNode(Node* node) {
     return matchingconditions;
 }
 
+//==============================================================================
+//  check if there a inputs which lead to multiple nodes and check if these
+//  inputs are one flipped binary apart
+//==============================================================================
 void Node::checkForOneStep() {
     for(auto const &pair : connections) {
 
@@ -49,102 +67,133 @@ void Node::checkForOneStep() {
                     differences++;
             }
             if(differences == 1) {
-                pair.second->addSecondNeighbour(pair2.second);
-                pair2.second->addSecondNeighbour(pair.second);
+                pair.second->addNeighbour(pair2.second, 1);
+                pair2.second->addNeighbour(pair.second, 1);
             }
         }
     }
 }
 
-std::map<Binary*, std::vector<bool>> Node::getOutput() {
+//==============================================================================
+//  get all inputs and the connected outputs
+//==============================================================================
+std::map<Binary*, Binary*> Node::getOutput() {
     return output;
 }
 
+//==============================================================================
+//  get a nodes name
+//==============================================================================
 char Node::getName() const {
     return name;
 }
 
+//==============================================================================
+//  create a new connection from this node to another under a certain
+//  condition(input)
+//==============================================================================
 void Node::newConnection(Node* node, Binary* condition) {
     connections.insert(std::pair<Binary*,Node*>(condition,node));
 }
 
+//==============================================================================
+//  return the node which this node connects to with given input.
+//==============================================================================
 Node* Node::getSpecificConnection(Binary* condition) {
     return connections.at(condition);
 }
 
+//==============================================================================
+//  check if a node connects anywhere with given input
+//==============================================================================
 bool Node::hasSpecificConnection(Binary* condition) {
     return connections.count(condition) != 0;
 }
 
+//==============================================================================
+//  return all connected nodes connectecting input
+//==============================================================================
 std::map<Binary*, Node*>& Node::getAllConnections() {
     return connections;
 }
 
+//==============================================================================
+//  get the set node code. This exists mainly to make the file IO easier
+//==============================================================================
 Binary* Node::getNodeCode() const {
     return node_code;
 }
 
+//==============================================================================
+//  set a new code for this node
+//==============================================================================
 void Node::setNodeCode(Binary* code) {
     node_code = code;
 }
 
+//==============================================================================
+//  overloaded operator < to use between two nodes. It compares the name of this
+//  node to the name of the other. It had to be implemented for a std:: function
+//  and makes no sense, which is ok.
+//==============================================================================
 bool Node::operator<(const Node& otherNode) const {
     return this->name < otherNode.name;
 }
 
-void Node::addFirstNeighbour(Node* node) {
-    if(std::find(firstneighbours.begin(), firstneighbours.end(), node) == firstneighbours.end())
-        firstneighbours.push_back(node);
+//==============================================================================
+//  add a node to the list of nodes which should get a neighbouring code to
+//  this node. Only add, if the map does not already contain this node.
+//==============================================================================
+void Node::addNeighbour(Node* node, short sel) {
+    if(std::find(neighbours[sel].begin(), neighbours[sel].end(), node) == neighbours[sel].end())
+        neighbours[sel].push_back(node);
 }
 
-void Node::addSecondNeighbour(Node* node) {
-    if(std::find(secondneighbours.begin(), secondneighbours.end(), node) == secondneighbours.end())
-        secondneighbours.push_back(node);
+//==============================================================================
+//  return the nodes to be coded with a single step. short select lets you
+//  select the priority.
+//==============================================================================
+std::vector<Node*>& Node::getNeighbours(short sel) {
+    return neighbours[sel];
 }
 
-void Node::addThirdNeighbour(Node* node) {
-    if(std::find(thirdneighbours.begin(), thirdneighbours.end(), node) == thirdneighbours.end())
-        thirdneighbours.push_back(node);
-}
-std::vector<Node*>& Node::getNeighbours(short select) {
-    if(select == 0)
-        return firstneighbours;
-    else if(select == 1)
-        return secondneighbours;
-    else if(select == 2)
-        return thirdneighbours;
-}
-
-std::map<Binary *, Node *> &Node::getConnections() {
-    return connections;
-}
-
+//==============================================================================
+//  return the number of initially created nodes, this is not useful for a
+//  dynamic adding and deleting of nodes, but it is not required in this project
+//  so num_nodes exists for convenience.
+//==============================================================================
 int Node::getNumNodes() {
     return num_nodes;
 }
 
-void Node::setWeight() {
+//==============================================================================
+//  set an artificial weight for a node, based on the number of neighbours.
+//  it helps sorting the nodes in the code assignment process.
+//==============================================================================
+void Node::setWeight(short k) {
     weight = 0;
-    for(auto &it : firstneighbours)
-        weight+=num_nodes*num_nodes;
-
-    for(auto &it : secondneighbours)
-        weight+=num_nodes;
-
-    for(auto &it : thirdneighbours)
-        weight++;
+    for(int i = 2; i >= k; i--)
+        weight += neighbours[i].size()*std::pow(num_nodes, 2-i);
 }
 
+//==============================================================================
+//  return the nodes weight
+//==============================================================================
 int Node::getWeight() {
     return weight;
 }
 
+//==============================================================================
+//  compare function for the std::sort function.
+//==============================================================================
 bool Node::compareRev(Node* a, Node* b) {
     return b->getWeight() > a->getWeight();
 }
 
-void Node::sortAllNeighbours() {
-   std::sort(firstneighbours.begin(), firstneighbours.end(), compareRev);
-   std::sort(secondneighbours.begin(), secondneighbours.end(), compareRev);
-   std::sort(thirdneighbours.begin(), thirdneighbours.end(), compareRev);
+//==============================================================================
+//  sort all neighbours by weight
+//==============================================================================
+void Node::sortNeighbours() {
+    for(int i = 0; i < 3; i ++)
+        std::sort(neighbours[i].begin(), neighbours[i].end(), compareRev);
 }

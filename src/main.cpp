@@ -12,10 +12,8 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    short input_bits = 1;
-    int num_nodes  = 4;
-    int probability_of_generation = 5;
-    int seed = std::time(0);
+    int input_bits = 1, output_bits = 1,
+            num_nodes  = 4, probability_of_generation = 5, seed = std::time(0);
     std::srand(seed);
 
     for(int i = 0; i < argc; i++) {
@@ -24,7 +22,9 @@ int main(int argc, char** argv) {
             input_bits = atoi(argv[i+1]);
         } else if (arg == "-n") {
             num_nodes = atoi(argv[i+1]);
-        } else if (arg == "-p") {
+        } else if (arg == "-o") {
+            output_bits = atoi(argv[i+1]);
+        }else if (arg == "-p") {
             probability_of_generation = atoi(argv[i+1]);
         } else if (arg == "--help") {
             cout << "===========================================================" << endl
@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
                  << "-p     -> chance of nodeconnections from 0 to 10" << endl
                  << "-i     -> number of input bits" << endl
                  << "-n     -> number of nodes" << endl
+                 << "-o     -> number of output bits"
                  << "--seed -> random seed same seed same generation" << endl
                  << "this shit was solely written by me :(" << endl
                  << "I also want to greet my mom and dad and thank my friends" << endl
@@ -51,29 +52,39 @@ int main(int argc, char** argv) {
     std::srand(seed);
     std::vector<Node*> testnodes;
     std::vector<Binary*> conditions;
+    std::vector<Binary*> outputs;
 
     for(int i = 0; i < num_nodes; i++)
         testnodes.push_back(new Node('a' + i, num_nodes));
-
+    //this pow usage is stupid, bit shifts should be used. Make a function in helper.cpp
     for(int i = 0; i < pow(2, input_bits); i++)
         conditions.push_back(new Binary(i, input_bits));
 
-    generateRandomConnections(testnodes, conditions, probability_of_generation);
+    for(int i = 0; i < pow(2, output_bits); i++)
+        outputs.push_back(new Binary(i, output_bits));
 
-
+    generateRandomConnections(testnodes,
+                              conditions,
+                              outputs,
+                              probability_of_generation);
 
     returnPriorityOne(testnodes, conditions);
     returnPriorityTwo(testnodes, conditions);
     returnPriorityThree(testnodes, conditions);
+
     writeFile(testnodes, conditions);
     generateOutput(testnodes);
 
     Table* table = new Table(pow(2,bitSize(num_nodes)));
-    table->assignPriorityOne(testnodes);
+    table->assignCodes(testnodes);
     for(Node* &n : testnodes) {
         if(n->getNodeCode() != NULL)
             cout << n->getName() << ": " << printVec(n->getNodeCode()->returnAsBoolVec(), false) << endl;
     }
+
+    cout << "PRIO 1 NODES NEIGHBOURED = " << table->getSuccess(0) << endl
+         << "PRIO 2 NODES NEIGHBOURED = " << table->getSuccess(1) << endl
+         << "PRIO 3 NODES NEIGHBOURED = " << table->getSuccess(2) << endl;
 
     printSortedMLFile(table, conditions);
     printUnsortedMLFile(testnodes, conditions);
