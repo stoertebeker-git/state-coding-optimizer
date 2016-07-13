@@ -80,7 +80,7 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
     sampleFile.open("samplefile.txt");
 
-    sampleFile <<"DESTATE: ";
+    sampleFile <<"DEFSTATE: ";
     for(int i = 0; i < nodes.size(); i++) {
         sampleFile << nodes.at(i)->getName();
         if(i < nodes.size()-1)
@@ -246,7 +246,7 @@ void generateOutput(std::vector<Node*> &nodes) {
 //==============================================================================
 void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     ofstream file;
-    file.open("sortedfile.tbl");
+    file.open("/home/stoertebeker/Documents/Studium/ads/projekt/Minilog/Minilog/WorkDir/sortedfile.tbl");
     file << "table sorted" << endl <<"input ";
 
     int conditions_size = conditions.at(0)->getSize();
@@ -262,25 +262,24 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
 
     file << endl << "output ";
     bits_nodes = table->getBinaries().at(0)->getSize();
+
     while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
-    file << endl;
+    file << "o" << endl;
     int i = 0;
     for(Binary* &condition : conditions) {
         for(auto const &pair : table->getTable()) {
-            file << printVec(condition->returnAsBoolVec(), false);
-
-            if (pair.second == NULL) {
-                file << placeholder << "," << placeholder << endl;
+            if(!pair.second)
                 continue;
-            }
+            file << printVec(condition->returnAsBoolVec(), false);
             file << printVec(pair.first->returnAsBoolVec(), false)
                  << ",";
+
             if (pair.second->hasSpecificConnection(condition))
-                file << printVec(pair.second->getSpecificConnection(condition)->getNodeCode()->returnAsBoolVec(), false) << endl;
+                file << printVec(pair.second->getSpecificConnection(condition)->getNodeCode()->returnAsBoolVec(), false)
+                     << printVec(pair.second->getOutputAt(condition)->returnAsBoolVec(),false) << endl;
             else
-                //MODE UNDEFINED file << placeholder << endl;
-                file << printVec(pair.first->returnAsBoolVec(),false) << endl;
+                file << placeholder << "-" << endl;
         }
     }
     file <<  "end" << endl;
@@ -298,7 +297,7 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     }
 
     ofstream file;
-    file.open("unsortedfile.tbl");
+    file.open("/home/stoertebeker/Documents/Studium/ads/projekt/Minilog/Minilog/WorkDir/unsortedfile.tbl");
 
     file << "table unsorted" << endl << "input ";
     int conditions_size = conditions.at(0)->getSize();
@@ -317,7 +316,7 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     bits_nodes = bitSize(nodes.at(0)->getNumNodes());
     while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
-    file << endl;
+    file << "o" << endl;
     int i = 0;
     for(Binary* &binary : conditions) {
         for(Node* &node : nodes) {
@@ -326,19 +325,15 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
                  << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false)
                  << ",";
             if(node->hasSpecificConnection(binary)) {
-                file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
-            } else {
-                //MODE UNDEFINED file << placeholder;
-                file << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false);
+                file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false)
+                     << printVec(node->getOutputAt(binary)->returnAsBoolVec(), false);
+            } else { 
+                //file << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false);
+                file << placeholder << "-";
             }
 
             file << endl;
             i++;
-        }
-        for(i; i < pow(2, bitSize(nodes.size())); i++) {
-            file << printVec(binary->returnAsBoolVec(), false)
-                 << placeholder << "," << placeholder
-                 << endl;
         }
         i = 0;
     }

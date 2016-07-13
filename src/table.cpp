@@ -66,11 +66,25 @@ void Table::assignCodes(std::vector<Node*> nodes) {
 
         std::cout << "===ASSIGN PRIORITY " << k+1 << " NEIGHBOURS===" << std::endl;
         for(Node* &anchor : nodes) {
+
             if(k == 0)
                 //sort the neighbours list in each node by weight
                 anchor->sortNeighbours();
+            //check if all neighbours already have codes
+            bool oneIsNull = false;
+            for(Node* neighbour : anchor->getNeighbours(k)) {
+                if(!neighbour->getNodeCode()) {
+                    oneIsNull = true;
+                    break;
+                }
+
+            }
+            if(!oneIsNull)
+               std::cout << "SKIPPED: all neighbours have codes!" << std::endl;
+
             //if node has no neighbours go to next anchor
-            if(anchor->getNeighbours(k).empty())
+
+            if(anchor->getNeighbours(k).empty() || !oneIsNull)
                 continue;
 
             if(anchor->getNodeCode() == NULL) {
@@ -197,7 +211,7 @@ std::vector<Binary*> Table::getBinaries() {
 }
 
 //==============================================================================
-//  return the sortes list of codes
+//  return the sorted list of codes
 //==============================================================================
 std::map<Binary*, Node*> Table::getTable() {
     return table;
