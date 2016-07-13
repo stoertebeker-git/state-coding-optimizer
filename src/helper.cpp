@@ -8,9 +8,10 @@
 #include <sstream>
 
 using namespace std;
-
 //==============================================================================
-// Util function see below.
+// Desc: Util function see below.
+// Arguments: vector of bools to print, bool for the commata option
+// Returns: string stream for files
 //==============================================================================
 std::string printVec(std::vector<bool> vector, bool commata) {
     ostringstream stream;
@@ -30,10 +31,12 @@ std::string printVec(std::vector<bool> vector, bool commata) {
 }
 
 //==============================================================================
-//  Util function to print a vector to a string stream, its used in debug
+// Desc: Util function to print a vector to a string stream, its used in debug
 //  messages and file i/o. This also applies for it overloaded variant
 //  which prints a bool vector and not a node vector. Bool commta decides if
 //  there should be a ", " between each node name.
+// Arguments: vector of nodes to print, bool for the commata option
+// Returns: string stream for files
 //==============================================================================
 std::string printVec(std::vector<Node*> vector, bool commata) {
     ostringstream stream;
@@ -54,7 +57,9 @@ std::string printVec(std::vector<Node*> vector, bool commata) {
 }
 
 //==============================================================================
-//  This function returns the number of bits needed for an integer number
+// Desc: This function returns the number of bits needed for an integer number
+// Arguments: an integer which represents a decimal
+// Returns: the number of binary digits of this decimal
 //==============================================================================
 int bitSize (int temp) {
 
@@ -72,9 +77,11 @@ int bitSize (int temp) {
 }
 
 //==============================================================================
-//  This function writes the random generated automate to a readable file.
+// Desc: This function writes the random generated automate to a readable file.
 //  It only exists for testing the file i/o and to make random input files
 //  possible.
+// Arguments: vector of nodes to write, vector of all conditions
+// Returns: void
 //==============================================================================
 void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
@@ -107,8 +114,10 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
 }
 
 //==============================================================================
-//  This function is a util function for the file i/o which writes a number of
+// Desc: This function is a util function for the file i/o which writes a number of
 //  names for inputbits, outputbits or states. It counts through chars.
+// Arguments: char which is the first display name, amount of nodes, commataoption
+// Returns: string stream
 //==============================================================================
 std::string generateNames(char start, int amount, bool commata) {
     ostringstream stream;
@@ -128,7 +137,9 @@ std::string generateNames(char start, int amount, bool commata) {
 }
 
 //==============================================================================
-//  This function assigns a list of nodes as neighbours to each other
+// Desc: This function assigns a list of nodes as neighbours to each other
+// Arguments: the nodelist crossassign, which priority neighbours
+// Returns: void
 //==============================================================================
 void assignNeighbours(std::vector<Node*> &list, short sel) {
     if(list.size() <= 1)
@@ -143,9 +154,11 @@ void assignNeighbours(std::vector<Node*> &list, short sel) {
 }
 
 //==============================================================================
-//  This function iterates through a list of nodes to find to nodes which
+// Desc: This function iterates through a list of nodes to find to nodes which
 //  connects to another. If theres more than one connecting to one node, than
 //  assignNeighbours doesnt sort it out.
+// Arguments: a vector of nodes to search through, a vector of conditions to search with
+// Returns: void
 //==============================================================================
 void returnPriorityOne (std::vector<Node*> nodes,std::vector<Binary*> conditions) {
 
@@ -173,9 +186,11 @@ void returnPriorityOne (std::vector<Node*> nodes,std::vector<Binary*> conditions
 }
 
 //==============================================================================
-//  Search for neighboured conditions which lead to different nodes. This is
+// Desc Search for neighboured conditions which lead to different nodes. This is
 //  a bit hacky because the Node::checkForOneStep should be in helper.cpp not
 //  in the Node class
+// Arguments: a vector of node to search through, a vector of conditions to do this
+// Returns: void
 //==============================================================================
 void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditions) {
     for(auto &n : nodes) {
@@ -184,8 +199,10 @@ void returnPriorityTwo (std::vector<Node*> &nodes, std::vector<Binary *> conditi
 }
 
 //==============================================================================
-//  This function searches for nodes which generate the same output with the
+// Desc: This function searches for nodes which generate the same output with the
 //  same input.
+// Arguments: a vector of nodes to search through, a list of conditions to do so
+// Returns: void
 //==============================================================================
 void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> conditions) {
     std::vector<Node*> results;
@@ -212,8 +229,11 @@ void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> condi
 }
 
 //==============================================================================
-//  This is function which helps the random automaton generation by generating
+// Desc: This is function which helps the random automaton generation by generating
 //  random connections between nodes.
+// Arguments: a vector of nodes to connect, the conditions by which they
+//  connect, and the outputs which they will generate
+// Returns: void
 //==============================================================================
 void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, std::vector<Binary*> &outputs, int numoutten) {
     for(Node* node : nodes) {
@@ -227,7 +247,9 @@ void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &
 }
 
 //==============================================================================
-//  This serves debug purposes and prints the neighbours of all nodes
+// Desc: This serves debug purposes and prints the neighbours of all nodes
+// Arguments: a vector of nodes whose neighbours should be printed
+// Returns: void
 //==============================================================================
 void generateOutput(std::vector<Node*> &nodes) {
     for(auto &n : nodes) {
@@ -242,7 +264,9 @@ void generateOutput(std::vector<Node*> &nodes) {
 }
 
 //==============================================================================
-//  This function prints the the optimized code table to a file
+// Desc: This function prints the the optimized code table to a file
+// Arguments: the table object and the automaton conditions to print to a file
+// Returns: void
 //==============================================================================
 void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
     ofstream file;
@@ -287,8 +311,11 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
 }
 
 //==============================================================================
-//  This function generates a file with a unoptimizes code table. This means,
+// Desc: This function generates a file with a unoptimizes code table. This means,
 //  every node gets a code in following order
+// Arguments: The list of nodes to generate an unoptimized code table with, and
+//  the conditions which connect them
+// Returns: void
 //==============================================================================
 void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditions) {
     std::vector<Binary*> unsortedcodes;

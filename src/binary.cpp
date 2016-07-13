@@ -11,7 +11,9 @@ Binary::~Binary() {
 }
 
 //==============================================================================
-//  returns the value of a binary object as a bool vector
+// Desc: returns the value of a binary object as a bool vector
+// Arguments: None
+// Returns: the content of the binary as a vector of bools
 //==============================================================================
 std::vector<bool> Binary::returnAsBoolVec() {
     std::vector<bool> bits;
@@ -22,14 +24,18 @@ std::vector<bool> Binary::returnAsBoolVec() {
 }
 
 //==============================================================================
-//  returns the size in bits of a binary object
+// Desc: returns the size in bits of a binary object
+// Arguments: none
+// Returns: integer which represents the bitlength
 //==============================================================================
 short Binary::getSize() {
     return size_in_bits;
 }
 \
 //==============================================================================
-//  returns the integer value of a binary object
+// Desc: returns the integer value of a binary object
+// Arguments: none
+// Returns: integer representing the decimal value of a binary
 //==============================================================================
 int Binary::returnInt() {
     return intvalue;

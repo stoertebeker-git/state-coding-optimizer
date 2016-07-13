@@ -75,6 +75,7 @@ int main(int argc, char** argv) {
     writeFile(testnodes, conditions);
     generateOutput(testnodes);
 
+
     Table* table = new Table(pow(2,bitSize(num_nodes)));
     table->assignCodes(testnodes);
     for(Node* &n : testnodes) {

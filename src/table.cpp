@@ -7,9 +7,11 @@
 
 
 //==============================================================================
-//  by creation of a table object, this constructor creates a selection of
+// Desc: by creation of a table object, this constructor creates a selection of
 //  possible codes which can later be inserted in the code table. This code
 //  is initializes with all existing samle binaries and the code NULL
+// Arguments: size of table
+// Returns: no
 //==============================================================================
 Table::Table(int size) : size(size){
     for(int i = 0; i < size; i++) {
@@ -20,7 +22,9 @@ Table::Table(int size) : size(size){
 }
 
 //==============================================================================
-//  when deleting a table object, also delete all contents of the code table
+// Desc: when deleting a table object, also delete all contents of the code table
+// Arguments: kill me
+// Returns: pls
 //==============================================================================
 Table::~Table() {
     for(auto &it : table)
@@ -28,20 +32,22 @@ Table::~Table() {
 }
 
 //==============================================================================
-//  Function to compare to Node variables in the std::sort method. Returns
+// Desc: Function to compare to Node variables in the std::sort method. Returns
 //  true if a's weight is bigger then b's.
+// Arguments: to nodes to compare
+// Returns: if node a has a higher weight than b
 //==============================================================================
 bool compare(Node* a, Node* b) {
     //compare method for the std::sort
     return b->getWeight() < a->getWeight();
 }
-//--> BUG! If a anchor doesnt find a code for a neighbour and if this neighbours
-// only neighbour is the anchor, the neighbour gets assigned a new code which
-// blocks the code for later priorities but has no use.
+
 //==============================================================================
-//  Sorts nodes by their priority. Starts with priority one neighbours and
+// Desc: Sorts nodes by their priority. Starts with priority one neighbours and
 //  finishes with priority three neighbours. It also sets the weight for a
 //  node (see node.cpp).
+// Arguments: a vector of nodes to generate codes for
+// Returns: void
 //==============================================================================
 void Table::assignCodes(std::vector<Node*> nodes) {
     //code for anchor nodes
@@ -125,10 +131,13 @@ void Table::assignCodes(std::vector<Node*> nodes) {
 }
 
 //==============================================================================
-//  Tries to set a new code for a node if it has none. It returns true if a
+// Desc: Tries to set a new code for a node if it has none. It returns true if a
 //  node either has a code or if the function was able to assign a new one.
 //  max-i represents the anchor codes bit which the function should try to flip
 //  and implement as a new code.
+// Arguments: a node which is the master, a node which is the slave to set a code for
+//  multiple ints to flip bits.
+// Returns: a success boolean
 //==============================================================================
 bool Table::setCodes (Node* anchor , Node* node, int i, int max, int k) {
 
@@ -159,8 +168,10 @@ bool Table::setCodes (Node* anchor , Node* node, int i, int max, int k) {
 
 
 //==============================================================================
-//  Checks if the table already contains a code. If it does contain it, the
+// Desc: Checks if the table already contains a code. If it does contain it, the
 //  entry at binaries.at(i) is not NULL
+// Arguments: table index to check at
+// Returns: boolean if there is sth. at this index
 //==============================================================================
 bool Table::inTable(int i) {
     if(table[binaries.at(i)])
@@ -169,8 +180,10 @@ bool Table::inTable(int i) {
 }
 
 //==============================================================================
-//  This abomination is a tool to find a code with the maximum hamming distance
+// Desc: This abomination is a tool to find a code with the maximum hamming distance
 //  to the set of existing codes. It works but is ugly as hell.
+// Arguments: void
+// Returns: a binary object which has the maximum ham dist. to the other codes
 //==============================================================================
 Binary* Table::findMaxHamDist() {
     //this is for finding the maximum hamming distance to
@@ -204,21 +217,27 @@ Binary* Table::findMaxHamDist() {
 }
 
 //==============================================================================
-//  return the list of sample binaries
+// Desc: return the list of sample binaries
+// Arguments: void
+// Returns: a vector of sample binaries
 //==============================================================================
 std::vector<Binary*> Table::getBinaries() {
     return binaries;
 }
 
 //==============================================================================
-//  return the sorted list of codes
+// Desc: return the sorted list of codes
+// Arguments: void
+// Returns: the map which contains both binaries and nodes
 //==============================================================================
 std::map<Binary*, Node*> Table::getTable() {
     return table;
 }
 
 //==============================================================================
-//  return the number of successfully assigned neighbours
+// Desc: return the number of successfully assigned neighbours
+// Arguments: the priority for which the number of successfull nodes should be shown
+// Returns: the number of successfully coded nodes
 //==============================================================================
 int Table::getSuccess(int k) {
     return success[k];
