@@ -1,0 +1,65 @@
+MINILOG  LOGIC MINIMIZER           Wednesday, May 11, 2016; 00:47
+INPUT FILE: unsortedfile.tbl           MULTIPLE OUTPUT SUM OF PRODUCTS MODE
+
+
+FUNCTION TABLE
+
+===========
+IIRRR   RRR
+10210   210
+===========
+00000 | 010
+00001 | 010
+00010 | 110
+00011 | 010
+00100 | ---
+00101 | 101
+00110 | 101
+00111 | 100
+01000 | ---
+01001 | ---
+01010 | ---
+01011 | 101
+01100 | 100
+01101 | 111
+01110 | ---
+01111 | ---
+10000 | ---
+10001 | ---
+10010 | ---
+10011 | 101
+10100 | ---
+10101 | 010
+10110 | 110
+10111 | ---
+11000 | ---
+11001 | 101
+11010 | ---
+11011 | ---
+11100 | ---
+11101 | 000
+11110 | 001
+11111 | ---
+
+MINIMIZATION RESULT STATISTICS
+==============================
+FOUND 10 ESSENTIAL PRODUCT TERMS
+MAXIMUM FANIN:                8
+TOTAL LITERAL COUNT:          41
+MAXIMUM PRODUCT TERM SIZE:    4
+MAXIMUM OUTPUT FUNCTION SIZE: 5
+
+===========
+IIRRR   RRR
+10210   210
+===========
+0010- | ..1
+001-0 | ..1
+011-1 | .11
+-0-10 | 1..
+101-- | .1.
+000-- | .1.
+-10-- | 1..
+-1-1- | ..1
+0-1-- | 1..
+1-0-- | 1.1

@@ -1,0 +1,35 @@
+MINILOG  LOGIC MINIMIZER           Wednesday, May 11, 2016; 09:10
+INPUT FILE: sortedfile.tbl           MULTIPLE OUTPUT SUM OF PRODUCTS MODE
+
+
+FUNCTION TABLE
+
+========
+ABC   YZ
+========
+000 | 00
+001 | 11
+010 | 10
+011 | 00
+100 | 11
+101 | 11
+110 | 11
+111 | 10
+
+MINIMIZATION RESULT STATISTICS
+==============================
+FOUND 4 ESSENTIAL PRODUCT TERMS
+MAXIMUM FANIN:                3
+TOTAL LITERAL COUNT:          12
+MAXIMUM PRODUCT TERM SIZE:    2
+MAXIMUM OUTPUT FUNCTION SIZE: 3
+
+INPUT SIGNAL  |  OUTPUT SIGNAL  REPRESENTATION
+
+A : I0        C : R0            |       Y : R1        
+B : R1                          |       Z : R0        
+
+MINIMIZED EQUATIONS
+
+Y = BC' + B'C + A
+Z = AC' + B'C

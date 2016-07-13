@@ -1,11 +1,11 @@
 #include "node.h"
 #include "helper.h"
 #include "binary.h"
-#include "stdafx.h"
+
 #include <iostream>
 #include <algorithm>
 
-Node::Node(std::string name) : name(name) {
+Node::Node(char name, int num_nodes) : name(name), num_nodes(num_nodes) {
     std::vector<Node *> sample;
     for(int i = 0; i < 3; i ++)
         neighbours[i] = sample;
@@ -48,40 +48,30 @@ std::vector<Binary*> Node::getConditionsForNode(Node* node) {
 //  inputs are one flipped binary apart
 //==============================================================================
 void Node::checkForOneStep() {
-	for (auto const &pair : connections) {
+    for(auto const &pair : connections) {
 
-		Binary* to_compare = pair.first;
-		if (name == pair.second->getName())
-			continue;
+        Binary* to_compare = pair.first;
+        if(name == pair.second->getName())
+            continue;
 
-		for (auto const &pair2 : connections) {
-			short differences = 0;
-			Binary* compare = pair2.first;
-			if (pair2.second->getName() == pair.second->getName())
-				continue;
-			if (pair2.second->getName() == name)
-				continue;
+        for(auto const &pair2 : connections) {
+            short differences = 0;
+            Binary* compare = pair2.first;
+            if(pair2.second->getName() == pair.second->getName())
+                continue;
+            if(pair2.second->getName() == name)
+                continue;
 
-			for (int k = 0; k < compare->getSize() || k < to_compare->getSize(); k++) {
-				if (compare->getSize() == k < to_compare->getSize()) {
-					if (compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k))
-						differences++;
-				}
-				else if (compare->getSize() > to_compare->getSize()) {
-					if (compare->returnAsBoolVec().at(k) != 0)
-						differences++;
-				}
-				else if (compare->getSize() < to_compare->getSize()) {
-					if (to_compare->returnAsBoolVec().at(k) != 0)
-						differences++;
-				}
-				if (differences == 1) {
-					pair.second->addNeighbour(pair2.second, 1);
-					pair2.second->addNeighbour(pair.second, 1);
-				}
-			}
-		}
-	}
+            for(int k = 0; k < compare->getSize(); k++) {
+                if(compare->returnAsBoolVec().at(k) != to_compare->returnAsBoolVec().at(k))
+                    differences++;
+            }
+            if(differences == 1) {
+                pair.second->addNeighbour(pair2.second, 1);
+                pair2.second->addNeighbour(pair.second, 1);
+            }
+        }
+    }
 }
 
 //==============================================================================
@@ -94,12 +84,8 @@ std::map<Binary*, Binary*> Node::getOutput() {
 //==============================================================================
 //  get a nodes name
 //==============================================================================
-std::string Node::getName() const {
+char Node::getName() const {
     return name;
-}
-
-void Node::setName(std::string newName) {
-	name = newName;
 }
 
 //==============================================================================
@@ -171,6 +157,14 @@ std::vector<Node*>& Node::getNeighbours(short sel) {
     return neighbours[sel];
 }
 
+//==============================================================================
+//  return the number of initially created nodes, this is not useful for a
+//  dynamic adding and deleting of nodes, but it is not required in this project
+//  so num_nodes exists for convenience.
+//==============================================================================
+int Node::getNumNodes() {
+    return num_nodes;
+}
 
 //==============================================================================
 //  set an artificial weight for a node, based on the number of neighbours.
@@ -179,7 +173,7 @@ std::vector<Node*>& Node::getNeighbours(short sel) {
 void Node::setWeight(short k) {
     weight = 0;
     for(int i = 2; i >= k; i--)
-        weight += neighbours[i].size()*std::pow(getNumNodes(), 2-i);
+        weight += neighbours[i].size()*std::pow(num_nodes, 2-i);
 }
 
 //==============================================================================

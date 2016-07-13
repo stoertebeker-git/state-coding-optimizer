@@ -3,14 +3,13 @@
 
 #include <map>
 #include <vector>
-#include <string>
 
 class Binary;
 
 class Node {
 public:
 
-    Node(std::string name);
+    Node(char name, int num_nodes);
     ~Node();
 
     void newConnection(Node* node, Binary* condition);
@@ -18,7 +17,7 @@ public:
     bool hasSpecificConnection(Binary *condition);
 
     std::vector<Binary*> getConditionsForNode(Node* node);
-	std::map<Binary*, Binary*> Node::getOutput();
+    std::map<Binary*, Node*>& getConnections();
     std::map<Binary *, Node *> &getAllConnections();
 
     void setOutputAt(Binary *output, Binary *conditions);
@@ -26,12 +25,13 @@ public:
 
     void checkForOneStep() ;
 
-    std::string getName() const;
-    void setName(std::string name);
+    char getName() const;
+    void setName(char name);
 
     Binary* getNodeCode() const;
     void setNodeCode(Binary *code);
 
+    std::map<Binary *, Binary *> getOutput();
 
     bool operator<(const Node& otherNode) const;
 
@@ -41,6 +41,8 @@ public:
 
     void setWeight(short k);
     int getWeight();
+
+    int getNumNodes();
 
     void sortNeighbours();
     static bool compareRev(Node* a, Node* b);
@@ -53,7 +55,8 @@ private:
     std::map<Binary*, Node*> connections;
 
     int weight;
-    std::string name;
+    int num_nodes;
+    char name;
 
     Binary* node_code;
 };

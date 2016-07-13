@@ -1,13 +1,11 @@
 #include "helper.h"
 #include "binary.h"
 #include "table.h"
-#include "stdafx.h"
+
 #include <math.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
-
 
 using namespace std;
 
@@ -37,7 +35,7 @@ std::string printVec(std::vector<bool> vector, bool commata) {
 //  which prints a bool vector and not a node vector. Bool commta decides if
 //  there should be a ", " between each node name.
 //==============================================================================
-std::string printVec(std::vector<Node*> vector, bool commata) {
+std::string printVec(std::vector<Node*> &vector, bool commata) {
     ostringstream stream;
     bool isFirst = true;
 
@@ -59,47 +57,18 @@ std::string printVec(std::vector<Node*> vector, bool commata) {
 //  This function returns the number of bits needed for an integer number
 //==============================================================================
 int bitSize (int temp) {
-	if (temp == 1 || temp == 0) {
-		return 1;
-	}
-    int bits = 1;
 
+    int bits = 0;
     while(true) {
-        if(temp == 1 || temp == 0)
+        if(temp == 1)
             return bits;
 
-        temp = temp>>1;
+        if(temp%2 == 1)
+            temp++;
+
+        temp = temp/2;
         bits++;
     }
-	return bits;
-}
-
-
-//==============================================================================
-//  This function calculates the integer value of a binary number
-//==============================================================================
-int boolVecToInt(std::vector<bool> boolVec) {
-	int result = 0;
-	for (int i = 0; i < boolVec.size(); i++) {
-
-		result += boolVec[i] * pow(2,  (boolVec.size() - (i+1)));
-	}
-	return result;
-}
-
-vector<bool> charVecToBoolVec(std::vector<char> a)
-{
-	vector<bool> result;
-	for(int i = 0; i < a.size(); i++)  {
-		if (a[i] =='1') {
-			result.push_back(true);
-		}
-		else {
-			result.push_back(false);
-		}
-		}
-
-	return result;
 }
 
 //==============================================================================
@@ -111,14 +80,13 @@ void writeFile (std::vector<Node*> &nodes, std::vector<Binary*> conditions) {
     ofstream sampleFile;
     sampleFile.open("samplefile.txt");
 
-    sampleFile <<"DEFSTATE: ";
+    sampleFile <<"DESTATE: ";
     for(int i = 0; i < nodes.size(); i++) {
         sampleFile << nodes.at(i)->getName();
         if(i < nodes.size()-1)
             sampleFile << ",";
     }
-	if (conditions.size() == 0)
-		return;
+
     string conditions_variable_string = generateNames('i', conditions.at(0)->getSize(), true);
     string output_variable_string = generateNames('v', conditions.at(0)->getSize(), true);
 
@@ -243,7 +211,20 @@ void returnPriorityThree(std::vector<Node *> &nodes, std::vector<Binary *> condi
     }
 }
 
-
+//==============================================================================
+//  This is function which helps the random automaton generation by generating
+//  random connections between nodes.
+//==============================================================================
+void generateRandomConnections(std::vector<Node*> &nodes, std::vector<Binary*> &conditions, std::vector<Binary*> &outputs, int numoutten) {
+    for(Node* node : nodes) {
+        for(Binary* condition : conditions) {
+            if(std::rand() % 11 <= numoutten) {
+                node->newConnection(nodes.at(std::rand() % nodes.size()), condition);
+                node->setOutputAt(outputs.at(std::rand() % outputs.size()), condition);
+            }
+        }
+    }
+}
 
 //==============================================================================
 //  This serves debug purposes and prints the neighbours of all nodes
@@ -313,7 +294,7 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
 void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditions) {
     std::vector<Binary*> unsortedcodes;
     for(int i = 0; i < nodes.size(); i++) {
-        unsortedcodes.push_back(new Binary(i));
+        unsortedcodes.push_back(new Binary(i, bitSize(nodes.size())));
     }
 
     ofstream file;
@@ -328,12 +309,12 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
     while(conditions_size --> 0)
         file << "i" << conditions_size << " ";
 
-    int bits_nodes = bitSize(numNodes_test);
+    int bits_nodes = bitSize(nodes.at(0)->getNumNodes());
     while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
 
     file << endl << "output ";
-    bits_nodes = bitSize(numNodes_test);
+    bits_nodes = bitSize(nodes.at(0)->getNumNodes());
     while(bits_nodes --> 0)
         file << "r" << bits_nodes << " ";
     file << endl;
@@ -345,8 +326,7 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
                  << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false)
                  << ",";
             if(node->hasSpecificConnection(binary)) {
-				//TODO subtract 97 from each char if necessary
-                //file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName())->returnAsBoolVec(), false);
+                file << printVec(unsortedcodes.at(node->getSpecificConnection(binary)->getName()-'a')->returnAsBoolVec(), false);
             } else {
                 //MODE UNDEFINED file << placeholder;
                 file << printVec(unsortedcodes.at(i)->returnAsBoolVec(), false);
@@ -368,58 +348,4 @@ void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditio
         delete it3;
 
     file.close();
-}
-
-
-void setNumNodes(int nodes) {
-	numNodes_test = nodes;
-}
-
-int getNumNodes() {
-	return numNodes_test;
-}
-
-void dontCareBits(vector<char> &values, list<vector<bool>> &possibleValues) {
-	int numberOfX = 0;
-	vector<char> helper(values.size(), '0');
-	list<vector<char>> helpList;
-
-	helpList.push_back(helper);
-
-	for (int i = 0; i < values.size(); i++) {
-		list<vector<char>>::iterator iter = helpList.begin();
-		if (values[i] == '0' || values[i] == '1') {
-
-
-				while (iter != helpList.end()) {
-					helper = *iter;
-					helper[i] = values[i];
-					*iter = helper;
-					iter++;
-				}					
-		}
-		else if (values[i] == 'x') {
-			int k = 0;
-			//sets value at index i to true and adds another element where value at index i is false
-			while( k < pow(2,numberOfX)) { //pow(2,numberOfX) marks end of list, after this loop list size has doubled
-				helper = *iter;
-				helper[i] = '0';
-				*iter = helper;
-
-				helper[i] = '1';
-				helpList.push_back(helper);
-				cout << "added another element to possibleValues list" << endl;
-				iter++;
-				k++;
-			}	
-			numberOfX++;
-		}
-	}
-	list<vector<char>>::iterator iter = helpList.begin();
-	while (iter != helpList.end()) {
-		possibleValues.push_back(charVecToBoolVec(*iter));
-		iter++;
-	}
-
-	return;
 }
