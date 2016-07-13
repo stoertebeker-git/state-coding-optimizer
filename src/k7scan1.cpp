@@ -5,7 +5,7 @@
 #include "helper.h"
 #include "binary.h"
 #include "table.h"
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <ctime>
 #include <iostream>
 #include <math.h>
@@ -13,6 +13,7 @@
 #include <map>
 #include <bitset>
 #include <list>
+#include <algorithm>
 
 using namespace std;
 
@@ -70,17 +71,18 @@ public:
 
 	lexstate s;
 
-	int CParser::yylex();						//lexial analyser
-	void CParser::yyerror(char *ers);			//error reporter
-	int CParser::IP_MatchToken(string &tok);	//checks the token
-	void CParser::InitParse(FILE *inp,FILE *err,FILE *lst);
-	int	CParser::yyparse();						//parser
-	void CParser::pr_tokentable();				//test output for tokens
-	void CParser::IP_init_token_table();		//loads the tokens
-	void CParser::Load_tokenentry(string str,int index);//load one token
-	void CParser::PushString(char c);			//Used for string assembly
+    int yylex();						//lexial analyser
+    void yyerror(char *ers);			//error reporter
+    int IP_MatchToken(string &tok);	//checks the token
+    void InitParse(FILE *inp,FILE *err,FILE *lst);
+    int	yyparse();						//parser
+    void pr_tokentable();				//test output for tokens
+    void IP_init_token_table();		//loads the tokens
+    void Load_tokenentry(string str,int index);//load one token
+    void PushString(char c);			//Used for string assembly
+    bool contains_shit(std::vector<char>& v, char c);
 	CParser(){IP_LineNumber = 1;ugetflag=0;prflag=0;};	//Constructor
-	int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c);
+    int lexHelper(vector<char> split, vector<char> end, lexstate e, int c);
 };
 //------------------------------------------------------------------------
 
@@ -376,7 +378,7 @@ int CParser::yylex()
 					s = E_OUTVALUE;
 					int j = outputNames.size();
 					while (j > 0) {
-						edge.values.push_back('0'); //no don't care values for output otherwise a certian input has multiple output options 
+                        edge.values.push_back('0'); //no don't care values for output otherwise a certain input has multiple output options
 						j--;
 					}
 				}
@@ -494,10 +496,16 @@ int CParser::yylex()
 		}
 	}
 }
+bool CParser::contains_shit(std::vector<char>& v, char c) {
+    return std::find(std::begin(v), std::end(v), c) != std::end(v);
+}
 
-int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) {
+int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c_raw) {
 	int t;
-	bool b = (find(split.begin(), split.end(), c) != split.end() || find(end.begin(), end.end(), c) != end.end()); // checks if c is seperator or end sign
+
+    char c = static_cast<char>(c_raw);
+
+    bool b = (contains_shit(split, c) || contains_shit(end, c)); // checks if c is seperator or end sign
 	if (b) {
 		yytext = yytext.substr(0, yytext.size() - 1);
 
@@ -517,9 +525,9 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 		case L_DEFIN:
 			inputNames.insert(make_pair(yytext, inputNames.size()));
 			cout << "added input " << yytext << endl;
-			if (find(end.begin(), end.end(), c) != end.end()) {
+            if (contains_shit(end, c)) {
 				for (int i = 0; i < pow(2, inputNames.size()); i++) {
-					conditions.push_back(new Binary(i));
+                    conditions.push_back(new Binary(i, bitSize(nodes.size())));
 				}
 			}
 			break;
@@ -527,9 +535,9 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 		case L_DEFOUT:
 			outputNames.insert(make_pair(yytext, outputNames.size()));
 			cout << "added output " << yytext << endl;
-			if (find(end.begin(), end.end(), c) != end.end()) {
+            if (contains_shit(end, c)) {
 				for (int i = 0; i < pow(2, outputNames.size()); i++) {
-					outputs.push_back(new Binary(i));
+                    outputs.push_back(new Binary(i, bitSize(nodes.size())));
 				}
 			}
 			break;
@@ -554,7 +562,7 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 
 				cout << "added condition input value " << yytext << " of edge" << endl;
 
-				if (find(end.begin(), end.end(), c) != end.end()) {
+                if (contains_shit(end, c)) {
 					dontCareBits(edge.values, edge.in);
 				}
 			}
@@ -583,7 +591,7 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 
 				cout << "added condition output value " << yytext << " of edge" << endl;
 
-				if (find(end.begin(), end.end(), c) != end.end()) {
+                if (contains_shit(end, c)) {
 
 					list<vector<bool>>::iterator iter = edge.in.begin();
 					
@@ -613,7 +621,7 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 				cout << "added end node " << yytext << " of edge" << endl;
 
 				//TODO add to node element
-				if (find(end.begin(), end.end(), c) != end.end()) {
+                if (contains_shit(end, c)) {
 
 					list<vector<bool>>::iterator iter = edge.in.begin();
 
@@ -638,7 +646,7 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 			break;
 		}
 		yytext = " ";
-		if ((find(end.begin(), end.end(), c) != end.end())) {
+        if (contains_shit(end, c)) {
 			s = L_START;
 			if (c == ')' && e != E_NODES) {
 				yytext = ")";
@@ -660,13 +668,48 @@ int CParser::lexHelper(vector<char> split, vector<char> end, lexstate e, int c) 
 }
 //------------------------------------------------------------------------
 int main(int argc, char** argv) {
-	FILE *inf;
-	char fistr[100];
-	printf("Enter filename:\n");
-	gets_s(fistr);
-	inf = fopen(fistr, "r");
-	if (inf == NULL) {
-		printf("Cannot open input file %s\n", fistr);
+    char *filename;
+
+    int input_bits, num_nodes, output_bits, probability_of_generation;
+
+    for(int i = 0; i < argc; i++) {
+        string arg = string(argv[i]);
+        if(arg == "-i") {
+            input_bits = atoi(argv[i+1]);
+        } else if (arg == "-n") {
+            num_nodes = atoi(argv[i+1]);
+        } else if (arg == "-o") {
+            output_bits = atoi(argv[i+1]);
+        } else if (arg == "-p") {
+            probability_of_generation = atoi(argv[i+1]);
+        } else if (arg == "--file") {
+            filename = argv[i+1];
+        } else if (arg == "--help") {
+            cout << "===========================================================" << endl
+                 << "              MEGA NODE CODE OPTIMIZER V" << std::rand()%10 << "." << std::rand()%1000 << endl
+                 << "This software has mega copyright until 1984" << endl
+                 << "This software is protected by law mainly on the moon" << endl
+                 << "--help -> display this help!" << endl
+                 << "--file -> specify file"
+                 << "-p     -> chance of nodeconnections from 0 to 10" << endl
+                 << "-i     -> number of input bits" << endl
+                 << "-n     -> number of nodes" << endl
+                 << "-o     -> number of output bits"
+                 << "--seed -> random seed same seed same generation" << endl
+                 << "this shit was solely written by me :(" << endl
+                 << "I also want to greet my mom and dad and thank my friends" << endl
+                 << "Simon and guterwhine for supporting me in those dank times" << endl
+                 << "==========================================================" << endl;
+
+            return 0;
+        } //else if (arg == "--seed") {
+          // seed = atoi(argv[i+1]);
+        //}
+    }
+
+    FILE* inf = fopen(filename, "r");
+    if (!inf) {
+        printf("Cannot open input file %s\n", filename);
 		return 0;
 	}
 	CParser obj;

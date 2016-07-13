@@ -1,7 +1,7 @@
 #include "helper.h"
 #include "binary.h"
 #include "table.h"
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <math.h>
 #include <iostream>
 #include <fstream>
@@ -10,6 +10,8 @@
 
 
 using namespace std;
+
+int numNodes_test = 0;
 
 //==============================================================================
 // Util function see below.
@@ -313,7 +315,7 @@ void printSortedMLFile(Table* table, std::vector<Binary*> conditions) {
 void printUnsortedMLFile(std::vector<Node*> nodes, std::vector<Binary*> conditions) {
     std::vector<Binary*> unsortedcodes;
     for(int i = 0; i < nodes.size(); i++) {
-        unsortedcodes.push_back(new Binary(i));
+        unsortedcodes.push_back(new Binary(i, bitSize(nodes.size())));
     }
 
     ofstream file;

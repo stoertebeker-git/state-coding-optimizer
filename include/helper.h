@@ -49,7 +49,7 @@ void printSortedMLFile(Table* table,
 
 void printUnsortedMLFile(std::vector<Node*> nodes,
                          std::vector<Binary *> conditions);
-__declspec(selectany) int numNodes_test;
+//__declspec(selectany) int numNodes_test;
 void setNumNodes(int nodes);
 
 int getNumNodes();

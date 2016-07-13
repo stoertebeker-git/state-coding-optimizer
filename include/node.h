@@ -18,7 +18,7 @@ public:
     bool hasSpecificConnection(Binary *condition);
 
     std::vector<Binary*> getConditionsForNode(Node* node);
-	std::map<Binary*, Binary*> Node::getOutput();
+    std::map<Binary*, Binary*> getOutput();
     std::map<Binary *, Node *> &getAllConnections();
 
     void setOutputAt(Binary *output, Binary *conditions);

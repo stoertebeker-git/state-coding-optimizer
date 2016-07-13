@@ -1,7 +1,7 @@
 #include "node.h"
 #include "helper.h"
 #include "binary.h"
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 #include <algorithm>
 
